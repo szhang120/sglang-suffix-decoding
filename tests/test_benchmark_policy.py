@@ -27,7 +27,8 @@ class BenchmarkPolicyTests(unittest.TestCase):
                     for block, count in (("independent", 52), ("refinement", 84), ("repeat", 104)):
                         for index in range(count):
                             rows.append(dict(block=block, index=index, question_id=index,
-                                             kind="initial", category="synthetic", input_tokens=2,
+                                             kind="refinement" if block == "refinement" and index >= 52 else "initial",
+                                             category="synthetic", input_tokens=2,
                                              truncated=False, elapsed_ns=1000,
                                              chunks=[{"elapsed_ns": 500}], response={"output_ids": [1, 2]}))
                     if mode == changed_mode:
@@ -53,6 +54,12 @@ class BenchmarkPolicyTests(unittest.TestCase):
         rows = [r for r in report["aggregate"] if r["mode"] == "ngram"]
         self.assertTrue(all("pooled_speedup" not in r and "descriptive_latency_ratio" in r for r in rows))
         self.assertEqual(len(report["mismatches"]), 5)
+        turns = [r for r in report["request_kinds"] if r["kind"] == "refinement"]
+        self.assertEqual(len(turns), 5)
+        self.assertTrue(all(r["requests"] == 160 for r in turns))
+        ngram = next(r for r in turns if r["mode"] == "ngram")
+        self.assertNotIn("pooled_speedup", ngram)
+        self.assertEqual(ngram["descriptive_latency_ratio"], 1.0)
 
     def test_suffix_difference_still_fails_with_flag(self):
         code, report = self.run_fixture("suffix", True)

@@ -14,10 +14,13 @@ import matplotlib.pyplot as plt
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--root", type=Path, default=Path(__file__).resolve().parents[1])
+    parser.add_argument("--width-summary", type=Path)
+    parser.add_argument("--width-stem", default="verify-width")
     args = parser.parse_args()
     dest = args.root / "docs/figures"
     dest.mkdir(parents=True, exist_ok=True)
-    data = json.loads((args.root / "results/width-probe-final/summary.json").read_text())
+    source = args.width_summary or args.root / "results/width-probe-final/summary.json"
+    data = json.loads(source.read_text())
     fig, ax = plt.subplots(figsize=(6.2, 3.8), layout="constrained")
     fig.get_layout_engine().set(rect=(0, 0.07, 1, 0.93))
     for context, color, style in ((126, "#707070", "--"), (128, "#0072B2", "-"), (512, "#D55E00", "-")):
@@ -30,8 +33,9 @@ def main():
         ax.errorbar(widths, medians, yerr=errors, color=color, linestyle=style,
                     marker="o", markersize=4, capsize=3, label=label)
     ax.set(xlabel="Actual verification rows", ylabel="Correlated GPU kernel sum (ms)",
-           xlim=(0, 34), ylim=(0, 12), xticks=[1, 2, 4, 8, 16, 33])
-    ax.set_title("Shorter proposals save some work; tile padding limits the gain", fontsize=11)
+           xlim=(0, 34), ylim=(0, max(r["range_kernel_ms"][1] for r in data["rows"]) * 1.12),
+           xticks=[1, 2, 4, 8, 16, 33])
+    ax.set_title("Measured verification widths and GPU kernel time", fontsize=11)
     ax.grid(axis="y", color="#dddddd", linewidth=0.6)
     ax.spines[["top", "right"]].set_visible(False)
     ax.legend(frameon=False, fontsize=8, loc="lower right")
@@ -40,7 +44,7 @@ def main():
         metadata = {"Creator": "analysis/plot_results.py"}
         if extension == "svg":
             metadata["Date"] = None
-        fig.savefig(dest / f"verify-width.{extension}", dpi=180, metadata=metadata)
+        fig.savefig(dest / f"{args.width_stem}.{extension}", dpi=180, metadata=metadata)
     plt.close(fig)
     report = args.root / "results/final/benchmark-report.json"
     if report.exists():

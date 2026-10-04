@@ -52,7 +52,7 @@ def main():
         target_acceptance_denominator="Sum of verify_rows - 1, excluding the pending root",
         stop_handling="Target acceptance may include a terminal tail discarded at EOS; committed emissions are clipped to final output length",
         timing="Separate instrumented runs; no serving-latency claims",
-        summaries=[], categories=[], raw_sha256={},
+        summaries=[], categories=[], request_kinds=[], raw_sha256={},
     )
     provenance = None
     for variant in VARIANTS:
@@ -88,6 +88,7 @@ def main():
             row["committed_tokens"] = min(accepted, remaining)
             row["block"] = request["block"]
             row["category"] = request["category"]
+            row["kind"] = request["kind"]
             grouped[row["rid"]].append(row)
         for rid, request in by_rid.items():
             previous_end = 1  # Prefill emits the first token.
@@ -100,6 +101,11 @@ def main():
             selected_rounds = [r for r in rounds if r["block"] == block]
             report["summaries"].append(dict(variant=variant, block=block,
                                              **summarize(selected_requests, selected_rounds)))
+            for kind in sorted({r["kind"] for r in selected_requests}):
+                report["request_kinds"].append(dict(
+                    variant=variant, block=block, kind=kind,
+                    **summarize([r for r in selected_requests if r["kind"] == kind],
+                                [r for r in selected_rounds if r["kind"] == kind])))
             for category in sorted({r["category"] for r in selected_requests}):
                 report["categories"].append(dict(
                     variant=variant, block=block, category=category,

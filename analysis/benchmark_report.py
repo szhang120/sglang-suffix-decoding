@@ -49,6 +49,8 @@ def main():
     controls = None
     identity = None
     grouped_pairs = defaultdict(list)
+    kind_pairs = defaultdict(list)
+    kind_counts = defaultdict(int)
     categories = defaultdict(lambda: [0, 0, 0])
     for trial in range(5):
         records = {}
@@ -82,7 +84,8 @@ def main():
                     first = next((i for i, (a, b) in enumerate(zip(x, y)) if a != b), min(len(x), len(y)))
                     mismatches.append(dict(mode=mode, trial=trial, block=row["block"], index=row["index"],
                                            question_id=row["question_id"], first_difference=first,
-                                           ordinary_ids=x[first:first + 8], mode_ids=y[first:first + 8]))
+                                           ordinary_ids=x[first:first + 8], mode_ids=y[first:first + 8],
+                                           ordinary_output_tokens=len(x), mode_output_tokens=len(y)))
                 key = (mode, row["block"], row["category"])
                 categories[key][0] += reference["elapsed_ns"]
                 categories[key][1] += row["elapsed_ns"]
@@ -94,6 +97,12 @@ def main():
                 mode_ns = sum(r["elapsed_ns"] for r in subset)
                 tokens = sum(len(r["response"]["output_ids"]) for r in subset)
                 grouped_pairs[(mode, block)].append((base_ns, mode_ns))
+                for kind in sorted({r["kind"] for r in subset}):
+                    original = [r for r in b if r["kind"] == kind]
+                    measured = [r for r in subset if r["kind"] == kind]
+                    kind_pairs[(mode, block, kind)].append((sum(r["elapsed_ns"] for r in original),
+                                                           sum(r["elapsed_ns"] for r in measured)))
+                    kind_counts[(mode, block, kind)] += len(measured)
                 summaries.append(dict(mode=mode, trial=trial, block=block,
                                       wall_seconds=mode_ns / 1e9, output_tokens=tokens,
                                       ordinary_output_tokens=sum(len(r["response"]["output_ids"]) for r in b),
@@ -115,6 +124,14 @@ def main():
                                                                        if (r["mode"], r["block"]) == (mode, block))))
     exact_modes_passed = not any(m["mode"] != "ngram" for m in mismatches)
     ngram_differs = any(m["mode"] == "ngram" for m in mismatches)
+    kind_rows = []
+    for (mode, block, kind), pairs in sorted(kind_pairs.items()):
+        ratios = [a / b for a, b in pairs]
+        kind_rows.append(dict(mode=mode, block=block, kind=kind,
+                              requests=kind_counts[(mode, block, kind)],
+                              pooled_speedup=sum(a for a, _ in pairs) / sum(b for _, b in pairs),
+                              observed_trial_range=[min(ratios), max(ratios)],
+                              trial_bootstrap_95=intervals(pairs)))
     if args.allow_ngram_numerical_differences and ngram_differs:
         for row in summaries:
             if row["mode"] == "ngram":
@@ -124,6 +141,10 @@ def main():
             if row["mode"] == "ngram":
                 row["descriptive_latency_ratio"] = row.pop("pooled_speedup")
                 row["median_trial_latency_ratio"] = row.pop("median_trial_speedup")
+                row["different_outputs"] = True
+        for row in kind_rows:
+            if row["mode"] == "ngram":
+                row["descriptive_latency_ratio"] = row.pop("pooled_speedup")
                 row["different_outputs"] = True
     category_rows = [dict(mode=m, block=b, category=c, requests=n, pooled_speedup=a / d)
                      for (m, b, c), (a, d, n) in sorted(categories.items())]
@@ -141,7 +162,7 @@ def main():
                   common_config=controls,
                   gpu_uuid_by_trial={str(trial): environments[("ordinary", trial)] for trial in range(5)},
                   aggregate=aggregate, trials=summaries,
-                  categories=category_rows,
+                  categories=category_rows, request_kinds=kind_rows,
                   raw_sha256=hashes)
     if args.output.exists():
         raise SystemExit(f"Preserving {args.output}")

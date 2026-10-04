@@ -18,9 +18,10 @@ For the retained shared-attention candidate, the complete isolated suffix gate s
 ```sh
 /tmp/sglang-modal-cli/bin/modal run --detach analysis/modal_final_campaign.py --run-id CAMPAIGN_ID
 /tmp/sglang-modal-cli/bin/modal run --detach analysis/modal_final_diagnostics.py --run-id DIAGNOSTIC_ID --reference-run CAMPAIGN_ID --wait-for-campaign
+/tmp/sglang-modal-cli/bin/modal run --detach analysis/modal_finalize.py --run-id ANALYSIS_ID --campaign-run CAMPAIGN_ID --diagnostics-run DIAGNOSTIC_ID
 ```
 
-The follow-up waits with **no GPU**, validates all 6000 serving records, then starts one serialized diagnostic GPU function after the campaign completes. A failed campaign/report stops it before allocation. Natural traces, five separate profiles, six paired ordinary-route controls and 54 width probes follow. Its CPU analysis writes report hashes and never merges instrumented latencies into serving estimates. The controller and GPU statuses in the artifact volume are authoritative.
+The follow-up waits with **no GPU**, validates all 6000 serving records, then starts one serialized diagnostic GPU function after the campaign completes. A failed campaign/report stops it before allocation. Natural traces, five separate profiles, six paired ordinary-route controls and 54 width probes follow. Its CPU analysis writes report hashes and never merges instrumented latencies into serving estimates. The CPU-only finalizer then regenerates extended reports with actual second turns separated, writes the gated results document and scientific figures, and packages raw measurements/profiles with per-file hashes. It refuses failed/incomplete evidence. The controller, GPU and finalizer statuses in the artifact volume are authoritative.
 
 The older `public-gate`/`audit-frozen`/`benchmark` phases require every NGRAM output to match and remain preserved for the original policy. They are not the launcher for the current explicitly disclosed descriptive-NGRAM policy. The frozen refinement inputs are retained; historical output IDs are provenance, never the new reference or cache seeds.
 
