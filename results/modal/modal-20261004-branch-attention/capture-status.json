@@ -1,0 +1,11 @@
+{
+  "success": true,
+  "image_id": "im-sRsqWf8dL1UL1NlO63qCWm",
+  "run_id": "modal-20261004-branch-attention",
+  "script_sha256": {
+    "model_tensor_trace_gpu.py": "dae2aae80c03d57a8388330cd2cd5c511f46f781d5fffbce6c76482d5e01e1a4",
+    "attention_capture_hook.py": "27b6faab6d641ddeac3517304926fae467bd0664df3f6e424af375f44d343c72",
+    "branch_attention_report_gpu.py": "6b29b993b221d4cef48a6c661f0753c020daf22c71dabf395d187b9fa470a17c"
+  },
+  "elapsed_seconds": 164.726447222
+}

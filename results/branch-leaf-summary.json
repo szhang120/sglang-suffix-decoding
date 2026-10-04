@@ -1,0 +1,2198 @@
+{
+  "diagnostic": true,
+  "metadata": {
+    "ordinary": [
+      {
+        "row": 0,
+        "position": 118,
+        "input_id": 304,
+        "expected_id": 304
+      }
+    ],
+    "ngram": [
+      {
+        "row": 0,
+        "position": 116,
+        "input_id": 3311,
+        "expected_id": 3311
+      },
+      {
+        "row": 1,
+        "position": 117,
+        "input_id": 279,
+        "expected_id": 27991
+      },
+      {
+        "row": 2,
+        "position": 117,
+        "input_id": 27991,
+        "expected_id": 27991
+      },
+      {
+        "row": 3,
+        "position": 118,
+        "input_id": 20567,
+        "expected_id": 304
+      },
+      {
+        "row": 4,
+        "position": 118,
+        "input_id": 304,
+        "expected_id": 304
+      },
+      {
+        "row": 5,
+        "position": 119,
+        "input_id": 27991,
+        "expected_id": 279
+      },
+      {
+        "row": 6,
+        "position": 119,
+        "input_id": 279,
+        "expected_id": 279
+      },
+      {
+        "row": 7,
+        "position": 120,
+        "input_id": 304,
+        "expected_id": 2086
+      },
+      {
+        "row": 8,
+        "position": 120,
+        "input_id": 1156,
+        "expected_id": 2086
+      },
+      {
+        "row": 9,
+        "position": 121,
+        "input_id": 3162,
+        "expected_id": 1042
+      },
+      {
+        "row": 10,
+        "position": 121,
+        "input_id": 1042,
+        "expected_id": 1042
+      },
+      {
+        "row": 11,
+        "position": 122,
+        "input_id": 4401,
+        "expected_id": 624
+      },
+      {
+        "row": 12,
+        "position": 122,
+        "input_id": 624,
+        "expected_id": 624
+      },
+      {
+        "row": 13,
+        "position": 123,
+        "input_id": 916,
+        "expected_id": 18
+      },
+      {
+        "row": 14,
+        "position": 123,
+        "input_id": 17,
+        "expected_id": 18
+      },
+      {
+        "row": 15,
+        "position": 124,
+        "input_id": 279,
+        "expected_id": 13
+      },
+      {
+        "row": 16,
+        "position": 124,
+        "input_id": 13,
+        "expected_id": 13
+      },
+      {
+        "row": 17,
+        "position": 125,
+        "input_id": 1378,
+        "expected_id": 2691
+      },
+      {
+        "row": 18,
+        "position": 125,
+        "input_id": 20517,
+        "expected_id": 2691
+      },
+      {
+        "row": 19,
+        "position": 126,
+        "input_id": 1635,
+        "expected_id": 279
+      },
+      {
+        "row": 20,
+        "position": 126,
+        "input_id": 279,
+        "expected_id": 279
+      },
+      {
+        "row": 21,
+        "position": 127,
+        "input_id": 30,
+        "expected_id": 14713
+      },
+      {
+        "row": 22,
+        "position": 128,
+        "input_id": 151645,
+        "expected_id": 504
+      },
+      {
+        "row": 23,
+        "position": 129,
+        "input_id": 198,
+        "expected_id": 2176
+      },
+      {
+        "row": 24,
+        "position": 130,
+        "input_id": 151644,
+        "expected_id": 1635
+      },
+      {
+        "row": 25,
+        "position": 131,
+        "input_id": 77091,
+        "expected_id": 311
+      },
+      {
+        "row": 26,
+        "position": 132,
+        "input_id": 198,
+        "expected_id": 633
+      },
+      {
+        "row": 27,
+        "position": 133,
+        "input_id": 1249,
+        "expected_id": 279
+      },
+      {
+        "row": 28,
+        "position": 134,
+        "input_id": 1477,
+        "expected_id": 2790
+      },
+      {
+        "row": 29,
+        "position": 135,
+        "input_id": 279,
+        "expected_id": 9162
+      },
+      {
+        "row": 30,
+        "position": 136,
+        "input_id": 2790,
+        "expected_id": 382
+      },
+      {
+        "row": 31,
+        "position": 137,
+        "input_id": 3311,
+        "expected_id": 785
+      },
+      {
+        "row": 32,
+        "position": 138,
+        "input_id": 279,
+        "expected_id": 20567
+      }
+    ]
+  },
+  "comparisons": [
+    {
+      "operator": "model.embed_tokens",
+      "part": 0,
+      "equal": true,
+      "unequal_elements": 0,
+      "max_abs": 0.0
+    },
+    {
+      "operator": "model.layers.0.input_layernorm",
+      "part": 0,
+      "equal": true,
+      "unequal_elements": 0,
+      "max_abs": 0.0
+    },
+    {
+      "operator": "model.layers.0.self_attn.qkv_proj",
+      "part": 0,
+      "equal": true,
+      "unequal_elements": 0,
+      "max_abs": 0.0
+    },
+    {
+      "operator": "model.layers.0.self_attn.attn",
+      "part": 0,
+      "equal": true,
+      "unequal_elements": 0,
+      "max_abs": 0.0
+    },
+    {
+      "operator": "model.layers.0.self_attn.o_proj",
+      "part": 0,
+      "equal": true,
+      "unequal_elements": 0,
+      "max_abs": 0.0
+    },
+    {
+      "operator": "model.layers.0.post_attention_layernorm",
+      "part": 0,
+      "equal": true,
+      "unequal_elements": 0,
+      "max_abs": 0.0
+    },
+    {
+      "operator": "model.layers.0.post_attention_layernorm",
+      "part": 1,
+      "equal": true,
+      "unequal_elements": 0,
+      "max_abs": 0.0
+    },
+    {
+      "operator": "model.layers.0.mlp.gate_up_proj",
+      "part": 0,
+      "equal": true,
+      "unequal_elements": 0,
+      "max_abs": 0.0
+    },
+    {
+      "operator": "model.layers.0.mlp.act_fn",
+      "part": 0,
+      "equal": true,
+      "unequal_elements": 0,
+      "max_abs": 0.0
+    },
+    {
+      "operator": "model.layers.0.mlp.down_proj",
+      "part": 0,
+      "equal": true,
+      "unequal_elements": 0,
+      "max_abs": 0.0
+    },
+    {
+      "operator": "model.layers.1.input_layernorm",
+      "part": 0,
+      "equal": true,
+      "unequal_elements": 0,
+      "max_abs": 0.0
+    },
+    {
+      "operator": "model.layers.1.input_layernorm",
+      "part": 1,
+      "equal": true,
+      "unequal_elements": 0,
+      "max_abs": 0.0
+    },
+    {
+      "operator": "model.layers.1.self_attn.qkv_proj",
+      "part": 0,
+      "equal": true,
+      "unequal_elements": 0,
+      "max_abs": 0.0
+    },
+    {
+      "operator": "model.layers.1.self_attn.attn",
+      "part": 0,
+      "equal": true,
+      "unequal_elements": 0,
+      "max_abs": 0.0
+    },
+    {
+      "operator": "model.layers.1.self_attn.o_proj",
+      "part": 0,
+      "equal": true,
+      "unequal_elements": 0,
+      "max_abs": 0.0
+    },
+    {
+      "operator": "model.layers.1.post_attention_layernorm",
+      "part": 0,
+      "equal": true,
+      "unequal_elements": 0,
+      "max_abs": 0.0
+    },
+    {
+      "operator": "model.layers.1.post_attention_layernorm",
+      "part": 1,
+      "equal": true,
+      "unequal_elements": 0,
+      "max_abs": 0.0
+    },
+    {
+      "operator": "model.layers.1.mlp.gate_up_proj",
+      "part": 0,
+      "equal": true,
+      "unequal_elements": 0,
+      "max_abs": 0.0
+    },
+    {
+      "operator": "model.layers.1.mlp.act_fn",
+      "part": 0,
+      "equal": true,
+      "unequal_elements": 0,
+      "max_abs": 0.0
+    },
+    {
+      "operator": "model.layers.1.mlp.down_proj",
+      "part": 0,
+      "equal": true,
+      "unequal_elements": 0,
+      "max_abs": 0.0
+    },
+    {
+      "operator": "model.layers.2.input_layernorm",
+      "part": 0,
+      "equal": true,
+      "unequal_elements": 0,
+      "max_abs": 0.0
+    },
+    {
+      "operator": "model.layers.2.input_layernorm",
+      "part": 1,
+      "equal": true,
+      "unequal_elements": 0,
+      "max_abs": 0.0
+    },
+    {
+      "operator": "model.layers.2.self_attn.qkv_proj",
+      "part": 0,
+      "equal": true,
+      "unequal_elements": 0,
+      "max_abs": 0.0
+    },
+    {
+      "operator": "model.layers.2.self_attn.attn",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 1,
+      "max_abs": 0.0001220703125
+    },
+    {
+      "operator": "model.layers.2.self_attn.o_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 41,
+      "max_abs": 0.00048828125
+    },
+    {
+      "operator": "model.layers.2.post_attention_layernorm",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 3,
+      "max_abs": 0.001220703125
+    },
+    {
+      "operator": "model.layers.2.post_attention_layernorm",
+      "part": 1,
+      "equal": false,
+      "unequal_elements": 4,
+      "max_abs": 0.0009765625
+    },
+    {
+      "operator": "model.layers.2.mlp.gate_up_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 458,
+      "max_abs": 0.03125
+    },
+    {
+      "operator": "model.layers.2.mlp.act_fn",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 425,
+      "max_abs": 0.001953125
+    },
+    {
+      "operator": "model.layers.2.mlp.down_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 768,
+      "max_abs": 0.001953125
+    },
+    {
+      "operator": "model.layers.3.input_layernorm",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 203,
+      "max_abs": 0.0078125
+    },
+    {
+      "operator": "model.layers.3.input_layernorm",
+      "part": 1,
+      "equal": false,
+      "unequal_elements": 218,
+      "max_abs": 0.00390625
+    },
+    {
+      "operator": "model.layers.3.self_attn.qkv_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 403,
+      "max_abs": 0.25
+    },
+    {
+      "operator": "model.layers.3.self_attn.attn",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 1245,
+      "max_abs": 0.00390625
+    },
+    {
+      "operator": "model.layers.3.self_attn.o_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 1785,
+      "max_abs": 0.00390625
+    },
+    {
+      "operator": "model.layers.3.post_attention_layernorm",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 913,
+      "max_abs": 0.125
+    },
+    {
+      "operator": "model.layers.3.post_attention_layernorm",
+      "part": 1,
+      "equal": false,
+      "unequal_elements": 913,
+      "max_abs": 0.0078125
+    },
+    {
+      "operator": "model.layers.3.mlp.gate_up_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 10125,
+      "max_abs": 0.125
+    },
+    {
+      "operator": "model.layers.3.mlp.act_fn",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 8768,
+      "max_abs": 0.0078125
+    },
+    {
+      "operator": "model.layers.3.mlp.down_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2405,
+      "max_abs": 0.001953125
+    },
+    {
+      "operator": "model.layers.4.input_layernorm",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 1622,
+      "max_abs": 0.03125
+    },
+    {
+      "operator": "model.layers.4.input_layernorm",
+      "part": 1,
+      "equal": false,
+      "unequal_elements": 1623,
+      "max_abs": 0.0078125
+    },
+    {
+      "operator": "model.layers.4.self_attn.qkv_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 1588,
+      "max_abs": 0.0625
+    },
+    {
+      "operator": "model.layers.4.self_attn.attn",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 1861,
+      "max_abs": 0.017578125
+    },
+    {
+      "operator": "model.layers.4.self_attn.o_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2083,
+      "max_abs": 0.00390625
+    },
+    {
+      "operator": "model.layers.4.post_attention_layernorm",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 1867,
+      "max_abs": 0.0625
+    },
+    {
+      "operator": "model.layers.4.post_attention_layernorm",
+      "part": 1,
+      "equal": false,
+      "unequal_elements": 1860,
+      "max_abs": 0.0078125
+    },
+    {
+      "operator": "model.layers.4.mlp.gate_up_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 13889,
+      "max_abs": 0.0625
+    },
+    {
+      "operator": "model.layers.4.mlp.act_fn",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 11877,
+      "max_abs": 0.046875
+    },
+    {
+      "operator": "model.layers.4.mlp.down_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2720,
+      "max_abs": 0.00830078125
+    },
+    {
+      "operator": "model.layers.5.input_layernorm",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2333,
+      "max_abs": 0.03125
+    },
+    {
+      "operator": "model.layers.5.input_layernorm",
+      "part": 1,
+      "equal": false,
+      "unequal_elements": 2256,
+      "max_abs": 0.0078125
+    },
+    {
+      "operator": "model.layers.5.self_attn.qkv_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2337,
+      "max_abs": 0.0625
+    },
+    {
+      "operator": "model.layers.5.self_attn.attn",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2260,
+      "max_abs": 0.015625
+    },
+    {
+      "operator": "model.layers.5.self_attn.o_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2464,
+      "max_abs": 0.0078125
+    },
+    {
+      "operator": "model.layers.5.post_attention_layernorm",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2371,
+      "max_abs": 0.125
+    },
+    {
+      "operator": "model.layers.5.post_attention_layernorm",
+      "part": 1,
+      "equal": false,
+      "unequal_elements": 2329,
+      "max_abs": 0.0625
+    },
+    {
+      "operator": "model.layers.5.mlp.gate_up_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 16884,
+      "max_abs": 0.0625
+    },
+    {
+      "operator": "model.layers.5.mlp.act_fn",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 13654,
+      "max_abs": 0.02734375
+    },
+    {
+      "operator": "model.layers.5.mlp.down_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2868,
+      "max_abs": 0.00830078125
+    },
+    {
+      "operator": "model.layers.6.input_layernorm",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2634,
+      "max_abs": 0.046875
+    },
+    {
+      "operator": "model.layers.6.input_layernorm",
+      "part": 1,
+      "equal": false,
+      "unequal_elements": 2500,
+      "max_abs": 0.0625
+    },
+    {
+      "operator": "model.layers.6.self_attn.qkv_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2705,
+      "max_abs": 0.0625
+    },
+    {
+      "operator": "model.layers.6.self_attn.attn",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2418,
+      "max_abs": 0.0078125
+    },
+    {
+      "operator": "model.layers.6.self_attn.o_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2392,
+      "max_abs": 0.015625
+    },
+    {
+      "operator": "model.layers.6.post_attention_layernorm",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2586,
+      "max_abs": 0.125
+    },
+    {
+      "operator": "model.layers.6.post_attention_layernorm",
+      "part": 1,
+      "equal": false,
+      "unequal_elements": 2511,
+      "max_abs": 0.0625
+    },
+    {
+      "operator": "model.layers.6.mlp.gate_up_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 25311,
+      "max_abs": 0.0625
+    },
+    {
+      "operator": "model.layers.6.mlp.act_fn",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 15589,
+      "max_abs": 0.03125
+    },
+    {
+      "operator": "model.layers.6.mlp.down_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2912,
+      "max_abs": 0.01953125
+    },
+    {
+      "operator": "model.layers.7.input_layernorm",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2697,
+      "max_abs": 0.0625
+    },
+    {
+      "operator": "model.layers.7.input_layernorm",
+      "part": 1,
+      "equal": false,
+      "unequal_elements": 2618,
+      "max_abs": 0.0625
+    },
+    {
+      "operator": "model.layers.7.self_attn.qkv_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2850,
+      "max_abs": 0.0625
+    },
+    {
+      "operator": "model.layers.7.self_attn.attn",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2750,
+      "max_abs": 0.015625
+    },
+    {
+      "operator": "model.layers.7.self_attn.o_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2965,
+      "max_abs": 0.01171875
+    },
+    {
+      "operator": "model.layers.7.post_attention_layernorm",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2752,
+      "max_abs": 0.0234375
+    },
+    {
+      "operator": "model.layers.7.post_attention_layernorm",
+      "part": 1,
+      "equal": false,
+      "unequal_elements": 2721,
+      "max_abs": 0.0625
+    },
+    {
+      "operator": "model.layers.7.mlp.gate_up_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 26777,
+      "max_abs": 0.015625
+    },
+    {
+      "operator": "model.layers.7.mlp.act_fn",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 15700,
+      "max_abs": 0.0234375
+    },
+    {
+      "operator": "model.layers.7.mlp.down_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2889,
+      "max_abs": 0.009765625
+    },
+    {
+      "operator": "model.layers.8.input_layernorm",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2719,
+      "max_abs": 0.0625
+    },
+    {
+      "operator": "model.layers.8.input_layernorm",
+      "part": 1,
+      "equal": false,
+      "unequal_elements": 2623,
+      "max_abs": 0.0625
+    },
+    {
+      "operator": "model.layers.8.self_attn.qkv_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2938,
+      "max_abs": 0.125
+    },
+    {
+      "operator": "model.layers.8.self_attn.attn",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2867,
+      "max_abs": 0.033203125
+    },
+    {
+      "operator": "model.layers.8.self_attn.o_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2989,
+      "max_abs": 0.03125
+    },
+    {
+      "operator": "model.layers.8.post_attention_layernorm",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2837,
+      "max_abs": 0.01953125
+    },
+    {
+      "operator": "model.layers.8.post_attention_layernorm",
+      "part": 1,
+      "equal": false,
+      "unequal_elements": 2764,
+      "max_abs": 0.046875
+    },
+    {
+      "operator": "model.layers.8.mlp.gate_up_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 28271,
+      "max_abs": 0.03125
+    },
+    {
+      "operator": "model.layers.8.mlp.act_fn",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 16183,
+      "max_abs": 0.0390625
+    },
+    {
+      "operator": "model.layers.8.mlp.down_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 3026,
+      "max_abs": 0.015625
+    },
+    {
+      "operator": "model.layers.9.input_layernorm",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2835,
+      "max_abs": 0.0625
+    },
+    {
+      "operator": "model.layers.9.input_layernorm",
+      "part": 1,
+      "equal": false,
+      "unequal_elements": 2792,
+      "max_abs": 0.046875
+    },
+    {
+      "operator": "model.layers.9.self_attn.qkv_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 3059,
+      "max_abs": 0.0625
+    },
+    {
+      "operator": "model.layers.9.self_attn.attn",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2701,
+      "max_abs": 0.02734375
+    },
+    {
+      "operator": "model.layers.9.self_attn.o_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2906,
+      "max_abs": 0.0625
+    },
+    {
+      "operator": "model.layers.9.post_attention_layernorm",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2915,
+      "max_abs": 0.03125
+    },
+    {
+      "operator": "model.layers.9.post_attention_layernorm",
+      "part": 1,
+      "equal": false,
+      "unequal_elements": 2821,
+      "max_abs": 0.0625
+    },
+    {
+      "operator": "model.layers.9.mlp.gate_up_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 23169,
+      "max_abs": 0.03125
+    },
+    {
+      "operator": "model.layers.9.mlp.act_fn",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 15778,
+      "max_abs": 0.017578125
+    },
+    {
+      "operator": "model.layers.9.mlp.down_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2974,
+      "max_abs": 0.0625
+    },
+    {
+      "operator": "model.layers.10.input_layernorm",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2831,
+      "max_abs": 0.03125
+    },
+    {
+      "operator": "model.layers.10.input_layernorm",
+      "part": 1,
+      "equal": false,
+      "unequal_elements": 2794,
+      "max_abs": 0.125
+    },
+    {
+      "operator": "model.layers.10.self_attn.qkv_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2962,
+      "max_abs": 0.0625
+    },
+    {
+      "operator": "model.layers.10.self_attn.attn",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2470,
+      "max_abs": 0.01953125
+    },
+    {
+      "operator": "model.layers.10.self_attn.o_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2870,
+      "max_abs": 0.015625
+    },
+    {
+      "operator": "model.layers.10.post_attention_layernorm",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2943,
+      "max_abs": 0.0234375
+    },
+    {
+      "operator": "model.layers.10.post_attention_layernorm",
+      "part": 1,
+      "equal": false,
+      "unequal_elements": 2850,
+      "max_abs": 0.125
+    },
+    {
+      "operator": "model.layers.10.mlp.gate_up_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 28707,
+      "max_abs": 0.03125
+    },
+    {
+      "operator": "model.layers.10.mlp.act_fn",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 16389,
+      "max_abs": 0.03125
+    },
+    {
+      "operator": "model.layers.10.mlp.down_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 3085,
+      "max_abs": 0.0130615234375
+    },
+    {
+      "operator": "model.layers.11.input_layernorm",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2959,
+      "max_abs": 0.09375
+    },
+    {
+      "operator": "model.layers.11.input_layernorm",
+      "part": 1,
+      "equal": false,
+      "unequal_elements": 2859,
+      "max_abs": 0.125
+    },
+    {
+      "operator": "model.layers.11.self_attn.qkv_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 3238,
+      "max_abs": 0.0625
+    },
+    {
+      "operator": "model.layers.11.self_attn.attn",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2611,
+      "max_abs": 0.01953125
+    },
+    {
+      "operator": "model.layers.11.self_attn.o_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2956,
+      "max_abs": 0.03125
+    },
+    {
+      "operator": "model.layers.11.post_attention_layernorm",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2935,
+      "max_abs": 0.03125
+    },
+    {
+      "operator": "model.layers.11.post_attention_layernorm",
+      "part": 1,
+      "equal": false,
+      "unequal_elements": 2896,
+      "max_abs": 0.125
+    },
+    {
+      "operator": "model.layers.11.mlp.gate_up_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 29691,
+      "max_abs": 0.03125
+    },
+    {
+      "operator": "model.layers.11.mlp.act_fn",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 16641,
+      "max_abs": 0.015625
+    },
+    {
+      "operator": "model.layers.11.mlp.down_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 3109,
+      "max_abs": 0.03125
+    },
+    {
+      "operator": "model.layers.12.input_layernorm",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2904,
+      "max_abs": 0.09375
+    },
+    {
+      "operator": "model.layers.12.input_layernorm",
+      "part": 1,
+      "equal": false,
+      "unequal_elements": 2870,
+      "max_abs": 0.25
+    },
+    {
+      "operator": "model.layers.12.self_attn.qkv_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 3273,
+      "max_abs": 0.0625
+    },
+    {
+      "operator": "model.layers.12.self_attn.attn",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2389,
+      "max_abs": 0.0390625
+    },
+    {
+      "operator": "model.layers.12.self_attn.o_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2871,
+      "max_abs": 0.03125
+    },
+    {
+      "operator": "model.layers.12.post_attention_layernorm",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2994,
+      "max_abs": 0.03125
+    },
+    {
+      "operator": "model.layers.12.post_attention_layernorm",
+      "part": 1,
+      "equal": false,
+      "unequal_elements": 2883,
+      "max_abs": 0.25
+    },
+    {
+      "operator": "model.layers.12.mlp.gate_up_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 29453,
+      "max_abs": 0.04296875
+    },
+    {
+      "operator": "model.layers.12.mlp.act_fn",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 16682,
+      "max_abs": 0.03125
+    },
+    {
+      "operator": "model.layers.12.mlp.down_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 3120,
+      "max_abs": 0.03125
+    },
+    {
+      "operator": "model.layers.13.input_layernorm",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2922,
+      "max_abs": 0.0625
+    },
+    {
+      "operator": "model.layers.13.input_layernorm",
+      "part": 1,
+      "equal": false,
+      "unequal_elements": 2874,
+      "max_abs": 0.25
+    },
+    {
+      "operator": "model.layers.13.self_attn.qkv_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 3320,
+      "max_abs": 0.25
+    },
+    {
+      "operator": "model.layers.13.self_attn.attn",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2618,
+      "max_abs": 0.03125
+    },
+    {
+      "operator": "model.layers.13.self_attn.o_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2886,
+      "max_abs": 0.03125
+    },
+    {
+      "operator": "model.layers.13.post_attention_layernorm",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2914,
+      "max_abs": 0.03125
+    },
+    {
+      "operator": "model.layers.13.post_attention_layernorm",
+      "part": 1,
+      "equal": false,
+      "unequal_elements": 2870,
+      "max_abs": 0.25
+    },
+    {
+      "operator": "model.layers.13.mlp.gate_up_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 29365,
+      "max_abs": 0.0234375
+    },
+    {
+      "operator": "model.layers.13.mlp.act_fn",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 16561,
+      "max_abs": 0.02734375
+    },
+    {
+      "operator": "model.layers.13.mlp.down_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 3072,
+      "max_abs": 0.015625
+    },
+    {
+      "operator": "model.layers.14.input_layernorm",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2963,
+      "max_abs": 0.078125
+    },
+    {
+      "operator": "model.layers.14.input_layernorm",
+      "part": 1,
+      "equal": false,
+      "unequal_elements": 2863,
+      "max_abs": 0.25
+    },
+    {
+      "operator": "model.layers.14.self_attn.qkv_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 3305,
+      "max_abs": 0.0625
+    },
+    {
+      "operator": "model.layers.14.self_attn.attn",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2484,
+      "max_abs": 0.03125
+    },
+    {
+      "operator": "model.layers.14.self_attn.o_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2851,
+      "max_abs": 0.03125
+    },
+    {
+      "operator": "model.layers.14.post_attention_layernorm",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2930,
+      "max_abs": 0.03125
+    },
+    {
+      "operator": "model.layers.14.post_attention_layernorm",
+      "part": 1,
+      "equal": false,
+      "unequal_elements": 2901,
+      "max_abs": 0.25
+    },
+    {
+      "operator": "model.layers.14.mlp.gate_up_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 29266,
+      "max_abs": 0.02734375
+    },
+    {
+      "operator": "model.layers.14.mlp.act_fn",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 16626,
+      "max_abs": 0.03125
+    },
+    {
+      "operator": "model.layers.14.mlp.down_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 3135,
+      "max_abs": 0.0625
+    },
+    {
+      "operator": "model.layers.15.input_layernorm",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2960,
+      "max_abs": 0.0625
+    },
+    {
+      "operator": "model.layers.15.input_layernorm",
+      "part": 1,
+      "equal": false,
+      "unequal_elements": 2913,
+      "max_abs": 0.25
+    },
+    {
+      "operator": "model.layers.15.self_attn.qkv_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 3247,
+      "max_abs": 0.0625
+    },
+    {
+      "operator": "model.layers.15.self_attn.attn",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2605,
+      "max_abs": 0.01953125
+    },
+    {
+      "operator": "model.layers.15.self_attn.o_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2600,
+      "max_abs": 0.015625
+    },
+    {
+      "operator": "model.layers.15.post_attention_layernorm",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2965,
+      "max_abs": 0.03125
+    },
+    {
+      "operator": "model.layers.15.post_attention_layernorm",
+      "part": 1,
+      "equal": false,
+      "unequal_elements": 2906,
+      "max_abs": 0.25
+    },
+    {
+      "operator": "model.layers.15.mlp.gate_up_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 29669,
+      "max_abs": 0.025390625
+    },
+    {
+      "operator": "model.layers.15.mlp.act_fn",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 16641,
+      "max_abs": 0.0234375
+    },
+    {
+      "operator": "model.layers.15.mlp.down_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 3111,
+      "max_abs": 0.015625
+    },
+    {
+      "operator": "model.layers.16.input_layernorm",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2956,
+      "max_abs": 0.0625
+    },
+    {
+      "operator": "model.layers.16.input_layernorm",
+      "part": 1,
+      "equal": false,
+      "unequal_elements": 2922,
+      "max_abs": 0.25
+    },
+    {
+      "operator": "model.layers.16.self_attn.qkv_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 3192,
+      "max_abs": 0.0625
+    },
+    {
+      "operator": "model.layers.16.self_attn.attn",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2487,
+      "max_abs": 0.0234375
+    },
+    {
+      "operator": "model.layers.16.self_attn.o_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2825,
+      "max_abs": 0.03125
+    },
+    {
+      "operator": "model.layers.16.post_attention_layernorm",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2911,
+      "max_abs": 0.03125
+    },
+    {
+      "operator": "model.layers.16.post_attention_layernorm",
+      "part": 1,
+      "equal": false,
+      "unequal_elements": 2885,
+      "max_abs": 0.25
+    },
+    {
+      "operator": "model.layers.16.mlp.gate_up_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 28893,
+      "max_abs": 0.03125
+    },
+    {
+      "operator": "model.layers.16.mlp.act_fn",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 16253,
+      "max_abs": 0.03125
+    },
+    {
+      "operator": "model.layers.16.mlp.down_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 3075,
+      "max_abs": 0.080078125
+    },
+    {
+      "operator": "model.layers.17.input_layernorm",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2882,
+      "max_abs": 0.0625
+    },
+    {
+      "operator": "model.layers.17.input_layernorm",
+      "part": 1,
+      "equal": false,
+      "unequal_elements": 2883,
+      "max_abs": 0.25
+    },
+    {
+      "operator": "model.layers.17.self_attn.qkv_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 3212,
+      "max_abs": 0.0625
+    },
+    {
+      "operator": "model.layers.17.self_attn.attn",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2627,
+      "max_abs": 0.0517578125
+    },
+    {
+      "operator": "model.layers.17.self_attn.o_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2849,
+      "max_abs": 0.00927734375
+    },
+    {
+      "operator": "model.layers.17.post_attention_layernorm",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2931,
+      "max_abs": 0.03125
+    },
+    {
+      "operator": "model.layers.17.post_attention_layernorm",
+      "part": 1,
+      "equal": false,
+      "unequal_elements": 2846,
+      "max_abs": 0.25
+    },
+    {
+      "operator": "model.layers.17.mlp.gate_up_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 28755,
+      "max_abs": 0.03125
+    },
+    {
+      "operator": "model.layers.17.mlp.act_fn",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 16316,
+      "max_abs": 0.03125
+    },
+    {
+      "operator": "model.layers.17.mlp.down_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 3090,
+      "max_abs": 0.03125
+    },
+    {
+      "operator": "model.layers.18.input_layernorm",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2966,
+      "max_abs": 0.09375
+    },
+    {
+      "operator": "model.layers.18.input_layernorm",
+      "part": 1,
+      "equal": false,
+      "unequal_elements": 2870,
+      "max_abs": 0.25
+    },
+    {
+      "operator": "model.layers.18.self_attn.qkv_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 3114,
+      "max_abs": 0.0625
+    },
+    {
+      "operator": "model.layers.18.self_attn.attn",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2477,
+      "max_abs": 0.0234375
+    },
+    {
+      "operator": "model.layers.18.self_attn.o_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2910,
+      "max_abs": 0.03125
+    },
+    {
+      "operator": "model.layers.18.post_attention_layernorm",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2922,
+      "max_abs": 0.0625
+    },
+    {
+      "operator": "model.layers.18.post_attention_layernorm",
+      "part": 1,
+      "equal": false,
+      "unequal_elements": 2846,
+      "max_abs": 0.25
+    },
+    {
+      "operator": "model.layers.18.mlp.gate_up_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 28506,
+      "max_abs": 0.03125
+    },
+    {
+      "operator": "model.layers.18.mlp.act_fn",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 16129,
+      "max_abs": 0.03125
+    },
+    {
+      "operator": "model.layers.18.mlp.down_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2989,
+      "max_abs": 0.01953125
+    },
+    {
+      "operator": "model.layers.19.input_layernorm",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2890,
+      "max_abs": 0.09375
+    },
+    {
+      "operator": "model.layers.19.input_layernorm",
+      "part": 1,
+      "equal": false,
+      "unequal_elements": 2848,
+      "max_abs": 0.375
+    },
+    {
+      "operator": "model.layers.19.self_attn.qkv_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 3044,
+      "max_abs": 0.125
+    },
+    {
+      "operator": "model.layers.19.self_attn.attn",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2168,
+      "max_abs": 0.015625
+    },
+    {
+      "operator": "model.layers.19.self_attn.o_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2664,
+      "max_abs": 0.03125
+    },
+    {
+      "operator": "model.layers.19.post_attention_layernorm",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2855,
+      "max_abs": 0.0625
+    },
+    {
+      "operator": "model.layers.19.post_attention_layernorm",
+      "part": 1,
+      "equal": false,
+      "unequal_elements": 2770,
+      "max_abs": 0.5
+    },
+    {
+      "operator": "model.layers.19.mlp.gate_up_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 28534,
+      "max_abs": 0.03125
+    },
+    {
+      "operator": "model.layers.19.mlp.act_fn",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 15982,
+      "max_abs": 0.0390625
+    },
+    {
+      "operator": "model.layers.19.mlp.down_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 3029,
+      "max_abs": 0.046875
+    },
+    {
+      "operator": "model.layers.20.input_layernorm",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2917,
+      "max_abs": 0.125
+    },
+    {
+      "operator": "model.layers.20.input_layernorm",
+      "part": 1,
+      "equal": false,
+      "unequal_elements": 2802,
+      "max_abs": 0.5
+    },
+    {
+      "operator": "model.layers.20.self_attn.qkv_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 3278,
+      "max_abs": 0.0625
+    },
+    {
+      "operator": "model.layers.20.self_attn.attn",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2552,
+      "max_abs": 0.03125
+    },
+    {
+      "operator": "model.layers.20.self_attn.o_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2826,
+      "max_abs": 0.0625
+    },
+    {
+      "operator": "model.layers.20.post_attention_layernorm",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2919,
+      "max_abs": 0.0625
+    },
+    {
+      "operator": "model.layers.20.post_attention_layernorm",
+      "part": 1,
+      "equal": false,
+      "unequal_elements": 2834,
+      "max_abs": 0.5
+    },
+    {
+      "operator": "model.layers.20.mlp.gate_up_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 28488,
+      "max_abs": 0.0625
+    },
+    {
+      "operator": "model.layers.20.mlp.act_fn",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 16194,
+      "max_abs": 0.0625
+    },
+    {
+      "operator": "model.layers.20.mlp.down_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 3014,
+      "max_abs": 0.0625
+    },
+    {
+      "operator": "model.layers.21.input_layernorm",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2906,
+      "max_abs": 0.125
+    },
+    {
+      "operator": "model.layers.21.input_layernorm",
+      "part": 1,
+      "equal": false,
+      "unequal_elements": 2842,
+      "max_abs": 0.625
+    },
+    {
+      "operator": "model.layers.21.self_attn.qkv_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 3247,
+      "max_abs": 0.125
+    },
+    {
+      "operator": "model.layers.21.self_attn.attn",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 3011,
+      "max_abs": 0.0390625
+    },
+    {
+      "operator": "model.layers.21.self_attn.o_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 3061,
+      "max_abs": 0.1875
+    },
+    {
+      "operator": "model.layers.21.post_attention_layernorm",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2974,
+      "max_abs": 0.046875
+    },
+    {
+      "operator": "model.layers.21.post_attention_layernorm",
+      "part": 1,
+      "equal": false,
+      "unequal_elements": 2929,
+      "max_abs": 0.5
+    },
+    {
+      "operator": "model.layers.21.mlp.gate_up_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 28523,
+      "max_abs": 0.0625
+    },
+    {
+      "operator": "model.layers.21.mlp.act_fn",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 16122,
+      "max_abs": 0.125
+    },
+    {
+      "operator": "model.layers.21.mlp.down_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 3075,
+      "max_abs": 0.125
+    },
+    {
+      "operator": "model.layers.22.input_layernorm",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 3028,
+      "max_abs": 0.125
+    },
+    {
+      "operator": "model.layers.22.input_layernorm",
+      "part": 1,
+      "equal": false,
+      "unequal_elements": 2912,
+      "max_abs": 1.0
+    },
+    {
+      "operator": "model.layers.22.self_attn.qkv_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 3416,
+      "max_abs": 0.125
+    },
+    {
+      "operator": "model.layers.22.self_attn.attn",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2752,
+      "max_abs": 0.046875
+    },
+    {
+      "operator": "model.layers.22.self_attn.o_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2958,
+      "max_abs": 0.0625
+    },
+    {
+      "operator": "model.layers.22.post_attention_layernorm",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 3035,
+      "max_abs": 0.125
+    },
+    {
+      "operator": "model.layers.22.post_attention_layernorm",
+      "part": 1,
+      "equal": false,
+      "unequal_elements": 2923,
+      "max_abs": 1.0
+    },
+    {
+      "operator": "model.layers.22.mlp.gate_up_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 30043,
+      "max_abs": 0.0625
+    },
+    {
+      "operator": "model.layers.22.mlp.act_fn",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 16425,
+      "max_abs": 0.15625
+    },
+    {
+      "operator": "model.layers.22.mlp.down_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 3103,
+      "max_abs": 0.0625
+    },
+    {
+      "operator": "model.layers.23.input_layernorm",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 3022,
+      "max_abs": 0.125
+    },
+    {
+      "operator": "model.layers.23.input_layernorm",
+      "part": 1,
+      "equal": false,
+      "unequal_elements": 2957,
+      "max_abs": 1.0
+    },
+    {
+      "operator": "model.layers.23.self_attn.qkv_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 3412,
+      "max_abs": 0.0625
+    },
+    {
+      "operator": "model.layers.23.self_attn.attn",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 3106,
+      "max_abs": 0.037109375
+    },
+    {
+      "operator": "model.layers.23.self_attn.o_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 3059,
+      "max_abs": 0.1875
+    },
+    {
+      "operator": "model.layers.23.post_attention_layernorm",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 3044,
+      "max_abs": 0.125
+    },
+    {
+      "operator": "model.layers.23.post_attention_layernorm",
+      "part": 1,
+      "equal": false,
+      "unequal_elements": 2965,
+      "max_abs": 0.5
+    },
+    {
+      "operator": "model.layers.23.mlp.gate_up_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 29080,
+      "max_abs": 0.0625
+    },
+    {
+      "operator": "model.layers.23.mlp.act_fn",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 16147,
+      "max_abs": 0.125
+    },
+    {
+      "operator": "model.layers.23.mlp.down_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 3072,
+      "max_abs": 0.0625
+    },
+    {
+      "operator": "model.layers.24.input_layernorm",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2997,
+      "max_abs": 0.1875
+    },
+    {
+      "operator": "model.layers.24.input_layernorm",
+      "part": 1,
+      "equal": false,
+      "unequal_elements": 2959,
+      "max_abs": 0.5
+    },
+    {
+      "operator": "model.layers.24.self_attn.qkv_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 3331,
+      "max_abs": 0.125
+    },
+    {
+      "operator": "model.layers.24.self_attn.attn",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2957,
+      "max_abs": 0.078125
+    },
+    {
+      "operator": "model.layers.24.self_attn.o_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 3229,
+      "max_abs": 0.125
+    },
+    {
+      "operator": "model.layers.24.post_attention_layernorm",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 3070,
+      "max_abs": 0.125
+    },
+    {
+      "operator": "model.layers.24.post_attention_layernorm",
+      "part": 1,
+      "equal": false,
+      "unequal_elements": 3045,
+      "max_abs": 0.3125
+    },
+    {
+      "operator": "model.layers.24.mlp.gate_up_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 29049,
+      "max_abs": 0.0625
+    },
+    {
+      "operator": "model.layers.24.mlp.act_fn",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 16265,
+      "max_abs": 0.25
+    },
+    {
+      "operator": "model.layers.24.mlp.down_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 3096,
+      "max_abs": 0.25
+    },
+    {
+      "operator": "model.layers.25.input_layernorm",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 3055,
+      "max_abs": 0.15625
+    },
+    {
+      "operator": "model.layers.25.input_layernorm",
+      "part": 1,
+      "equal": false,
+      "unequal_elements": 3004,
+      "max_abs": 0.5
+    },
+    {
+      "operator": "model.layers.25.self_attn.qkv_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 3406,
+      "max_abs": 0.0625
+    },
+    {
+      "operator": "model.layers.25.self_attn.attn",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 3029,
+      "max_abs": 0.109375
+    },
+    {
+      "operator": "model.layers.25.self_attn.o_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 3276,
+      "max_abs": 0.125
+    },
+    {
+      "operator": "model.layers.25.post_attention_layernorm",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 3060,
+      "max_abs": 0.25
+    },
+    {
+      "operator": "model.layers.25.post_attention_layernorm",
+      "part": 1,
+      "equal": false,
+      "unequal_elements": 3029,
+      "max_abs": 1.0
+    },
+    {
+      "operator": "model.layers.25.mlp.gate_up_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 29465,
+      "max_abs": 0.078125
+    },
+    {
+      "operator": "model.layers.25.mlp.act_fn",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 16465,
+      "max_abs": 0.375
+    },
+    {
+      "operator": "model.layers.25.mlp.down_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 3022,
+      "max_abs": 0.375
+    },
+    {
+      "operator": "model.layers.26.input_layernorm",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 3076,
+      "max_abs": 0.125
+    },
+    {
+      "operator": "model.layers.26.input_layernorm",
+      "part": 1,
+      "equal": false,
+      "unequal_elements": 3022,
+      "max_abs": 0.5
+    },
+    {
+      "operator": "model.layers.26.self_attn.qkv_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 3392,
+      "max_abs": 0.09375
+    },
+    {
+      "operator": "model.layers.26.self_attn.attn",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2899,
+      "max_abs": 0.0625
+    },
+    {
+      "operator": "model.layers.26.self_attn.o_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2998,
+      "max_abs": 0.25
+    },
+    {
+      "operator": "model.layers.26.post_attention_layernorm",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 3073,
+      "max_abs": 0.25
+    },
+    {
+      "operator": "model.layers.26.post_attention_layernorm",
+      "part": 1,
+      "equal": false,
+      "unequal_elements": 3037,
+      "max_abs": 0.5
+    },
+    {
+      "operator": "model.layers.26.mlp.gate_up_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 29810,
+      "max_abs": 0.09375
+    },
+    {
+      "operator": "model.layers.26.mlp.act_fn",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 16392,
+      "max_abs": 0.5
+    },
+    {
+      "operator": "model.layers.26.mlp.down_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 3088,
+      "max_abs": 0.375
+    },
+    {
+      "operator": "model.layers.27.input_layernorm",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 3063,
+      "max_abs": 0.15625
+    },
+    {
+      "operator": "model.layers.27.input_layernorm",
+      "part": 1,
+      "equal": false,
+      "unequal_elements": 3061,
+      "max_abs": 0.5
+    },
+    {
+      "operator": "model.layers.27.self_attn.qkv_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 3468,
+      "max_abs": 0.25
+    },
+    {
+      "operator": "model.layers.27.self_attn.attn",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 2967,
+      "max_abs": 0.09375
+    },
+    {
+      "operator": "model.layers.27.self_attn.o_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 3143,
+      "max_abs": 1.0
+    },
+    {
+      "operator": "model.layers.27.post_attention_layernorm",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 3112,
+      "max_abs": 0.25
+    },
+    {
+      "operator": "model.layers.27.post_attention_layernorm",
+      "part": 1,
+      "equal": false,
+      "unequal_elements": 3074,
+      "max_abs": 0.5
+    },
+    {
+      "operator": "model.layers.27.mlp.gate_up_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 26554,
+      "max_abs": 0.125
+    },
+    {
+      "operator": "model.layers.27.mlp.act_fn",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 16076,
+      "max_abs": 0.9375
+    },
+    {
+      "operator": "model.layers.27.mlp.down_proj",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 3183,
+      "max_abs": 1.0
+    },
+    {
+      "operator": "model.norm",
+      "part": 0,
+      "equal": false,
+      "unequal_elements": 3159,
+      "max_abs": 1.5
+    },
+    {
+      "operator": "model.norm",
+      "part": 1,
+      "equal": false,
+      "unequal_elements": 3117,
+      "max_abs": 1.5
+    }
+  ],
+  "first_unequal": {
+    "operator": "model.layers.2.self_attn.attn",
+    "part": 0,
+    "equal": false,
+    "unequal_elements": 1,
+    "max_abs": 0.0001220703125
+  },
+  "script_sha256": "c0b1eac58bd3e6d9f1f8af6241b440deebb76b5ed5b74923b3daab47bf125388",
+  "correction": "NGRAM PROB top_k1 restricts each anchor's children; multiple anchors can merge branching paths. A contiguous-prefix trace filter incorrectly excluded row4 after the sibling at row3."
+}

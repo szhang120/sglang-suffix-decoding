@@ -1,6 +1,7 @@
 """Capture and replay the first differing real attention instance on one H100."""
 
 import json
+import os
 from pathlib import Path
 
 import modal
@@ -9,7 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 app = modal.App("sglang-real-attention-capture")
 artifacts = modal.Volume.from_name("sglang-suffix-artifacts")
 model_cache = modal.Volume.from_name("sglang-suffix-model-cache")
-image = modal.Image.from_id("im-Sw0TTFndEnpfYhEZKoDfsG")
+image = modal.Image.from_id(os.environ.get("SUFFIX_MODAL_DIAGNOSTIC_BASE_IMAGE", "im-Sw0TTFndEnpfYhEZKoDfsG"))
 for name in ("model_tensor_trace_gpu.py", "attention_capture_hook.py", "attention_capture_report_gpu.py"):
     image = image.add_local_file(ROOT / "analysis" / name, "/project/analysis/" + name, copy=True)
 image = image.run_commands(

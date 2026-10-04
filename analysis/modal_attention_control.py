@@ -1,6 +1,7 @@
 """Standalone SGLang attention equivalence controls; one GPU, no model rental overlap."""
 
 import json
+import os
 from pathlib import Path
 
 import modal
@@ -9,7 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 app = modal.App("sglang-attention-equivalence")
 artifacts = modal.Volume.from_name("sglang-suffix-artifacts")
 model_cache = modal.Volume.from_name("sglang-suffix-model-cache")
-image = modal.Image.from_id("im-j008pljEZGTNXdCClQMMbR").add_local_file(
+image = modal.Image.from_id(os.environ.get("SUFFIX_MODAL_PRISTINE_IMAGE", "im-j008pljEZGTNXdCClQMMbR")).add_local_file(
     ROOT / "analysis/attention_equivalence_gpu.py", "/project/analysis/attention_equivalence_gpu.py", copy=True
 )
 

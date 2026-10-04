@@ -1,10 +1,7 @@
-"""Align explicitly linear leaf activations by logical input position.
+"""Align leaf activations by logical input position and correct causal prefix.
 
 The upstream dumper saves top-model/logits outputs in the following pass;
 exclude those lagged keys and compare the current leaf outputs only.
-NGRAM PROB may branch even with top_k1: reject non-linear position layouts
-rather than treating preceding siblings as ancestors. Complete tree alignment
-requires the actual attention masks, absent from upstream tensor dumps.
 """
 
 import argparse
@@ -38,16 +35,12 @@ def compare(directory):
             prefixes[position] = (path, i)
         hashes[str(path.relative_to(directory))] = hashlib.sha256(path.read_bytes()).hexdigest()
     mismatches = []
-    excluded_non_linear_passes = []
     eligible_rows = comparisons = 0
     cached_path = cached_tensors = None
     for path in ngram_files:
         tensors = torch.load(path, map_location="cpu", weights_only=True)
         positions = tensors["model.forward_batch_info.positions"].tolist()
         ids = tensors["model.forward_batch_info.input_ids"].tolist()
-        if any(position != positions[0] + i for i, position in enumerate(positions)):
-            excluded_non_linear_passes.append(path.name)
-            continue
         correct_path = True
         hashes[str(path.relative_to(directory))] = hashlib.sha256(path.read_bytes()).hexdigest()
         for row, (position, token) in enumerate(zip(positions, ids)):
@@ -82,8 +75,7 @@ def compare(directory):
                 eligible_rows=eligible_rows, tensor_comparisons=comparisons,
                 unequal_comparisons=len(mismatches), first_mismatches=mismatches[:40],
                 mismatches=mismatches, tensor_sha256=hashes,
-                excluded_non_linear_passes=excluded_non_linear_passes,
-                limitation="Explicitly linear passes only; no global first-divergence attribution for trees without actual masks; shared RoPE hook labels are unreliable; hooks synchronize and suppress warmup; not a timing result")
+                limitation="Leaf output comparison; correct proposal prefixes only; hooks synchronize and suppress server warmup; not a timing result")
 
 
 def main():

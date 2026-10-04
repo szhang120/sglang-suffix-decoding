@@ -45,7 +45,7 @@ def main():
     report = args.root / "results/final/benchmark-report.json"
     if report.exists():
         results = json.loads(report.read_text())
-        if not results["exact_ids_passed"]:
+        if not results.get("exact_suffix_ids_passed", results["exact_ids_passed"]):
             raise SystemExit("Output equality failed; refusing an unlabeled performance figure")
         fig, ax = plt.subplots(figsize=(7, 4), layout="constrained")
         fig.get_layout_engine().set(rect=(0, 0.07, 1, 0.93))
@@ -53,13 +53,16 @@ def main():
         modes = (("ngram", "NGRAM PROB", "#707070"), ("suffix", "Suffix adaptive", "#0072B2"),
                  ("suffix-fixed", "Suffix unbounded match cap", "#D55E00"),
                  ("suffix-local", "Suffix local only", "#009E73"))
+        ngram_excluded = any(r.get("different_outputs") for r in results["aggregate"] if r["mode"] == "ngram")
+        if ngram_excluded:
+            modes = tuple(m for m in modes if m[0] != "ngram")
         positions = list(range(len(blocks)))
         for j, (mode, label, color) in enumerate(modes):
             rows = [next(r for r in results["aggregate"] if (r["mode"], r["block"]) == (mode, block)) for block in blocks]
             centers = [r["pooled_speedup"] for r in rows]
             errs = [[r["pooled_speedup"] - r["trial_bootstrap_95"][0] for r in rows],
                     [r["trial_bootstrap_95"][1] - r["pooled_speedup"] for r in rows]]
-            ax.bar([x + (j - 1.5) * 0.19 for x in positions], centers, width=0.18,
+            ax.bar([x + (j - (len(modes) - 1) / 2) * 0.19 for x in positions], centers, width=0.18,
                    yerr=errs, capsize=2, color=color, label=label)
         ax.axhline(1, color="black", linewidth=0.8, linestyle="--")
         ax.set_xticks(positions, ["Independent", "Initial + refinement", "Identical-prompt repetition"])
@@ -68,7 +71,10 @@ def main():
         ax.set_title("Fixed public subset, five rotated-order trials", fontsize=11)
         ax.legend(frameon=False, fontsize=8)
         ax.spines[["top", "right"]].set_visible(False)
-        fig.text(0.015, 0.015, "95% paired trial-bootstrap interval; repeat is a diagnostic upper bound, not an agent workload", fontsize=7)
+        footer = "95% paired trial-bootstrap interval; repeat is a diagnostic upper bound, not an agent workload"
+        if ngram_excluded:
+            footer += "\nNGRAM excluded from exact-output speedup figure; differing outputs reported separately"
+        fig.text(0.015, 0.015, footer, fontsize=7)
         for extension in ("png", "svg"):
             metadata = {"Creator": "analysis/plot_results.py"}
             if extension == "svg":

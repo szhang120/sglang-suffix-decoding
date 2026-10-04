@@ -1,0 +1,75 @@
+{
+  "archive": "branch-attention-complete-replay.tar.gz",
+  "bytes": 906102,
+  "sha256": "9747c75f10e3cdbd34fba1d966bb1620230c6136eaef909c1123cf78d63d97eb",
+  "files": {
+    "branch/README.md": {
+      "bytes": 955,
+      "sha256": "bbea68515c1a7ce861e9787fe1337aec1c88910fc8b74f4187f12a6e5bb8acad"
+    },
+    "branch/analysis/attention_capture_hook.py": {
+      "bytes": 1750,
+      "sha256": "27b6faab6d641ddeac3517304926fae467bd0664df3f6e424af375f44d343c72"
+    },
+    "branch/analysis/branch_attention_report_gpu.py": {
+      "bytes": 4099,
+      "sha256": "6b29b993b221d4cef48a6c661f0753c020daf22c71dabf395d187b9fa470a17c"
+    },
+    "branch/analysis/modal_branch_attention.py": {
+      "bytes": 3902,
+      "sha256": "da87ae716d66df0e3e4e51da52c989d7c1725c8787152a23bc1b970f01ff326f"
+    },
+    "branch/analysis/model_tensor_trace_gpu.py": {
+      "bytes": 3220,
+      "sha256": "dae2aae80c03d57a8388330cd2cd5c511f46f781d5fffbce6c76482d5e01e1a4"
+    },
+    "branch/branch-attention-report.json": {
+      "bytes": 2885,
+      "sha256": "da7d151684c0e350a54de4f7e7b245666f32c84dfe1440df25f8f0bfa4ff97a4"
+    },
+    "branch/capture-status.json": {
+      "bytes": 481,
+      "sha256": "a9284043e3fa4772982cf4cfcbdfbb7c8f2527d896fad32f1a6286b0ce6a1a4b"
+    },
+    "branch/capture.log": {
+      "bytes": 4625,
+      "sha256": "b26eb7e9c20f9a7c85246d910049e7bb163185ddf6506d3bf7a2f42212d5f46c"
+    },
+    "branch/results/branch-attention-summary.json": {
+      "bytes": 2885,
+      "sha256": "da7d151684c0e350a54de4f7e7b245666f32c84dfe1440df25f8f0bfa4ff97a4"
+    },
+    "branch/results/branch-leaf-summary.json": {
+      "bytes": 50170,
+      "sha256": "ac830891999274fcdcde4d1305b9159908b77388cdaa79c30fc9805b4595bc52"
+    },
+    "branch/results/kv-origin-summary.json": {
+      "bytes": 10586,
+      "sha256": "b06eecf92ef68abac638735bdf230378696de94ad768aaaa76927cb38900f74e"
+    },
+    "branch/results/ngram/attention.pt": {
+      "bytes": 787309,
+      "sha256": "c5d60dbb42ea0820287549c744c2adff403ff2d4eaf02a1dda52965019457f86"
+    },
+    "branch/results/ngram/environment.json": {
+      "bytes": 73178,
+      "sha256": "7d145a5eb5b5c965c6056b953758282c3f177ef7b427fd71a97a6b756a145864"
+    },
+    "branch/results/ngram/request.json": {
+      "bytes": 2655,
+      "sha256": "862fc4ac112f37e9307ae9a0a1a994a91418dff0877a9d630299044d4792c0a0"
+    },
+    "branch/results/ordinary/attention.pt": {
+      "bytes": 261743,
+      "sha256": "60443b17ff352143fca5b1e22e3a5bc07c8351d79a883eb1ce290ce52e7d0354"
+    },
+    "branch/results/ordinary/environment.json": {
+      "bytes": 72343,
+      "sha256": "b74d03e750f742d81e54a48f26e11433da17da3c7140c249065f852427927a41"
+    },
+    "branch/results/ordinary/request.json": {
+      "bytes": 2275,
+      "sha256": "89accb35048a5300103ee445eb64ccabfbb0face592d4bc29e549a69e926e935"
+    }
+  }
+}

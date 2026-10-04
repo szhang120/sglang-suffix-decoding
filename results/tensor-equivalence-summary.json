@@ -577,5 +577,7 @@
     "ngram/tensors/TP0_PP0_Rank0_pid320/Pass00085.pt": "22c6739c710480f4d5921ad10b0ceac843ef665dca95897708f3de21edbd1626",
     "ngram/tensors/TP0_PP0_Rank0_pid320/Pass00086.pt": "3f6ff9d014460ede383904905e350779c7a8cebca679c2d454c193044afe5574"
   },
-  "diagnostic_script_snapshot": "analysis/snapshots/20261004-tensor-equivalence/model_tensor_trace_gpu.py"
+  "diagnostic_script_snapshot": "analysis/snapshots/20261004-tensor-equivalence/model_tensor_trace_gpu.py",
+  "analysis_status": "Superseded for first-divergence attribution: contiguous prefix filter missed valid NGRAM branches. Raw tensors and comparisons preserved.",
+  "correction_reference": "results/branch-leaf-summary.json"
 }

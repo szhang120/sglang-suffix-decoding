@@ -1,0 +1,8 @@
+{
+  "complete": true,
+  "requests": 240,
+  "mismatches": [],
+  "ordinary_reference_run": "modal-20261004-v12-full",
+  "same_immutable_image": true,
+  "cross_allocation_correctness_only": true
+}

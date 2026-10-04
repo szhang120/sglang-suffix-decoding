@@ -1,0 +1,40 @@
+COMMAND: ["python", "/project/scripts/gpu_public_gate.py", "--mode", "suffix", "--shared", "1", "--limit", "0"]
+[2026-10-04 21:13:46] Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+
+Multi-thread loading shards:   0% Completed | 0/4 [00:00<?, ?it/s]
+Multi-thread loading shards:  25% Completed | 1/4 [00:02<00:08,  2.86s/it]
+Multi-thread loading shards:  50% Completed | 2/4 [00:06<00:06,  3.33s/it]
+Multi-thread loading shards:  75% Completed | 3/4 [00:08<00:02,  2.58s/it]
+Multi-thread loading shards: 100% Completed | 4/4 [00:09<00:00,  2.05s/it]
+Multi-thread loading shards: 100% Completed | 4/4 [00:09<00:00,  2.36s/it]
+PROGRESS: public-gate-suffix-shared1 8 public requests
+PROGRESS: public-gate-suffix-shared1 16 public requests
+PROGRESS: public-gate-suffix-shared1 24 public requests
+PROGRESS: public-gate-suffix-shared1 32 public requests
+PROGRESS: public-gate-suffix-shared1 40 public requests
+PROGRESS: public-gate-suffix-shared1 48 public requests
+PROGRESS: public-gate-suffix-shared1 52 public requests
+PROGRESS: public-gate-suffix-shared1 56 public requests
+PROGRESS: public-gate-suffix-shared1 64 public requests
+PROGRESS: public-gate-suffix-shared1 72 public requests
+PROGRESS: public-gate-suffix-shared1 80 public requests
+PROGRESS: public-gate-suffix-shared1 88 public requests
+PROGRESS: public-gate-suffix-shared1 96 public requests
+PROGRESS: public-gate-suffix-shared1 104 public requests
+PROGRESS: public-gate-suffix-shared1 112 public requests
+PROGRESS: public-gate-suffix-shared1 120 public requests
+PROGRESS: public-gate-suffix-shared1 128 public requests
+PROGRESS: public-gate-suffix-shared1 136 public requests
+PROGRESS: public-gate-suffix-shared1 144 public requests
+PROGRESS: public-gate-suffix-shared1 152 public requests
+PROGRESS: public-gate-suffix-shared1 160 public requests
+PROGRESS: public-gate-suffix-shared1 168 public requests
+PROGRESS: public-gate-suffix-shared1 176 public requests
+PROGRESS: public-gate-suffix-shared1 184 public requests
+PROGRESS: public-gate-suffix-shared1 192 public requests
+PROGRESS: public-gate-suffix-shared1 200 public requests
+PROGRESS: public-gate-suffix-shared1 208 public requests
+PROGRESS: public-gate-suffix-shared1 216 public requests
+PROGRESS: public-gate-suffix-shared1 224 public requests
+PROGRESS: public-gate-suffix-shared1 232 public requests
+PROGRESS: public-gate-suffix-shared1 240 public requests

@@ -1,5 +1,5 @@
 # Diagnostic overlay appended to the pinned attention module in a Linux image.
-# It captures a selected layer/prefix, then calls the original kernel.
+# It captures only the fourth layer at prefix120, then calls the original kernel.
 import os as _capture_os
 from pathlib import Path as _CapturePath
 
@@ -10,12 +10,10 @@ _capture_matching_calls = 0
 def extend_attention_fwd_unified(*args, **kwargs):
     global _capture_matching_calls
     destination = _capture_os.environ.get("SUFFIX_ATTENTION_CAPTURE_FILE")
-    target_prefix = int(_capture_os.environ.get("SUFFIX_ATTENTION_CAPTURE_PREFIX", "120"))
-    target_layer = int(_capture_os.environ.get("SUFFIX_ATTENTION_CAPTURE_LAYER", "3"))
     selected = False
-    if destination and int(args[9].item()) == target_prefix:
+    if destination and int(args[9].item()) == 120:
         _capture_matching_calls += 1
-        selected = _capture_matching_calls == target_layer + 1
+        selected = _capture_matching_calls == 4
     if selected:
         assert not _CapturePath(destination).exists()
         q, output, keys, values = args[:4]
@@ -25,7 +23,7 @@ def extend_attention_fwd_unified(*args, **kwargs):
             q=q.detach().cpu(), q_stride=list(q.stride()),
             keys=keys[indices].detach().cpu(), values=values[indices].detach().cpu(),
             kv_indices=indices.detach().cpu(), prefix=int(args[9].item()),
-            width=q.shape[0], layer_ordinal=target_layer,
+            width=q.shape[0], layer_ordinal=3,
             custom_mask=kwargs.get("custom_mask"), sm_scale=kwargs["sm_scale"],
         )
         if capture["custom_mask"] is not None:

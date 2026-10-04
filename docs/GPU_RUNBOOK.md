@@ -1,6 +1,6 @@
 # Provisioning and execution
 
-Modal authentication/payment setup is complete; net spend limit is $0. The v11 Triton/FP32-logit configuration passes 30 exact-ID cases and direct GPU KV checks, but fails the broader public workload. The v12 shared-attention gate was interrupted after six NGRAM differences on 136 completed requests. Independent pristine controls reproduce selected failures without the suffix adapter; fixed-Q/K/V attention controls all match. A stride-preserving head matmul removes a measured 1.09GB weight-copy operation. Serving timings remain stopped; all failures are retained.
+Modal authentication/payment setup is complete; net spend limit is $0. SUFFIX passes all 240 public-workload exact-ID comparisons in the unchanged v12 image. Earlier configurations and the interrupted NGRAM gate remain preserved. Exact real-input replay identifies one upstream NGRAM tree-layout numerical effect. The five-trial campaign therefore keeps ordinary/SUFFIX/ablations strict and records any unchanged upstream NGRAM differences descriptively.
 
 ## Modal execution
 
@@ -15,7 +15,7 @@ Use Modal CLI 1.6.1 in the isolated Mac environment `/tmp/sglang-modal-cli`. Tok
 
 For the current shared-attention candidate, run `public-gate` first (240 requests per mode). On success, use `audit-frozen` in the same run ID: it checks plain and instrumented 30-case equality, audits suffix KV, and copies the exact checked workload into the timing directory. It preserves the existing v11-generated refinement inputs; historical output IDs are not the new correctness reference or cache seeds. `benchmark` requires a passing full gate and the same workload hash, then checks every completed timed mode against the public ordinary reference before continuing. Use `public-probe --limit 8` only as a diagnostic subset.
 
-Use `modal run --detach` for long allocations. The remote status in the artifact volume is authoritative if the local CLI disconnects. `analysis/modal_campaign.py` now recovers remote completion statuses and detaches each serialized phase. An interrupted status is failure; inspect the existing app before allocating another GPU. No controller is currently running while correctness is diagnosed.
+Use `modal run --detach` for long allocations. The remote status in the artifact volume is authoritative if the local CLI disconnects. `analysis/modal_campaign.py` now recovers remote completion statuses and detaches each serialized phase. An interrupted status is failure; inspect the existing app before allocating another GPU. The current `analysis/modal_final_campaign.py` runs the entire sequence inside one detached remote function with a 12-hour operational timeout and no automatic retries. It records source hashes, the passed isolated suffix gate, the branch replay, direct KV assertions and progress after every mode. The older all-mode-exact controller is retained as historical code and is not used for this campaign.
 
 Use phase `audit` for target-logit/acceptance/KV diagnostics after a failure, and `width-probe` for controlled row-count profiling. After downloading width artifacts, run `python scripts/analyze_width_probe.py PATH/width-probe` locally. The streaming reader selects CPU annotations and correlates their launches with GPU kernels; matching GPU annotation labels are excluded. Phase `prepare` combines plain correctness and workload freezing in one GPU allocation. Repeat benchmark trials1–4, then run phases `profile` and `analyze`. Each trial runs every mode sequentially on the same GPU. Commands refuse to overwrite completed phases. Download artifacts from volume `sglang-suffix-artifacts`, under RUN_ID. Create the destination directory before a recursive download; the CLI otherwise treats it as a single filename:
 
@@ -74,15 +74,32 @@ Setup assumes CUDA/compiler/Rust are already available. Package installs use the
 
 Materialize one frozen workload: tokenizer IDs and second-turn inputs include assistant responses generated once by ordinary decoding. Every timed mode receives the same IDs. Truncations are recorded. Workload hash, source lock, resolved settings, installed package freeze and complete NVIDIA information are saved alongside results.
 
-Five trials rotate ordinary, linear NGRAM PROB (breadth1), suffix, unbounded-match-length suffix and local-only suffix modes. All use graphs/overlap/radix cache disabled; each workload block starts with a cache reset. Independent, refinement and repeated-identical-prompt blocks are reported separately. Repetition is a diagnostic upper bound and must never be presented as an agent benchmark.
+Five trials rotate ordinary, upstream NGRAM PROB (per-anchor fanout 1; merged paths can still branch), suffix, unbounded-match-length suffix and local-only suffix modes. All use graphs/overlap/radix cache disabled; each workload block starts with a cache reset. Independent, refinement and repeated-identical-prompt blocks are reported separately. Repetition is a diagnostic upper bound and must never be presented as an agent benchmark.
 
 Separate profile runs add per-round suffix traces and SGLang's real scheduler CPU/GPU profiler with tensor shapes. Inspect projection/MLP GEMM row counts and attention query lengths against `verify_rows`. Compare GPU event time across naturally observed lengths with matched context lengths. Inspect CPU draft, host transfers, allocation and launch overhead too. Shorter tensors establish a different execution shape; only traces/timings establish how much GPU work/time it saves. If natural widths are too narrow, add a documented controlled-width profiling experiment before drawing that conclusion.
 
-Streaming request timings include host/tokenization output handling. Record TTFT, total wall time, tokens/sec and per-trial aggregate speedup. Prefer paired trial summaries and uncertainty ranges; do not mix profiler runs into timing results. Root analysis script refuses output-ID divergence and refuses to produce a summary without real measurements.
+Streaming request timings include host/tokenization output handling. Record TTFT, total wall time, tokens/sec and per-trial aggregate speedup. Prefer paired trial summaries and uncertainty ranges; do not mix profiler runs into timing results. The benchmark report defaults to refusing all output-ID divergence. After the documented branch attribution, `--allow-ngram-numerical-differences` permits only the upstream NGRAM baseline to differ. Every difference and response length is recorded; differing NGRAM latency ratios are descriptive and excluded from exact-output speedup figures. Ordinary/SUFFIX/ablation differences always fail.
 
 Download `results/gpu`, correctness files, `workload.jsonl`, its hash and environment logs. Inspect logs for unintended GPU contention, thermal/clocks changes and errors. Update the technical report and plan with results, including failures. Preserve raw artifacts; the `.gitignore` excludes bulky GPU traces so they can be published as release artifacts rather than accidentally committed.
 
 ## Additional controls for the shared-attention candidate
+
+The diagnostic Modal image IDs in `analysis/modal_*.py` identify immutable images
+in the original workspace. They are recorded provenance, not portable public
+images. In a different Modal workspace, first build the pinned project image
+with CPU-only `cpu-validate` and record its returned image ID. Set
+`SUFFIX_MODAL_V12_IMAGE` to that image for `analysis/modal_reassessment.py`.
+Its pristine derived image ID becomes `SUFFIX_MODAL_PRISTINE_IMAGE` for kernel,
+tensor and CPU artifact controls. The head-only/shared-attention image produced
+by `analysis/modal_tensor_trace.py` becomes `SUFFIX_MODAL_DIAGNOSTIC_BASE_IMAGE`
+for exact attention/branch captures. Every diagnostic records its source diff
+and settings; default IDs preserve the original runs. Use fresh run IDs and
+inspect stopped allocations between GPU stages.
+
+NGRAM PROB's configured fanout 1 is per suffix anchor. The native code merges
+multiple anchors into a tree, so it must not be described as a linear proposer.
+General tree tensor alignment requires actual masks; logical positions alone
+do not identify each query's ancestors.
 
 After the serving campaign has completed, use phase `natural-trace` in a fresh run ID for each of `suffix`, `suffix-fixed`, and `suffix-local`, passing `--variant VARIANT --reference-run VALIDATED_RUN`. These full public-workload runs enable per-round traces and are excluded from timings. Download each result tree and run `analysis/natural_trace_report.py`; it clips terminal discarded tails and uses actual proposal counts.
 

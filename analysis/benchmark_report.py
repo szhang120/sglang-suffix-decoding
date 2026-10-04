@@ -39,6 +39,8 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("directory", type=Path, help="Downloaded results directory containing gpu/")
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--allow-ngram-numerical-differences", action="store_true",
+                        help="Keep strict suffix gates; report differing NGRAM outputs as descriptive latency ratios only")
     args = parser.parse_args()
     mismatches = []
     summaries = []
@@ -94,6 +96,7 @@ def main():
                 grouped_pairs[(mode, block)].append((base_ns, mode_ns))
                 summaries.append(dict(mode=mode, trial=trial, block=block,
                                       wall_seconds=mode_ns / 1e9, output_tokens=tokens,
+                                      ordinary_output_tokens=sum(len(r["response"]["output_ids"]) for r in b),
                                       tokens_per_second=tokens * 1e9 / mode_ns,
                                       aggregate_speedup=base_ns / mode_ns,
                                       median_ttft_ms=statistics.median(r["chunks"][0]["elapsed_ns"] / 1e6 for r in subset),
@@ -110,22 +113,42 @@ def main():
                                   trial_bootstrap_95=intervals(pairs),
                                   median_trial_ttft_ms=statistics.median(r["median_ttft_ms"] for r in summaries
                                                                        if (r["mode"], r["block"]) == (mode, block))))
-    report = dict(exact_ids_passed=not mismatches, mismatches=mismatches,
+    exact_modes_passed = not any(m["mode"] != "ngram" for m in mismatches)
+    ngram_differs = any(m["mode"] == "ngram" for m in mismatches)
+    if args.allow_ngram_numerical_differences and ngram_differs:
+        for row in summaries:
+            if row["mode"] == "ngram":
+                row["descriptive_latency_ratio"] = row.pop("aggregate_speedup")
+                row["different_outputs"] = True
+        for row in aggregate:
+            if row["mode"] == "ngram":
+                row["descriptive_latency_ratio"] = row.pop("pooled_speedup")
+                row["median_trial_latency_ratio"] = row.pop("median_trial_speedup")
+                row["different_outputs"] = True
+    category_rows = [dict(mode=m, block=b, category=c, requests=n, pooled_speedup=a / d)
+                     for (m, b, c), (a, d, n) in sorted(categories.items())]
+    if args.allow_ngram_numerical_differences and ngram_differs:
+        for row in category_rows:
+            if row["mode"] == "ngram":
+                row["descriptive_latency_ratio"] = row.pop("pooled_speedup")
+                row["different_outputs"] = True
+    report = dict(exact_ids_passed=not mismatches, exact_suffix_ids_passed=exact_modes_passed, mismatches=mismatches,
+                  ngram_numerical_differences_permitted=args.allow_ngram_numerical_differences,
+                  ngram_limitation="Different responses and possibly lengths; descriptive NGRAM latency ratios cannot establish an exact-output speedup. One independently reproduced masked-tree rounding case does not attribute all divergences.",
                   measured_requests=5 * len(MODES) * sum(BLOCKS.values()),
                   metric="Paired ratio of summed request wall latency, ordinary/mode; includes host and streaming overhead",
                   uncertainty="10,000 paired trial-block bootstrap samples, seed42; fixed workload, five trials, percentile interval",
                   common_config=controls,
                   gpu_uuid_by_trial={str(trial): environments[("ordinary", trial)] for trial in range(5)},
                   aggregate=aggregate, trials=summaries,
-                  categories=[dict(mode=m, block=b, category=c, requests=n, pooled_speedup=a / d)
-                              for (m, b, c), (a, d, n) in sorted(categories.items())],
+                  categories=category_rows,
                   raw_sha256=hashes)
     if args.output.exists():
         raise SystemExit(f"Preserving {args.output}")
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(report, indent=2) + "\n")
     print(json.dumps(dict(exact_ids_passed=not mismatches, mismatches=len(mismatches), aggregate=aggregate), indent=2))
-    if mismatches:
+    if mismatches and not (args.allow_ngram_numerical_differences and exact_modes_passed):
         raise SystemExit("Measured outputs differ; results cannot establish an exact-output performance comparison")
 
 

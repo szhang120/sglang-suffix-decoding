@@ -1,12 +1,13 @@
 """One-H100 independent controls, starting from exactly pristine SGLang."""
 
 import json
+import os
 from pathlib import Path
 
 import modal
 
 ROOT = Path(__file__).resolve().parents[1]
-BASE_IMAGE = "im-96vGJgQDElG1UZq72yqyhI"
+BASE_IMAGE = os.environ.get("SUFFIX_MODAL_V12_IMAGE", "im-96vGJgQDElG1UZq72yqyhI")
 BASE_COMMIT = "e00930c5489053f26d86b179cee0d087f846acbb"
 PATCH_SHA = "19fc2ced20cde74fef8bfb0e7baeaada3430fc2a4d8096597e1778da1d2327bf"
 app = modal.App("sglang-suffix-independent-reassessment")

@@ -18,8 +18,6 @@ def main():
     parser.add_argument("--mode", choices=("ordinary", "ngram"), required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--capture-only", action="store_true")
-    parser.add_argument("--capture-prefix", type=int, default=120)
-    parser.add_argument("--capture-layer", type=int, default=3)
     args = parser.parse_args()
     sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
     from gpu_common import LOCK, ROOT, engine_config, sampling
@@ -37,8 +35,6 @@ def main():
     if args.capture_only:
         config["debug_tensor_dump_layers"] = []
         os.environ["SUFFIX_ATTENTION_CAPTURE_FILE"] = str(destination / "attention.pt")
-        os.environ["SUFFIX_ATTENTION_CAPTURE_PREFIX"] = str(args.capture_prefix)
-        os.environ["SUFFIX_ATTENTION_CAPTURE_LAYER"] = str(args.capture_layer)
     import torch
     import sglang as sgl
 

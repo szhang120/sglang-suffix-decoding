@@ -1,0 +1,11 @@
+{
+  "success": true,
+  "image_id": "im-puiWPCwFe9Lwc2X9kn3Csy",
+  "run_id": "modal-20261004-attention-capture",
+  "script_sha256": {
+    "model_tensor_trace_gpu.py": "35ca068d6c077cff49671d62cd89ba76aa200c76402ece186364f6ff0cc41e17",
+    "attention_capture_hook.py": "3e39ab89cebb735cb3d7faff171b8e62627a88a6989d045acde689e2715b4d80",
+    "attention_capture_report_gpu.py": "df896b875ff64b8126ca87bb18f8e75b6445d8c189c7b5124227130d5910a835"
+  },
+  "elapsed_seconds": 195.295443229
+}

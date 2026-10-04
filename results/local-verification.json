@@ -141,8 +141,8 @@
   },
   "public_repository": "https://github.com/szhang120/sglang-suffix-decoding",
   "ci": {
-    "url": "https://github.com/szhang120/sglang-suffix-decoding/actions/runs/37197939132",
-    "commit": "6689897881633f2859dab54cb4774a4851dbc194",
+    "url": "https://github.com/szhang120/sglang-suffix-decoding/actions/runs/37234301748",
+    "commit": "cc4b9c0377e0c7079c817e3d85a249bd285cd2c3",
     "ubuntu_24_04": "passed",
     "macos_14": "passed"
   },
@@ -180,5 +180,39 @@
     "suffix_mismatches_shared_decode": 0,
     "new_ordinary_equals_old_ngram": 8,
     "full_gate_passed": false
+  },
+  "independent_reassessment": {
+    "pristine_adapter_absent": true,
+    "pristine_ordinary_ngram_exact_selected": "5/8",
+    "head_fix_output_changes": 0,
+    "shared_attention_exact_selected": "7/8",
+    "synthetic_attention_bitwise_equal_fixtures": 3840,
+    "ngram_prob_fanout1_is_linear": false,
+    "trace_prefix_filter_error": "Corrected; old first-divergence attribution superseded",
+    "earlier_branch_attention_difference": {
+      "position": 118,
+      "layer": 2,
+      "unequal_elements": 1,
+      "max_abs": 0.0001220703125
+    },
+    "kv_value_origin_matches_projection": true,
+    "isolated_suffix_full_gate": {
+      "run_id": "modal-20261004-v12-suffix-isolated",
+      "requests": 240,
+      "exact_output_matches": 240,
+      "mismatches": 0
+    },
+    "serving_benchmarks": {
+      "status": "running",
+      "run_id": "modal-20261004-final-campaign",
+      "exact_output_policy": "ordinary/SUFFIX/ablations strict; upstream NGRAM differences descriptive"
+    },
+    "real_branch_replay": {
+      "run_id": "modal-20261004-branch-attention",
+      "q_and_visible_kv_bitwise_equal": true,
+      "original_output_replays_exactly": true,
+      "compact_visible_kv_equals_ordinary": true,
+      "scope": "One accepted NGRAM branch; no blanket attribution"
+    }
   }
 }

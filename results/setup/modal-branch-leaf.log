@@ -1,0 +1,244 @@
+Note that running a local entrypoint in detached mode only keeps the last triggered Modal function alive after the parent process has been killed or disconnected.
+✓ Initialized. View run at 
+https://modal.com/apps/szhanggg/main/ap-zLDCQsMpPDgEwYxhONgWbG
+Building image im-zz2NEaUXvRh09Fq30IcwqA
+
+=> Step 0: FROM base
+
+=> Step 1: COPY . /
+Saving image...
+Image saved, took 4.59s
+
+Built image im-zz2NEaUXvRh09Fq30IcwqA in 7.96s
+
+
+✓ Created objects.
+├── ✓ Uploaded 
+│   /Users/seanzhang/Documents/ChatGPT/sglang-suffix-decoding/analysis/modal_bra
+│   nch_leaf.py
+├── ✓ Uploaded 
+│   /Users/seanzhang/Documents/ChatGPT/sglang-suffix-decoding/analysis/branch_le
+│   af_report.py
+└── ✓ Created Function execute.
+{
+  "first_unequal": {
+    "operator": "model.layers.2.self_attn.attn",
+    "part": 0,
+    "equal": false,
+    "unequal_elements": 1,
+    "max_abs": 0.0001220703125
+  },
+  "metadata": {
+    "ordinary": [
+      {
+        "row": 0,
+        "position": 118,
+        "input_id": 304,
+        "expected_id": 304
+      }
+    ],
+    "ngram": [
+      {
+        "row": 0,
+        "position": 116,
+        "input_id": 3311,
+        "expected_id": 3311
+      },
+      {
+        "row": 1,
+        "position": 117,
+        "input_id": 279,
+        "expected_id": 27991
+      },
+      {
+        "row": 2,
+        "position": 117,
+        "input_id": 27991,
+        "expected_id": 27991
+      },
+      {
+        "row": 3,
+        "position": 118,
+        "input_id": 20567,
+        "expected_id": 304
+      },
+      {
+        "row": 4,
+        "position": 118,
+        "input_id": 304,
+        "expected_id": 304
+      },
+      {
+        "row": 5,
+        "position": 119,
+        "input_id": 27991,
+        "expected_id": 279
+      },
+      {
+        "row": 6,
+        "position": 119,
+        "input_id": 279,
+        "expected_id": 279
+      },
+      {
+        "row": 7,
+        "position": 120,
+        "input_id": 304,
+        "expected_id": 2086
+      },
+      {
+        "row": 8,
+        "position": 120,
+        "input_id": 1156,
+        "expected_id": 2086
+      },
+      {
+        "row": 9,
+        "position": 121,
+        "input_id": 3162,
+        "expected_id": 1042
+      },
+      {
+        "row": 10,
+        "position": 121,
+        "input_id": 1042,
+        "expected_id": 1042
+      },
+      {
+        "row": 11,
+        "position": 122,
+        "input_id": 4401,
+        "expected_id": 624
+      },
+      {
+        "row": 12,
+        "position": 122,
+        "input_id": 624,
+        "expected_id": 624
+      },
+      {
+        "row": 13,
+        "position": 123,
+        "input_id": 916,
+        "expected_id": 18
+      },
+      {
+        "row": 14,
+        "position": 123,
+        "input_id": 17,
+        "expected_id": 18
+      },
+      {
+        "row": 15,
+        "position": 124,
+        "input_id": 279,
+        "expected_id": 13
+      },
+      {
+        "row": 16,
+        "position": 124,
+        "input_id": 13,
+        "expected_id": 13
+      },
+      {
+        "row": 17,
+        "position": 125,
+        "input_id": 1378,
+        "expected_id": 2691
+      },
+      {
+        "row": 18,
+        "position": 125,
+        "input_id": 20517,
+        "expected_id": 2691
+      },
+      {
+        "row": 19,
+        "position": 126,
+        "input_id": 1635,
+        "expected_id": 279
+      },
+      {
+        "row": 20,
+        "position": 126,
+        "input_id": 279,
+        "expected_id": 279
+      },
+      {
+        "row": 21,
+        "position": 127,
+        "input_id": 30,
+        "expected_id": 14713
+      },
+      {
+        "row": 22,
+        "position": 128,
+        "input_id": 151645,
+        "expected_id": 504
+      },
+      {
+        "row": 23,
+        "position": 129,
+        "input_id": 198,
+        "expected_id": 2176
+      },
+      {
+        "row": 24,
+        "position": 130,
+        "input_id": 151644,
+        "expected_id": 1635
+      },
+      {
+        "row": 25,
+        "position": 131,
+        "input_id": 77091,
+        "expected_id": 311
+      },
+      {
+        "row": 26,
+        "position": 132,
+        "input_id": 198,
+        "expected_id": 633
+      },
+      {
+        "row": 27,
+        "position": 133,
+        "input_id": 1249,
+        "expected_id": 279
+      },
+      {
+        "row": 28,
+        "position": 134,
+        "input_id": 1477,
+        "expected_id": 2790
+      },
+      {
+        "row": 29,
+        "position": 135,
+        "input_id": 279,
+        "expected_id": 9162
+      },
+      {
+        "row": 30,
+        "position": 136,
+        "input_id": 2790,
+        "expected_id": 382
+      },
+      {
+        "row": 31,
+        "position": 137,
+        "input_id": 3311,
+        "expected_id": 785
+      },
+      {
+        "row": 32,
+        "position": 138,
+        "input_id": 279,
+        "expected_id": 20567
+      }
+    ]
+  }
+}
+[modal-client] 2026-10-04T17:13:27-0400 Timed out waiting for final app logs.
+✓ App completed. View run at 
+https://modal.com/apps/szhanggg/main/ap-zLDCQsMpPDgEwYxhONgWbG

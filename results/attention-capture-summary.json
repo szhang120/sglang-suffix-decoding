@@ -1,0 +1,105 @@
+{
+  "diagnostic": true,
+  "layer_ordinal": 3,
+  "prefix": 120,
+  "ordinary_q_stride": [
+    3584,
+    128,
+    1
+  ],
+  "ngram_q_stride": [
+    4608,
+    128,
+    1
+  ],
+  "captured_input_comparisons": {
+    "model_q": {
+      "bitwise_equal": true,
+      "unequal_elements": 0,
+      "max_abs": 0.0,
+      "mean_abs": 0.0
+    },
+    "model_visible_keys": {
+      "bitwise_equal": false,
+      "unequal_elements": 39,
+      "max_abs": 0.25,
+      "mean_abs": 7.891458153608255e-06
+    },
+    "model_visible_values": {
+      "bitwise_equal": false,
+      "unequal_elements": 61,
+      "max_abs": 0.00390625,
+      "mean_abs": 7.921013889244932e-07
+    },
+    "model_attention_output": {
+      "bitwise_equal": false,
+      "unequal_elements": 1010,
+      "max_abs": 0.0078125,
+      "mean_abs": 0.00012407345639076084
+    }
+  },
+  "replay_controls": {
+    "original_replay": {
+      "bitwise_equal": true,
+      "unequal_elements": 0,
+      "max_abs": 0.0,
+      "mean_abs": 0.0
+    },
+    "ngram_replay": {
+      "bitwise_equal": true,
+      "unequal_elements": 0,
+      "max_abs": 0.0,
+      "mean_abs": 0.0
+    },
+    "full_vs_causal": {
+      "bitwise_equal": false,
+      "unequal_elements": 1010,
+      "max_abs": 0.0078125,
+      "mean_abs": 0.00012407345639076084
+    },
+    "truncated_custom_vs_causal": {
+      "bitwise_equal": false,
+      "unequal_elements": 1010,
+      "max_abs": 0.0078125,
+      "mean_abs": 0.00012407345639076084
+    },
+    "truncated_causal_vs_causal": {
+      "bitwise_equal": false,
+      "unequal_elements": 1010,
+      "max_abs": 0.0078125,
+      "mean_abs": 0.00012407345639076084
+    },
+    "full_queries_short_kv_vs_causal": {
+      "bitwise_equal": false,
+      "unequal_elements": 1010,
+      "max_abs": 0.0078125,
+      "mean_abs": 0.00012407345639076084
+    },
+    "full_zero_future_vs_causal": {
+      "bitwise_equal": false,
+      "unequal_elements": 1010,
+      "max_abs": 0.0078125,
+      "mean_abs": 0.00012407345639076084
+    }
+  },
+  "finite": {
+    "ordinary": {
+      "q": true,
+      "keys": true,
+      "values": true,
+      "output": true
+    },
+    "ngram": {
+      "q": true,
+      "keys": true,
+      "values": true,
+      "output": true
+    }
+  },
+  "capture_sha256": {
+    "ordinary": "57a7c9a9796f21f55b46fc6718c9395bd33051107186500b8001787e99275764",
+    "ngram": "948136afe083362170a174e7fd8f048dbdba67638d840491931bb64d0e265f20"
+  },
+  "script_sha256": "df896b875ff64b8126ca87bb18f8e75b6445d8c189c7b5124227130d5910a835",
+  "limitation": "One real-model attention instance; diagnostic hooks and changed output cap; not a broad correctness or performance result"
+}
