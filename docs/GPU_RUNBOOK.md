@@ -1,6 +1,6 @@
 # Provisioning and execution
 
-Modal authentication and payment-method setup are complete; the user set the net spend limit to $0. H100 BF16 math and Linux build/import gates passed. All decoding modes execute Qwen. Batch-invariant settings fix the shared NGRAM/SUFFIX divergence, but a remaining warm SUFFIX case shows a BF16 tie sensitivity; FP32-output logits and GPU layout/acceptance assertions are being tested. No GPU benchmark has run. SSH provisioning is an optional alternative.
+Modal authentication/payment setup is complete; net spend limit is$0. The final Triton/FP32-logit configuration passes30 exact-ID cases across both speculators and direct GPU KV checks. A stride-preserving head matmul removes a measured1.09GB weight-copy operation. No serving benchmark result is established yet. All earlier numerical and diagnostic failures are retained.
 
 ## Modal execution
 
@@ -13,7 +13,7 @@ Use Modal CLI 1.6.1 in the isolated Mac environment `/tmp/sglang-modal-cli`. Tok
 /tmp/sglang-modal-cli/bin/modal run scripts/modal_runner.py --phase benchmark --run-id RUN_ID --trial 0
 ```
 
-Use phase `audit` for target-logit/acceptance diagnostics after a failure, and `width-probe` for controlled row-count profiling. Repeat benchmark trials 1–4, then run phases `profile` and `analyze`. Each trial runs every mode sequentially on the same GPU. Commands refuse to overwrite completed phases. Download artifacts from volume `sglang-suffix-artifacts`, under RUN_ID. Create the destination directory before a recursive download; the CLI otherwise treats it as a single filename:
+Use phase `audit` for target-logit/acceptance/KV diagnostics after a failure, and `width-probe` for controlled row-count profiling. After downloading width artifacts, run `python scripts/analyze_width_probe.py PATH/width-probe` locally. The streaming reader selects CPU annotations and correlates their launches with GPU kernels; matching GPU annotation labels are excluded. Phase `prepare` combines plain correctness and workload freezing in one GPU allocation. Repeat benchmark trials1–4, then run phases `profile` and `analyze`. Each trial runs every mode sequentially on the same GPU. Commands refuse to overwrite completed phases. Download artifacts from volume `sglang-suffix-artifacts`, under RUN_ID. Create the destination directory before a recursive download; the CLI otherwise treats it as a single filename:
 
 ```sh
 mkdir -p results/modal/RUN_ID/raw

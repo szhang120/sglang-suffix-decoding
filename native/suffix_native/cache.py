@@ -1,5 +1,7 @@
 # Copyright 2025 Snowflake Inc.
 # SPDX-License-Identifier: Apache-2.0
+# Modified for this reproduction: standalone import namespace and repaired
+# default proposal-cap attribute (max_tree_depth). Native search is unchanged.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.

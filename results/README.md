@@ -1,0 +1,18 @@
+# Evidence and provenance
+
+`final/` contains the plain, uninstrumented 30-case correctness gate for each mode and the frozen 84-row public workload from `modal-20261004-v11`. Workload rows include tokenizer IDs, ordinary outputs and whether inputs were truncated. No future answer is inserted into speculative caches.
+
+`width-probe-final/` contains 54 controlled-width requests and correlated GPU-kernel summaries for the final stride-preserving FP32-head configuration. `width-probe-fp32/` contains the earlier 18-request study with the weight copy still present. The three contexts in the final study distinguish query-width effects from crossing a key-tile boundary. Profiler timing is separate from serving timing.
+
+To regenerate final kernel summaries from downloaded traces:
+
+```sh
+python scripts/analyze_width_probe.py PATH/width-probe
+python analysis/width_report.py PATH/width-probe
+```
+
+Both commands preserve existing outputs; use a fresh extraction directory when repeating analysis. The summary records individual trace SHA256 hashes. Large traces are excluded from Git; publication as release artifacts remains pending.
+
+`modal/` and `setup/` retain earlier attempts, failures and diagnostic logs. A phase status can fail after successful GPU execution if its subsequent analysis failed. The initial width study had that outcome; its corrected local analysis is retained. The ambiguous single file `modal/modal-20261004-v2/raw` resulted from an incorrectly specified recursive download destination and is not a complete artifact collection. Explicit per-mode correctness files in that directory are authoritative.
+
+`local-verification.json` records the current verification status. CPU microbenchmarks use synthetic integer sequences and establish no model speedup. No serving benchmark conclusion is available yet.

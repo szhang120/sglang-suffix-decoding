@@ -1,8 +1,13 @@
 diff --git a/python/sglang/srt/arg_groups/speculative_hook.py b/python/sglang/srt/arg_groups/speculative_hook.py
-index 539188b..ad04bcc 100644
+index 539188b..a3484af 100644
 --- a/python/sglang/srt/arg_groups/speculative_hook.py
 +++ b/python/sglang/srt/arg_groups/speculative_hook.py
-@@ -1177,6 +1177,32 @@ def _handle_ngram(server_args: ServerArgs) -> None:
+@@ -1,3 +1,4 @@
++# Modified for the linear SuffixDecoding reproduction; see the project patch.
+ from __future__ import annotations
+ 
+ import json
+@@ -1177,6 +1178,32 @@ def _handle_ngram(server_args: ServerArgs) -> None:
              "Ngram speculative decoding only supports CUDA, CPU, or XPU devices."
          )
  
@@ -35,11 +40,45 @@ index 539188b..ad04bcc 100644
      _disable_overlap_schedule_for_cpu(server_args)
  
      if cfg.max_running_requests is None:
+diff --git a/python/sglang/srt/batch_invariant_ops/batch_invariant_ops.py b/python/sglang/srt/batch_invariant_ops/batch_invariant_ops.py
+index b6a7a58..c01bc1a 100644
+--- a/python/sglang/srt/batch_invariant_ops/batch_invariant_ops.py
++++ b/python/sglang/srt/batch_invariant_ops/batch_invariant_ops.py
+@@ -1,3 +1,5 @@
++# Modified for this reproduction: avoid copying transposed LM-head weights
++# in the deterministic FP32-output Triton matmul path.
+ # Adapted from https://github.com/thinking-machines-lab/batch_invariant_ops/blob/main/batch_invariant_ops/batch_invariant_ops.py
+ 
+ import contextlib
+@@ -989,6 +991,18 @@ def _rms_norm_aten_compat(input, normalized_shape, weight=None, eps=None):
+ 
+ 
+ def _mm_dtype_compat(self, mat2, out_dtype):
++    if (
++        out_dtype == torch.float32
++        and self.dtype in (torch.float16, torch.bfloat16)
++        and mat2.dtype == self.dtype
++        and mat2.transpose(0, 1).is_contiguous()
++    ):
++        # The previous contiguous transpose selected this same Triton kernel,
++        # but copied the entire vocabulary weight matrix on every forward.
++        # Its explicit strides support this column-major view directly.
++        return _matmul_persistent_triton(
++            self.contiguous(), mat2, out_dtype=out_dtype
++        )
+     return matmul_persistent(self.contiguous(), mat2.contiguous(), out_dtype=out_dtype)
+ 
+ 
 diff --git a/python/sglang/srt/managers/scheduler.py b/python/sglang/srt/managers/scheduler.py
-index a7d8bae..9106474 100644
+index a7d8bae..fcfddf4 100644
 --- a/python/sglang/srt/managers/scheduler.py
 +++ b/python/sglang/srt/managers/scheduler.py
-@@ -3329,6 +3329,8 @@ class Scheduler(
+@@ -1,3 +1,4 @@
++# Modified for the linear SuffixDecoding reproduction; see the project patch.
+ # Copyright 2023-2024 SGLang Team
+ # Licensed under the Apache License, Version 2.0 (the "License");
+ # you may not use this file except in compliance with the License.
+@@ -3329,6 +3330,8 @@ class Scheduler(
      def _release_aborted_request(self, req: Req) -> None:
          """Drop the cache-side state an aborted request left behind."""
          self.tree_cache.finish(req.cache_request_handle, CacheRequestOutcome.ABORT)
@@ -49,10 +88,15 @@ index a7d8bae..9106474 100644
      def _abort_on_queued_limit(self, recv_req: Req) -> bool:
          """Abort an incoming or existing request if the waiting queue is full. Returns True if the incoming request is aborted."""
 diff --git a/python/sglang/srt/managers/scheduler_components/batch_result_processor.py b/python/sglang/srt/managers/scheduler_components/batch_result_processor.py
-index e0f922f..83a5823 100644
+index e0f922f..00113e4 100644
 --- a/python/sglang/srt/managers/scheduler_components/batch_result_processor.py
 +++ b/python/sglang/srt/managers/scheduler_components/batch_result_processor.py
-@@ -370,6 +370,11 @@ class SchedulerBatchResultProcessor:
+@@ -1,3 +1,4 @@
++# Modified for the linear SuffixDecoding reproduction; see the project patch.
+ from __future__ import annotations
+ 
+ import logging
+@@ -370,6 +371,11 @@ class SchedulerBatchResultProcessor:
                      ):
                          req.kv.kv_committed_len += 1
                      if req.finished():
@@ -65,10 +109,15 @@ index e0f922f..83a5823 100644
                              self._maybe_collect_routed_experts(req)
                              self._maybe_collect_indexer_topk(req)
 diff --git a/python/sglang/srt/speculative/ngram_worker.py b/python/sglang/srt/speculative/ngram_worker.py
-index c31157a..a4a6f40 100644
+index c31157a..3b4ff86 100644
 --- a/python/sglang/srt/speculative/ngram_worker.py
 +++ b/python/sglang/srt/speculative/ngram_worker.py
-@@ -118,16 +118,19 @@ class NGRAMWorker(BaseSpecWorker):
+@@ -1,3 +1,4 @@
++# Modified for the linear SuffixDecoding reproduction; see the project patch.
+ import logging
+ from typing import List, Optional
+ 
+@@ -118,16 +119,19 @@ class NGRAMWorker(BaseSpecWorker):
          self._prev_decode_rids: set = set()
          self.grammar_tree_host: Optional[tuple] = None
  
@@ -98,7 +147,7 @@ index c31157a..a4a6f40 100644
          if get_spec().speculative_ngram_external_corpus_path is not None:
              from sglang.srt.speculative.cpp_ngram.external_corpus import (
                  iter_external_corpus_chunks,
-@@ -519,7 +522,7 @@ class NGRAMWorker(BaseSpecWorker):
+@@ -519,7 +523,7 @@ class NGRAMWorker(BaseSpecWorker):
              # The last batch's entries persist while idle (bounded, small).
              cur_rids = {req.rid for req in batch.reqs}
              departed_rids = self._prev_decode_rids - cur_rids
@@ -108,10 +157,15 @@ index c31157a..a4a6f40 100644
              self._prev_decode_rids = cur_rids
              batch.forward_mode = ForwardMode.DECODE
 diff --git a/python/sglang/srt/speculative/spec_info.py b/python/sglang/srt/speculative/spec_info.py
-index f72644a..4e37a88 100644
+index f72644a..1bf8f37 100644
 --- a/python/sglang/srt/speculative/spec_info.py
 +++ b/python/sglang/srt/speculative/spec_info.py
-@@ -44,6 +44,7 @@ class SpeculativeAlgorithm(Enum):
+@@ -1,3 +1,4 @@
++# Modified for the linear SuffixDecoding reproduction; see the project patch.
+ from __future__ import annotations
+ 
+ from abc import ABC
+@@ -44,6 +45,7 @@ class SpeculativeAlgorithm(Enum):
      FROZEN_KV_MTP = auto()
      STANDALONE = auto()
      NGRAM = auto()
@@ -119,7 +173,7 @@ index f72644a..4e37a88 100644
      NONE = auto()
  
      @classmethod
-@@ -130,7 +131,7 @@ class SpeculativeAlgorithm(Enum):
+@@ -130,7 +132,7 @@ class SpeculativeAlgorithm(Enum):
          return self == SpeculativeAlgorithm.STANDALONE
  
      def is_ngram(self) -> bool:
@@ -128,7 +182,7 @@ index f72644a..4e37a88 100644
  
      def supports_target_verify_for_draft(self) -> bool:
          return self.is_dflash_family()
-@@ -353,6 +354,10 @@ class SpeculativeAlgorithm(Enum):
+@@ -353,6 +355,10 @@ class SpeculativeAlgorithm(Enum):
              from sglang.srt.speculative.standalone_worker_v2 import StandaloneWorkerV2
  
              return StandaloneWorkerV2
@@ -141,7 +195,7 @@ index f72644a..4e37a88 100644
  
 diff --git a/python/sglang/srt/speculative/suffix_worker.py b/python/sglang/srt/speculative/suffix_worker.py
 new file mode 100644
-index 0000000..7b168db
+index 0000000..145902d
 --- /dev/null
 +++ b/python/sglang/srt/speculative/suffix_worker.py
 @@ -0,0 +1,259 @@
@@ -332,7 +386,7 @@ index 0000000..7b168db
 +                    pool.get_key_buffer(layer)[prefix_locs].clone(),
 +                    pool.get_value_buffer(layer)[prefix_locs].clone(),
 +                )
-+                for layer in range(pool.start_layer, pool.end_layer + 1)
++                for layer in range(pool.start_layer, pool.start_layer + pool.layer_num)
 +            ]
 +        with annotation, get_spec().override(speculative_num_draft_tokens=width):
 +            result = super().forward_batch_generation(

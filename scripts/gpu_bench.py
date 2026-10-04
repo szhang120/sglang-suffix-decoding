@@ -43,6 +43,23 @@ def main():
     cfg = engine_config(args.mode)
     environment = dict(
         config=cfg,
+        draft_environment={
+            name: os.environ.get(name, default)
+            for name, default in {
+                "SUFFIX_FACTOR": "1.0", "SUFFIX_OFFSET": "0.0",
+                "SUFFIX_MIN_PROB": "0.1", "SUFFIX_CACHE_REQUESTS": "128",
+                "SUFFIX_FIXED": "0", "SUFFIX_ALLOW_WIDTH_PROBE": "0",
+            }.items()
+        },
+        kernel_environment={
+            name: os.environ.get(name)
+            for name in (
+                "SGLANG_TRITON_DECODE_SPLIT_TILE_SIZE",
+                "SGLANG_BATCH_INVARIANT_OPS_ENABLE_MM_DEEPGEMM",
+                "SGLANG_BATCH_INVARIANT_OPS_ENABLE_MM_FALLBACK_VARIANT",
+                "SGLANG_CACHE_DIR",
+            )
+        },
         source_lock=LOCK,
         integration_patch_sha256=hashlib.sha256(
             (ROOT / "patches/sglang-suffix.patch").read_bytes()
@@ -68,6 +85,10 @@ def main():
         (dest / "server-info.json").write_text(
             json.dumps(engine.get_server_info(), indent=2, default=str)
         )
+        # Warm every frozen prompt's prefill shape, then all suffix widths.
+        # Only one token is emitted; all algorithm caches are cleared below.
+        for row in rows:
+            engine.generate(input_ids=row["input_ids"], sampling_params=sampling(1))
         if args.mode.startswith("suffix"):
             for width in range(1, 34):
                 engine.generate(
@@ -80,13 +101,6 @@ def main():
         else:
             engine.generate(input_ids=rows[0]["input_ids"], sampling_params=sampling(128))
         engine.flush_cache()
-        if args.profile:
-            engine.start_profile(
-                output_dir=str(dest / "profile"),
-                activities=["CPU", "GPU"],
-                record_shapes=True,
-                detailed_annotations=True,
-            )
         with (dest / "requests.jsonl").open("w") as f:
             # Independent and refinement blocks are public first/second turns.
             # Repetition is a separate diagnostic upper bound, not a paper workload.
@@ -101,6 +115,12 @@ def main():
                     # Preserve repeated responses in the diagnostic profile.
                     requests = requests[:2] * 2 if block == "repeat" else requests[:4]
                 for index, row in enumerate(requests):
+                    if args.profile:
+                        engine.start_profile(
+                            output_dir=str(dest / "profile" / f"{block}-{index}"),
+                            activities=["CPU", "GPU"], num_steps=8,
+                            record_shapes=True, with_stack=False, detailed_annotations=True,
+                        )
                     start = time.perf_counter_ns()
                     chunks = []
                     final = None
@@ -118,6 +138,10 @@ def main():
                         )
                         final = response
                     end = time.perf_counter_ns()
+                    if args.profile:
+                        from gpu_width_probe import stop_if_active
+
+                        stop_if_active(engine)
                     if final is None or "output_ids" not in final:
                         raise RuntimeError(
                             "Missing token IDs: cannot establish exact equality"
@@ -136,8 +160,11 @@ def main():
                     )
                     f.write(json.dumps(record) + "\n")
                     f.flush()
-        if args.profile:
-            engine.stop_profile()
+                    if (index + 1) % 10 == 0 or index + 1 == len(requests):
+                        print(
+                            f"PROGRESS: {args.mode} trial{args.trial} {block} "
+                            f"{index + 1}/{len(requests)}", flush=True,
+                        )
     finally:
         engine.shutdown()
 

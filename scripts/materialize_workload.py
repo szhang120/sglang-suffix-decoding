@@ -26,7 +26,7 @@ def main():
     engine = sgl.Engine(**engine_config("ordinary"))
     try:
         with output.open("w") as f:
-            for r in rows:
+            for index, r in enumerate(rows):
                 messages = [dict(role="user", content=r["turns"][0])]
                 ids = tokenizer.apply_chat_template(
                     messages,
@@ -68,6 +68,9 @@ def main():
                         )
                         + "\n"
                     )
+                f.flush()
+                if (index + 1) % 4 == 0 or index + 1 == len(rows):
+                    print(f"PROGRESS: frozen initial prompts {index + 1}/{len(rows)}", flush=True)
         (ROOT / "results/workload.sha256").write_text(
             hashlib.sha256(output.read_bytes()).hexdigest() + "\n"
         )

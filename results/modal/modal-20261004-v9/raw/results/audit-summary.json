@@ -1,0 +1,1227 @@
+[
+  {
+    "mode": "ngram",
+    "name": "length-128",
+    "repeat": 0,
+    "first_difference": 91,
+    "ordinary_length": 128,
+    "other_length": 128,
+    "ordinary_token": 11,
+    "other_token": 13,
+    "ordinary_top2_logprobs": [
+      [
+        -1.3833317756652832,
+        13,
+        null
+      ],
+      [
+        -1.3833317756652832,
+        11,
+        null
+      ]
+    ],
+    "ordinary_logprob_margin": 0.0
+  },
+  {
+    "mode": "ngram",
+    "name": "mismatch",
+    "repeat": 0,
+    "first_difference": 57,
+    "ordinary_length": 128,
+    "other_length": 128,
+    "ordinary_token": 1181,
+    "other_token": 279,
+    "ordinary_top2_logprobs": [
+      [
+        -0.633656919002533,
+        1181,
+        null
+      ],
+      [
+        -0.883656919002533,
+        279,
+        null
+      ]
+    ],
+    "ordinary_logprob_margin": 0.25
+  },
+  {
+    "mode": "ngram",
+    "name": "length-128",
+    "repeat": 1,
+    "first_difference": 80,
+    "ordinary_length": 128,
+    "other_length": 128,
+    "ordinary_token": 5700,
+    "other_token": 11514,
+    "ordinary_top2_logprobs": [
+      [
+        -1.1115041971206665,
+        11514,
+        null
+      ],
+      [
+        -1.1115041971206665,
+        5700,
+        null
+      ]
+    ],
+    "ordinary_logprob_margin": 0.0
+  },
+  {
+    "mode": "ngram",
+    "name": "mismatch",
+    "repeat": 1,
+    "first_difference": 57,
+    "ordinary_length": 128,
+    "other_length": 128,
+    "ordinary_token": 1181,
+    "other_token": 279,
+    "ordinary_top2_logprobs": [
+      [
+        -0.633656919002533,
+        1181,
+        null
+      ],
+      [
+        -0.883656919002533,
+        279,
+        null
+      ]
+    ],
+    "ordinary_logprob_margin": 0.25
+  },
+  {
+    "mode": "ngram",
+    "name": "length-128",
+    "repeat": 2,
+    "first_difference": 91,
+    "ordinary_length": 128,
+    "other_length": 128,
+    "ordinary_token": 11,
+    "other_token": 13,
+    "ordinary_top2_logprobs": [
+      [
+        -1.3833317756652832,
+        13,
+        null
+      ],
+      [
+        -1.3833317756652832,
+        11,
+        null
+      ]
+    ],
+    "ordinary_logprob_margin": 0.0
+  },
+  {
+    "mode": "ngram",
+    "name": "mismatch",
+    "repeat": 2,
+    "first_difference": 57,
+    "ordinary_length": 128,
+    "other_length": 128,
+    "ordinary_token": 1181,
+    "other_token": 279,
+    "ordinary_top2_logprobs": [
+      [
+        -0.633656919002533,
+        1181,
+        null
+      ],
+      [
+        -0.883656919002533,
+        279,
+        null
+      ]
+    ],
+    "ordinary_logprob_margin": 0.25
+  },
+  {
+    "mode": "suffix",
+    "name": "length-128",
+    "repeat": 0,
+    "first_difference": 91,
+    "ordinary_length": 128,
+    "other_length": 128,
+    "ordinary_token": 11,
+    "other_token": 13,
+    "ordinary_top2_logprobs": [
+      [
+        -1.3833317756652832,
+        13,
+        null
+      ],
+      [
+        -1.3833317756652832,
+        11,
+        null
+      ]
+    ],
+    "ordinary_logprob_margin": 0.0,
+    "suffix_round": {
+      "rid": "case-0-length-128",
+      "output_len_before": 91,
+      "input_ids": [
+        18707
+      ],
+      "gpu_layout_and_acceptance_checked": true,
+      "existing_kv_prefix_unchanged": true,
+      "accepted_kv_slots_checked": true,
+      "positions": [
+        216
+      ],
+      "emitted_ids": [
+        13
+      ],
+      "top2_ids": [
+        [
+          13,
+          11
+        ]
+      ],
+      "top2_logits": [
+        [
+          16.125,
+          16.0
+        ]
+      ],
+      "verify_rows": 1,
+      "match_len": 63,
+      "accepted_with_bonus": [
+        1
+      ]
+    },
+    "suffix_prediction_row": 0,
+    "suffix_logit_margin": 0.125,
+    "suffix_top2_ids": [
+      13,
+      11
+    ]
+  },
+  {
+    "mode": "suffix",
+    "name": "mismatch",
+    "repeat": 0,
+    "first_difference": 57,
+    "ordinary_length": 128,
+    "other_length": 128,
+    "ordinary_token": 1181,
+    "other_token": 279,
+    "ordinary_top2_logprobs": [
+      [
+        -0.633656919002533,
+        1181,
+        null
+      ],
+      [
+        -0.883656919002533,
+        279,
+        null
+      ]
+    ],
+    "ordinary_logprob_margin": 0.25,
+    "suffix_round": {
+      "rid": "case-0-mismatch",
+      "output_len_before": 57,
+      "input_ids": [
+        315,
+        279
+      ],
+      "gpu_layout_and_acceptance_checked": true,
+      "existing_kv_prefix_unchanged": true,
+      "accepted_kv_slots_checked": true,
+      "positions": [
+        94,
+        95
+      ],
+      "emitted_ids": [
+        279,
+        11580
+      ],
+      "top2_ids": [
+        [
+          1181,
+          279
+        ],
+        [
+          11580,
+          9237
+        ]
+      ],
+      "top2_logits": [
+        [
+          36.5,
+          36.5
+        ],
+        [
+          29.375,
+          26.875
+        ]
+      ],
+      "verify_rows": 2,
+      "match_len": 1,
+      "accepted_with_bonus": [
+        2
+      ]
+    },
+    "suffix_prediction_row": 0,
+    "suffix_logit_margin": 0.0,
+    "suffix_top2_ids": [
+      1181,
+      279
+    ]
+  },
+  {
+    "mode": "suffix",
+    "name": "length-128",
+    "repeat": 1,
+    "first_difference": 91,
+    "ordinary_length": 128,
+    "other_length": 128,
+    "ordinary_token": 11,
+    "other_token": 13,
+    "ordinary_top2_logprobs": [
+      [
+        -1.3833317756652832,
+        13,
+        null
+      ],
+      [
+        -1.3833317756652832,
+        11,
+        null
+      ]
+    ],
+    "ordinary_logprob_margin": 0.0,
+    "suffix_round": {
+      "rid": "case-1-length-128",
+      "output_len_before": 65,
+      "input_ids": [
+        151645,
+        198,
+        151643,
+        33975,
+        25,
+        2980,
+        498,
+        3410,
+        264,
+        9814,
+        12126,
+        315,
+        279,
+        7089,
+        315,
+        279,
+        5700,
+        330,
+        641,
+        995,
+        43869,
+        151645,
+        198,
+        151644,
+        52618,
+        2878,
+        18707,
+        13,
+        576,
+        3364,
+        11017,
+        20751,
+        67905
+      ],
+      "gpu_layout_and_acceptance_checked": true,
+      "existing_kv_prefix_unchanged": true,
+      "accepted_kv_slots_checked": true,
+      "positions": [
+        190,
+        191,
+        192,
+        193,
+        194,
+        195,
+        196,
+        197,
+        198,
+        199,
+        200,
+        201,
+        202,
+        203,
+        204,
+        205,
+        206,
+        207,
+        208,
+        209,
+        210,
+        211,
+        212,
+        213,
+        214,
+        215,
+        216,
+        217,
+        218,
+        219,
+        220,
+        221,
+        222
+      ],
+      "emitted_ids": [
+        198,
+        151643,
+        33975,
+        25,
+        2980,
+        498,
+        3410,
+        264,
+        9814,
+        12126,
+        315,
+        279,
+        7089,
+        315,
+        279,
+        5700,
+        330,
+        641,
+        995,
+        43869,
+        151645,
+        198,
+        151644,
+        52618,
+        2878,
+        18707,
+        13,
+        576,
+        3364,
+        11017,
+        20751,
+        67905,
+        320
+      ],
+      "top2_ids": [
+        [
+          198,
+          319
+        ],
+        [
+          151643,
+          151644
+        ],
+        [
+          33975,
+          2610
+        ],
+        [
+          25,
+          374
+        ],
+        [
+          2980,
+          16246
+        ],
+        [
+          498,
+          582
+        ],
+        [
+          3410,
+          10339
+        ],
+        [
+          264,
+          803
+        ],
+        [
+          9814,
+          12126
+        ],
+        [
+          12126,
+          3840
+        ],
+        [
+          315,
+          476
+        ],
+        [
+          279,
+          264
+        ],
+        [
+          7089,
+          1887
+        ],
+        [
+          315,
+          323
+        ],
+        [
+          279,
+          330
+        ],
+        [
+          11514,
+          5700
+        ],
+        [
+          330,
+          758
+        ],
+        [
+          641,
+          785
+        ],
+        [
+          995,
+          10844
+        ],
+        [
+          43869,
+          1
+        ],
+        [
+          151645,
+          358
+        ],
+        [
+          198,
+          319
+        ],
+        [
+          151644,
+          76759
+        ],
+        [
+          52618,
+          104873
+        ],
+        [
+          2878,
+          323
+        ],
+        [
+          18707,
+          52618
+        ],
+        [
+          13,
+          11
+        ],
+        [
+          576,
+          758
+        ],
+        [
+          3364,
+          1887
+        ],
+        [
+          11017,
+          78376
+        ],
+        [
+          20751,
+          264
+        ],
+        [
+          67905,
+          45951
+        ],
+        [
+          320,
+          11
+        ]
+      ],
+      "top2_logits": [
+        [
+          39.25,
+          25.125
+        ],
+        [
+          24.0,
+          20.25
+        ],
+        [
+          17.625,
+          15.1875
+        ],
+        [
+          17.75,
+          12.8125
+        ],
+        [
+          18.5,
+          17.5
+        ],
+        [
+          20.0,
+          12.6875
+        ],
+        [
+          22.375,
+          22.25
+        ],
+        [
+          27.625,
+          26.375
+        ],
+        [
+          20.125,
+          19.25
+        ],
+        [
+          23.625,
+          22.5
+        ],
+        [
+          32.5,
+          25.5
+        ],
+        [
+          19.125,
+          16.25
+        ],
+        [
+          17.125,
+          15.0625
+        ],
+        [
+          28.75,
+          26.5
+        ],
+        [
+          21.125,
+          20.625
+        ],
+        [
+          19.125,
+          19.125
+        ],
+        [
+          19.875,
+          18.75
+        ],
+        [
+          20.125,
+          19.5
+        ],
+        [
+          23.5,
+          15.75
+        ],
+        [
+          30.75,
+          27.125
+        ],
+        [
+          22.125,
+          12.875
+        ],
+        [
+          34.5,
+          22.5
+        ],
+        [
+          39.75,
+          32.5
+        ],
+        [
+          14.9375,
+          14.8125
+        ],
+        [
+          17.125,
+          14.375
+        ],
+        [
+          27.625,
+          23.875
+        ],
+        [
+          16.125,
+          16.0
+        ],
+        [
+          17.75,
+          17.0
+        ],
+        [
+          20.0,
+          19.875
+        ],
+        [
+          24.25,
+          23.5
+        ],
+        [
+          20.0,
+          16.75
+        ],
+        [
+          23.5,
+          15.375
+        ],
+        [
+          33.75,
+          32.5
+        ]
+      ],
+      "verify_rows": 33,
+      "match_len": 32,
+      "accepted_with_bonus": [
+        33
+      ]
+    },
+    "suffix_prediction_row": 26,
+    "suffix_logit_margin": 0.125,
+    "suffix_top2_ids": [
+      13,
+      11
+    ]
+  },
+  {
+    "mode": "suffix",
+    "name": "mismatch",
+    "repeat": 1,
+    "first_difference": 57,
+    "ordinary_length": 128,
+    "other_length": 128,
+    "ordinary_token": 1181,
+    "other_token": 279,
+    "ordinary_top2_logprobs": [
+      [
+        -0.633656919002533,
+        1181,
+        null
+      ],
+      [
+        -0.883656919002533,
+        279,
+        null
+      ]
+    ],
+    "ordinary_logprob_margin": 0.25,
+    "suffix_round": {
+      "rid": "case-1-mismatch",
+      "output_len_before": 31,
+      "input_ids": [
+        279,
+        8059,
+        13,
+        576,
+        17330,
+        594,
+        69919,
+        6815,
+        374,
+        279,
+        24456,
+        8168,
+        4152,
+        311,
+        1181,
+        36743,
+        311,
+        9237,
+        13,
+        1634,
+        279,
+        9237,
+        89059,
+        11,
+        2155,
+        5479,
+        315,
+        279,
+        11580,
+        3579,
+        279,
+        17330
+      ],
+      "gpu_layout_and_acceptance_checked": true,
+      "existing_kv_prefix_unchanged": true,
+      "accepted_kv_slots_checked": true,
+      "positions": [
+        68,
+        69,
+        70,
+        71,
+        72,
+        73,
+        74,
+        75,
+        76,
+        77,
+        78,
+        79,
+        80,
+        81,
+        82,
+        83,
+        84,
+        85,
+        86,
+        87,
+        88,
+        89,
+        90,
+        91,
+        92,
+        93,
+        94,
+        95,
+        96,
+        97,
+        98,
+        99
+      ],
+      "emitted_ids": [
+        8059,
+        13,
+        576,
+        17330,
+        594,
+        69919,
+        6815,
+        374,
+        279,
+        24456,
+        8168,
+        4152,
+        311,
+        1181,
+        36743,
+        311,
+        9237,
+        13,
+        1634,
+        279,
+        9237,
+        89059,
+        11,
+        2155,
+        5479,
+        315,
+        279,
+        11580,
+        3579,
+        279,
+        17330,
+        11
+      ],
+      "top2_ids": [
+        [
+          8059,
+          7015
+        ],
+        [
+          13,
+          389
+        ],
+        [
+          576,
+          5692
+        ],
+        [
+          17330,
+          69919
+        ],
+        [
+          702,
+          594
+        ],
+        [
+          69919,
+          23249
+        ],
+        [
+          6815,
+          5344
+        ],
+        [
+          374,
+          702
+        ],
+        [
+          279,
+          803
+        ],
+        [
+          24456,
+          1429
+        ],
+        [
+          8168,
+          5344
+        ],
+        [
+          4152,
+          1576
+        ],
+        [
+          311,
+          1181
+        ],
+        [
+          1181,
+          279
+        ],
+        [
+          36743,
+          12128
+        ],
+        [
+          311,
+          323
+        ],
+        [
+          9237,
+          279
+        ],
+        [
+          13,
+          382
+        ],
+        [
+          1634,
+          5692
+        ],
+        [
+          279,
+          9237
+        ],
+        [
+          9237,
+          17330
+        ],
+        [
+          89059,
+          323
+        ],
+        [
+          11,
+          389
+        ],
+        [
+          2155,
+          279
+        ],
+        [
+          5479,
+          5671
+        ],
+        [
+          315,
+          525
+        ],
+        [
+          1181,
+          279
+        ],
+        [
+          11580,
+          9237
+        ],
+        [
+          3579,
+          3139
+        ],
+        [
+          279,
+          6974
+        ],
+        [
+          17330,
+          17788
+        ],
+        [
+          11,
+          323
+        ]
+      ],
+      "top2_logits": [
+        [
+          34.5,
+          22.125
+        ],
+        [
+          33.0,
+          31.75
+        ],
+        [
+          29.625,
+          29.375
+        ],
+        [
+          22.5,
+          22.25
+        ],
+        [
+          28.25,
+          28.25
+        ],
+        [
+          25.875,
+          24.0
+        ],
+        [
+          32.5,
+          25.5
+        ],
+        [
+          26.25,
+          24.625
+        ],
+        [
+          28.125,
+          25.5
+        ],
+        [
+          29.125,
+          27.75
+        ],
+        [
+          30.875,
+          29.25
+        ],
+        [
+          31.5,
+          30.75
+        ],
+        [
+          37.5,
+          23.75
+        ],
+        [
+          39.25,
+          30.25
+        ],
+        [
+          28.875,
+          27.125
+        ],
+        [
+          33.0,
+          29.125
+        ],
+        [
+          35.75,
+          33.0
+        ],
+        [
+          31.5,
+          31.375
+        ],
+        [
+          30.125,
+          28.125
+        ],
+        [
+          32.25,
+          28.125
+        ],
+        [
+          27.625,
+          27.5
+        ],
+        [
+          27.75,
+          26.25
+        ],
+        [
+          30.5,
+          29.5
+        ],
+        [
+          29.0,
+          24.875
+        ],
+        [
+          30.25,
+          26.25
+        ],
+        [
+          32.25,
+          25.625
+        ],
+        [
+          36.5,
+          36.5
+        ],
+        [
+          29.375,
+          26.875
+        ],
+        [
+          25.25,
+          24.75
+        ],
+        [
+          29.875,
+          28.375
+        ],
+        [
+          29.75,
+          23.5
+        ],
+        [
+          31.375,
+          28.875
+        ]
+      ],
+      "verify_rows": 32,
+      "match_len": 31,
+      "accepted_with_bonus": [
+        32
+      ]
+    },
+    "suffix_prediction_row": 26,
+    "suffix_logit_margin": 0.0,
+    "suffix_top2_ids": [
+      1181,
+      279
+    ]
+  },
+  {
+    "mode": "suffix",
+    "name": "length-128",
+    "repeat": 2,
+    "first_difference": 91,
+    "ordinary_length": 128,
+    "other_length": 128,
+    "ordinary_token": 11,
+    "other_token": 13,
+    "ordinary_top2_logprobs": [
+      [
+        -1.3833317756652832,
+        13,
+        null
+      ],
+      [
+        -1.3833317756652832,
+        11,
+        null
+      ]
+    ],
+    "ordinary_logprob_margin": 0.0,
+    "suffix_round": {
+      "rid": "case-2-length-128",
+      "output_len_before": 91,
+      "input_ids": [
+        18707
+      ],
+      "gpu_layout_and_acceptance_checked": true,
+      "existing_kv_prefix_unchanged": true,
+      "accepted_kv_slots_checked": true,
+      "positions": [
+        216
+      ],
+      "emitted_ids": [
+        13
+      ],
+      "top2_ids": [
+        [
+          13,
+          11
+        ]
+      ],
+      "top2_logits": [
+        [
+          16.125,
+          16.0
+        ]
+      ],
+      "verify_rows": 1,
+      "match_len": 63,
+      "accepted_with_bonus": [
+        1
+      ]
+    },
+    "suffix_prediction_row": 0,
+    "suffix_logit_margin": 0.125,
+    "suffix_top2_ids": [
+      13,
+      11
+    ]
+  },
+  {
+    "mode": "suffix",
+    "name": "mismatch",
+    "repeat": 2,
+    "first_difference": 57,
+    "ordinary_length": 128,
+    "other_length": 128,
+    "ordinary_token": 1181,
+    "other_token": 279,
+    "ordinary_top2_logprobs": [
+      [
+        -0.633656919002533,
+        1181,
+        null
+      ],
+      [
+        -0.883656919002533,
+        279,
+        null
+      ]
+    ],
+    "ordinary_logprob_margin": 0.25,
+    "suffix_round": {
+      "rid": "case-2-mismatch",
+      "output_len_before": 57,
+      "input_ids": [
+        315,
+        279
+      ],
+      "gpu_layout_and_acceptance_checked": true,
+      "existing_kv_prefix_unchanged": true,
+      "accepted_kv_slots_checked": true,
+      "positions": [
+        94,
+        95
+      ],
+      "emitted_ids": [
+        279,
+        11580
+      ],
+      "top2_ids": [
+        [
+          1181,
+          279
+        ],
+        [
+          11580,
+          9237
+        ]
+      ],
+      "top2_logits": [
+        [
+          36.5,
+          36.5
+        ],
+        [
+          29.375,
+          26.875
+        ]
+      ],
+      "verify_rows": 2,
+      "match_len": 1,
+      "accepted_with_bonus": [
+        2
+      ]
+    },
+    "suffix_prediction_row": 0,
+    "suffix_logit_margin": 0.0,
+    "suffix_top2_ids": [
+      1181,
+      279
+    ]
+  }
+]

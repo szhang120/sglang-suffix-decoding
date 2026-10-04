@@ -1,0 +1,95 @@
+{
+  "mode": "suffix with FP32-output logits",
+  "run_id": "modal-20261004-audit-v8",
+  "input_tokens": 126,
+  "output_ids_equal": true,
+  "widths": [
+    {
+      "verify_rows": 1,
+      "trials": 3,
+      "median_gpu_kernel_sum_ms": 12.925107,
+      "gpu_kernel_counts": [
+        1213,
+        1213,
+        1213
+      ],
+      "deep_gemm_median_ms": 4.782425999999999,
+      "matmul_kernel_persistent_median_ms": 1.066813,
+      "_fwd_kernel_unified_median_ms": 0.39110799999999996,
+      "direct_copy_kernel_cuda_median_ms": 5.280183
+    },
+    {
+      "verify_rows": 2,
+      "trials": 3,
+      "median_gpu_kernel_sum_ms": 12.980824,
+      "gpu_kernel_counts": [
+        1214,
+        1214,
+        1214
+      ],
+      "deep_gemm_median_ms": 4.793216999999999,
+      "matmul_kernel_persistent_median_ms": 1.049472,
+      "_fwd_kernel_unified_median_ms": 0.39043400000000006,
+      "direct_copy_kernel_cuda_median_ms": 5.289929
+    },
+    {
+      "verify_rows": 4,
+      "trials": 3,
+      "median_gpu_kernel_sum_ms": 13.149052000000001,
+      "gpu_kernel_counts": [
+        1214,
+        1214,
+        1214
+      ],
+      "deep_gemm_median_ms": 4.805060999999999,
+      "matmul_kernel_persistent_median_ms": 1.059297,
+      "_fwd_kernel_unified_median_ms": 0.5176620000000001,
+      "direct_copy_kernel_cuda_median_ms": 5.303576
+    },
+    {
+      "verify_rows": 8,
+      "trials": 3,
+      "median_gpu_kernel_sum_ms": 13.184758999999998,
+      "gpu_kernel_counts": [
+        1214,
+        1214,
+        1214
+      ],
+      "deep_gemm_median_ms": 4.823717999999999,
+      "matmul_kernel_persistent_median_ms": 1.023519,
+      "_fwd_kernel_unified_median_ms": 0.5330199999999999,
+      "direct_copy_kernel_cuda_median_ms": 5.311164
+    },
+    {
+      "verify_rows": 16,
+      "trials": 3,
+      "median_gpu_kernel_sum_ms": 13.609018000000003,
+      "gpu_kernel_counts": [
+        1214,
+        1214,
+        1214
+      ],
+      "deep_gemm_median_ms": 4.866660000000001,
+      "matmul_kernel_persistent_median_ms": 1.344289,
+      "_fwd_kernel_unified_median_ms": 0.5622999999999999,
+      "direct_copy_kernel_cuda_median_ms": 5.3179479999999995
+    },
+    {
+      "verify_rows": 33,
+      "trials": 3,
+      "median_gpu_kernel_sum_ms": 14.000926000000002,
+      "gpu_kernel_counts": [
+        1214,
+        1214,
+        1214
+      ],
+      "deep_gemm_median_ms": 5.516956,
+      "matmul_kernel_persistent_median_ms": 0.896255,
+      "_fwd_kernel_unified_median_ms": 0.6520309999999999,
+      "direct_copy_kernel_cuda_median_ms": 5.329205
+    }
+  ],
+  "trace_sha256": "611a338afc2ed5e42d516cbcb2e3fc409991500a73eed536405f386e18d6144a",
+  "trace_size_bytes": 153837451,
+  "trace_analysis_note": "Original phase failed on duplicate CPU/GPU annotation names; corrected reader selects CPU user_annotation and correlates GPU launches in streaming passes."
+}

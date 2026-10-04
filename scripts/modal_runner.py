@@ -160,13 +160,17 @@ def execute(
                 f.write("COMMAND: " + json.dumps(command) + "\n")
                 f.flush()
                 print("Running", command, flush=True)
-                subprocess.run(
-                    command,
-                    stdout=f,
-                    stderr=subprocess.STDOUT,
-                    cwd="/project",
-                    check=True,
-                )
+                with subprocess.Popen(
+                    command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                    cwd="/project", text=True, bufsize=1,
+                ) as process:
+                    for line in process.stdout:
+                        f.write(line)
+                        if line.startswith("PROGRESS: "):
+                            print(line.rstrip(), flush=True)
+                    code = process.wait()
+                    if code:
+                        raise subprocess.CalledProcessError(code, command)
 
             if not expected_sources:
                 raise ValueError("Source fingerprints are required")
@@ -217,10 +221,12 @@ def execute(
             )
             if phase == "preflight":
                 run(["python", "-m", "pip", "freeze"])
-            elif phase == "correctness":
+            elif phase in ("correctness", "prepare"):
                 for mode in ("ordinary", "ngram", "suffix"):
                     run(["python", "scripts/gpu_correctness.py", "--mode", mode])
                 run(["python", "scripts/analyze_gpu.py", "--correctness-only"])
+                if phase == "prepare":
+                    run(["python", "scripts/materialize_workload.py"])
             elif phase == "audit":
                 # Numerical diagnostics are intentionally allowed after a failed
                 # correctness gate; they never produce benchmark claims.
@@ -250,7 +256,6 @@ def execute(
                     )
             elif phase == "width-probe":
                 run(["python", "scripts/gpu_width_probe.py"])
-                run(["python", "scripts/analyze_width_probe.py", str(results / "width-probe")])
             elif phase == "profile":
                 for mode in ("ordinary", "ngram", "suffix"):
                     run(
@@ -301,8 +306,11 @@ def main(phase: str = "preflight", run_id: str = "", trial: int = 0):
         "configs/gpu-requirements.lock",
         "patches/sglang-suffix.patch",
         "native/suffix_native/cache.py",
-        "sglang/python/sglang/srt/speculative/suffix_worker.py",
-        "sglang/python/sglang/srt/speculative/ngram_worker.py",
+    ]
+    source_names += [
+        "sglang/" + line.split(" b/", 1)[1]
+        for line in (ROOT / "patches/sglang-suffix.patch").read_text().splitlines()
+        if line.startswith("diff --git ")
     ]
     source_names += [
         str(p.relative_to(ROOT))

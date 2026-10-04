@@ -3,11 +3,11 @@
   "cpu_tests_passed": true,
   "native_compiler": "AppleClang 17.0.0",
   "patch_clean_apply": true,
-  "patch_reproduces_files": 6,
+  "patch_reproduces_files": 7,
   "syntax_checks": true,
   "ruff_checks": "F401,F821,F823,UP037 pass; ruff 0.15.1",
   "gpu_executed": true,
-  "gpu_blocker": "Triton SUFFIX30/30 exact; branching NGRAM29/30 exact. Linear NGRAM PROB and direct KV prefix/slot checks pending.",
+  "gpu_blocker": null,
   "public_github_remote_configured": false,
   "binary_dependency_resolution": true,
   "dependency_packages": 212,
@@ -27,7 +27,7 @@
     "image_id": "im-U2wujU31CItE7NuxlSZLK4"
   },
   "gpu_model_loaded": true,
-  "gpu_correctness_passed": false,
+  "gpu_correctness_passed": true,
   "gpu_correctness_attempts": [
     {
       "run_id": "modal-20261004-v2",
@@ -58,6 +58,85 @@
       "backend": "triton",
       "fp32_lm_head": true,
       "ngram_breadth": 10
+    },
+    {
+      "run_id": "modal-20261004-audit-v7",
+      "ngram_exact_cases": 30,
+      "suffix_completed_cases": 0,
+      "total_cases": 30,
+      "backend": "triton",
+      "fp32_lm_head": true,
+      "ngram_breadth": 1,
+      "diagnostic_failure": "KV snapshot loop included an extra layer; corrected range to start_layer + layer_num."
+    },
+    {
+      "run_id": "modal-20261004-audit-v8",
+      "ngram_exact_cases": 30,
+      "suffix_exact_cases": 30,
+      "total_cases": 30,
+      "backend": "triton",
+      "fp32_lm_head": true,
+      "ngram_breadth": 1,
+      "gpu_layout_and_acceptance_checked": true,
+      "existing_kv_prefix_unchanged": true,
+      "accepted_kv_slots_checked": true,
+      "checked_verify_rounds": 416
+    },
+    {
+      "run_id": "modal-20261004-v9",
+      "ngram_exact_cases": 24,
+      "suffix_exact_cases": 24,
+      "total_cases": 30,
+      "backend": "triton",
+      "fp32_lm_head": false,
+      "ngram_breadth": 1,
+      "note": "Native BF16 logits fail mainly on ties; preserve raw evidence."
+    },
+    {
+      "run_id": "modal-20261004-v10",
+      "ngram_exact_cases": 30,
+      "suffix_exact_cases": 30,
+      "total_cases": 30,
+      "backend": "triton",
+      "fp32_lm_head": true,
+      "fp32_head_strides_preserved": true,
+      "checked_verify_rounds": 416
+    },
+    {
+      "run_id": "modal-20261004-v11",
+      "ngram_exact_cases": 30,
+      "suffix_exact_cases": 30,
+      "total_cases": 30,
+      "diagnostic_instrumentation": false
     }
-  ]
+  ],
+  "gpu_width_probe": {
+    "run_id": "modal-20261004-audit-v8",
+    "matched_context_tokens": 126,
+    "requests": 18,
+    "output_ids_equal": true,
+    "gpu_trace_saved": true,
+    "analysis_fixed_locally": true,
+    "median_kernel_ms_width1": 12.925107,
+    "median_kernel_ms_width33": 14.000926,
+    "limitation": "Single query tile at all widths; context126 crosses KV64-token boundary. FP32-head weight copy present in this first study. Aligned-context study prepared."
+  },
+  "final_workload": {
+    "requests": 84,
+    "initial": 52,
+    "refinement": 32,
+    "sha256": "8b94953aa6e1c8ec18e4f9c405f82cf87d4c330ad172be118e0547e4c657132c"
+  },
+  "gpu_width_probe_final": {
+    "run_id": "modal-20261004-v11",
+    "contexts": [
+      126,
+      128,
+      512
+    ],
+    "requests": 54,
+    "output_ids_equal": true,
+    "profile_kernel_summary": "results/width-probe-final/kernel-summary.json",
+    "fp32_head_weight_copy_absent": true
+  }
 }
