@@ -58,6 +58,8 @@ The final profile uses contexts 126/128/512 and widths 1/2/4/8/16/33, three rand
 | 128 | 7.98ms | 8.99ms | 11.2% |
 | 512 | 8.86ms | 10.26ms | 13.6% |
 
+![Controlled verification widths and correlated GPU kernel time](figures/verify-width.png)
+
 KV-store grids grow from `[2,1,1]` to `[66,1,1]` per layer, and argmax from `[1,19,1]` to `[33,16,1]`. These launches establish actual reduced GPU work, beyond masking padded host execution. Attention keeps `[1,28,1]`, and the persistent head matmul keeps `[132,1,1]`. Summed kernel durations are profiler diagnostics, not request wall latency or hardware FLOP counts.
 
 Source inspection explains the limitation. The FP32-output head uses a 128-row M tile, remapping padded rows to row zero before its dot product. Deterministic unified attention selects a 128-row query tile for Qwen’s 128-dimensional heads on H100, with 64-token key tiles. Dense GEMMs also use tiled kernels. Reducing 33 rows to 1 therefore saves some storage/reduction work while substantial arithmetic remains padded. It does not produce a 33-fold compute reduction. Full samples, kernel grids and trace hashes are in `results/width-probe-final/`.

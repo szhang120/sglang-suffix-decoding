@@ -8,6 +8,7 @@ import argparse
 import hashlib
 import json
 import random
+import re
 import statistics
 from collections import defaultdict
 from pathlib import Path
@@ -42,6 +43,9 @@ def main():
     mismatches = []
     summaries = []
     hashes = {}
+    environments = {}
+    controls = None
+    identity = None
     grouped_pairs = defaultdict(list)
     categories = defaultdict(lambda: [0, 0, 0])
     for trial in range(5):
@@ -50,9 +54,24 @@ def main():
             path = args.directory / "gpu" / f"{mode}-{trial}" / "requests.jsonl"
             records[mode] = load(path)
             hashes[str(path.relative_to(args.directory))] = hashlib.sha256(path.read_bytes()).hexdigest()
+            env_path = path.parent / "environment.json"
+            environment = json.loads(env_path.read_text())
+            hashes[str(env_path.relative_to(args.directory))] = hashlib.sha256(env_path.read_bytes()).hexdigest()
+            common = {k: v for k, v in environment["config"].items() if not k.startswith("speculative_")}
+            provenance = (environment["workload_sha256"], environment["integration_patch_sha256"],
+                          environment["source_lock"]["model"], environment["torch"], environment["cuda"],
+                          environment["pip_freeze"], environment["kernel_environment"])
+            if controls is None:
+                controls, identity = common, provenance
+            assert common == controls and provenance == identity, (mode, trial, "environment differs")
+            assert environment["gpu"] == "NVIDIA H100 80GB HBM3"
+            match = re.search(r"GPU UUID\s*:\s*(\S+)", environment["nvidia_smi"])
+            assert match, "Missing GPU UUID"
+            environments[(mode, trial)] = match.group(1)
             assert len(records[mode]) == sum(BLOCKS.values()), (mode, trial, "incomplete")
             assert {block: sum(r["block"] == block for r in records[mode]) for block in BLOCKS} == BLOCKS
         base = records["ordinary"]
+        assert len({environments[(mode, trial)] for mode in MODES}) == 1, "GPU changed within a paired trial"
         for mode, rows in records.items():
             for reference, row in zip(base, rows):
                 assert all(reference[k] == row[k] for k in ("block", "index", "question_id", "kind", "category", "input_tokens", "truncated"))
@@ -95,6 +114,8 @@ def main():
                   measured_requests=5 * len(MODES) * sum(BLOCKS.values()),
                   metric="Paired ratio of summed request wall latency, ordinary/mode; includes host and streaming overhead",
                   uncertainty="10,000 paired trial-block bootstrap samples, seed42; fixed workload, five trials, percentile interval",
+                  common_config=controls,
+                  gpu_uuid_by_trial={str(trial): environments[("ordinary", trial)] for trial in range(5)},
                   aggregate=aggregate, trials=summaries,
                   categories=[dict(mode=m, block=b, category=c, requests=n, pooled_speedup=a / d)
                               for (m, b, c), (a, d, n) in sorted(categories.items())],

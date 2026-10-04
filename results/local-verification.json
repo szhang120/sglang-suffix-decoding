@@ -8,7 +8,7 @@
   "ruff_checks": "F401,F821,F823,UP037 pass; ruff 0.15.1",
   "gpu_executed": true,
   "gpu_blocker": null,
-  "public_github_remote_configured": false,
+  "public_github_remote_configured": true,
   "binary_dependency_resolution": true,
   "dependency_packages": 212,
   "dependency_lock_sha256": "c0a19671efe44499b964370a3932dcb1d6abca143c0fbf7f1fd65f0e44f85510",
@@ -138,5 +138,12 @@
     "output_ids_equal": true,
     "profile_kernel_summary": "results/width-probe-final/kernel-summary.json",
     "fp32_head_weight_copy_absent": true
+  },
+  "public_repository": "https://github.com/szhang120/sglang-suffix-decoding",
+  "ci": {
+    "url": "https://github.com/szhang120/sglang-suffix-decoding/actions/runs/37193733550",
+    "commit": "3b81de986a863df0a88d51c2c7e251f481ece753",
+    "ubuntu_24_04": "passed",
+    "macos_14": "passed"
   }
 }

@@ -16,6 +16,7 @@ import modal
 
 ROOT = Path(__file__).resolve().parents[1]
 CPU_ONLY = os.environ.get("SUFFIX_MODAL_CPU_ONLY") == "1"
+FUNCTION_TIMEOUT = int(os.environ.get("SUFFIX_MODAL_TIMEOUT", "14400"))
 app = modal.App("sglang-suffix-reproduction")
 artifacts = modal.Volume.from_name("sglang-suffix-artifacts", create_if_missing=True)
 model_cache = modal.Volume.from_name(
@@ -113,7 +114,7 @@ if prebuilt := os.environ.get("SUFFIX_MODAL_PREBUILT_IMAGE"):
     memory=65536,
     ephemeral_disk=512 * 1024,
     volumes={"/artifacts": artifacts, "/model-cache": model_cache},
-    timeout=7200,
+    timeout=FUNCTION_TIMEOUT,
     startup_timeout=1800,
     max_containers=1,
     retries=0,
@@ -126,6 +127,7 @@ def execute(
     image_id: str = "",
     expected_sources: dict = None,
     gpu_requested: bool = True,
+    function_timeout: int = 14400,
 ):
     import hashlib
     import subprocess
@@ -184,6 +186,7 @@ def execute(
                     "Prebuilt image source fingerprint mismatch; rebuild the image"
                 )
             status["gpu_requested"] = gpu_requested
+            status["function_timeout_seconds"] = function_timeout
             if phase == "cpu-validate":
                 run(
                     [
@@ -322,7 +325,7 @@ def main(phase: str = "preflight", run_id: str = "", trial: int = 0):
         for name in source_names
     }
     output = execute.remote(
-        phase, run_id, trial, image.object_id, expected, not CPU_ONLY
+        phase, run_id, trial, image.object_id, expected, not CPU_ONLY, FUNCTION_TIMEOUT
     )
     print(json.dumps(output, indent=2))
     destination = ROOT / "results/modal" / run_id

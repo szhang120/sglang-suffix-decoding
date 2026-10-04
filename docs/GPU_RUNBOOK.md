@@ -4,7 +4,7 @@ Modal authentication/payment setup is complete; net spend limit is$0. The final 
 
 ## Modal execution
 
-Use Modal CLI 1.6.1 in the isolated Mac environment `/tmp/sglang-modal-cli`. Token setup stays outside this repository. The launcher requests one explicit `H100!`, 8 CPU cores, 64GiB RAM and 512GiB ephemeral disk (Modal’s minimum for an explicit request). Persistent named volumes hold model cache and raw artifacts. Functions time out after two hours, have no automatic retries and scale down after two seconds. Decision score: **90/100**.
+Use Modal CLI 1.6.1 in the isolated Mac environment `/tmp/sglang-modal-cli`. Token setup stays outside this repository. The launcher requests one explicit `H100!`, 8 CPU cores, 64GiB RAM and 512GiB ephemeral disk (Modal’s minimum for an explicit request). Persistent named volumes hold model cache and raw artifacts. The current default timeout is four hours, with no automatic retries and scale-down after two seconds. `SUFFIX_MODAL_TIMEOUT` overrides that operational guard. The frozen v11 image source lock and original trial0 used a two-hour guard; later phase statuses record the actual timeout. Increasing headroom changes no inference settings. Decision score: **93/100**, based on the measured 22-minute ordinary baseline within a five-mode trial.
 
 ```sh
 /tmp/sglang-modal-cli/bin/modal run scripts/modal_runner.py --phase preflight --run-id RUN_ID
@@ -23,6 +23,8 @@ mkdir -p results/modal/RUN_ID/raw
 The downloaded tree includes a `results/` subdirectory. Immutable project image IDs can accelerate development with `SUFFIX_MODAL_RUST_BASE_IMAGE`; portable builds do not depend on those IDs. Runtime compares exact source fingerprints before execution. Image builds happen before GPU execution; installation failures are retained in `results/setup/`. The first build caught a CUDA-tile downloader-stub hash in the resolver output. The direct NVIDIA CPython 3.12 wheel is now pinned through `configs/gpu-overrides.in`; its downloaded bytes match the NVIDIA index hash. Hash checking remains mandatory.
 
 List-price compute estimate for the requested resources is approximately $4.84/hour, excluding image builds, storage and other billable usage; this is not an account invoice. See [Modal pricing](https://modal.com/pricing). No always-on deployment is created.
+
+Public correctness/profile artifacts include the actual source snapshots from immutable images, not just image identifiers that require access to the original Modal workspace. `analysis/export_modal_sources.py` exports those files using CPU only and checks recorded source hashes. `analysis/package_artifacts.py` packages explicit evidence directories with normalized headers and a per-file SHA256 manifest. The first source-export helper attempt lacked a remote environment variable; its failed log is retained, and the repaired export passes every source-hash check.
 
 ## Steps on the Mac / rental dashboard
 

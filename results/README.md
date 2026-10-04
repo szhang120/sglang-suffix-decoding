@@ -13,6 +13,15 @@ python analysis/width_report.py PATH/width-probe
 
 Both commands preserve existing outputs; use a fresh extraction directory when repeating analysis. The summary records individual trace SHA256 hashes. Large traces are excluded from Git; publication as release artifacts remains pending.
 
+Generate scientific figures with Python 3.12 and the plotting-only pins in `configs/analysis-requirements.txt`:
+
+```sh
+python -m pip install -r configs/analysis-requirements.txt
+MPLCONFIGDIR=/tmp/suffix-matplotlib python analysis/plot_results.py
+```
+
+`analysis/benchmark_report.py PATH/results --output REPORT.json` validates five complete, unprofiled trials, records exact-ID mismatches and reports paired latency ratios with trial bootstrap intervals. If equality fails, its saved report is diagnostic and its exit status fails; it cannot establish an exact-output performance comparison. Bootstrap intervals describe repeated execution on this fixed subset.
+
 `modal/` and `setup/` retain earlier attempts, failures and diagnostic logs. A phase status can fail after successful GPU execution if its subsequent analysis failed. The initial width study had that outcome; its corrected local analysis is retained. The ambiguous single file `modal/modal-20261004-v2/raw` resulted from an incorrectly specified recursive download destination and is not a complete artifact collection. Explicit per-mode correctness files in that directory are authoritative.
 
 `local-verification.json` records the current verification status. CPU microbenchmarks use synthetic integer sequences and establish no model speedup. No serving benchmark conclusion is available yet.
