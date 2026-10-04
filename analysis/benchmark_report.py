@@ -17,6 +17,25 @@ MODES = ("ordinary", "ngram", "suffix", "suffix-fixed", "suffix-local")
 BLOCKS = {"independent": 52, "refinement": 84, "repeat": 104}
 
 
+def validate_proposer(mode, environment):
+    """Require the recorded configuration to implement the named experiment."""
+    config = environment["config"]
+    if mode == "ordinary":
+        assert "speculative_algorithm" not in config, "Ordinary baseline enables speculation"
+        return
+    expected = dict(speculative_algorithm="SUFFIX" if mode.startswith("suffix") else "NGRAM",
+                    speculative_num_draft_tokens=33, speculative_ngram_match_type="PROB",
+                    speculative_ngram_max_trie_depth=64, speculative_ngram_max_bfs_breadth=1)
+    assert all(config.get(k) == v for k, v in expected.items()), (mode, "Speculative configuration differs")
+    if mode.startswith("suffix"):
+        draft = environment["draft_environment"]
+        expected_values = dict(SUFFIX_FACTOR=1.0, SUFFIX_OFFSET=0.0, SUFFIX_MIN_PROB=0.1,
+                               SUFFIX_CACHE_REQUESTS=0 if mode == "suffix-local" else 128,
+                               SUFFIX_FIXED=1 if mode == "suffix-fixed" else 0,
+                               SUFFIX_ALLOW_WIDTH_PROBE=1)
+        assert all(float(draft.get(k, "nan")) == v for k, v in expected_values.items()), (mode, "Suffix ablation configuration differs")
+
+
 def load(path):
     return [json.loads(line) for line in path.read_text().splitlines()]
 
@@ -75,6 +94,7 @@ def main():
             hashes[str(path.relative_to(args.directory))] = hashlib.sha256(path.read_bytes()).hexdigest()
             env_path = path.parent / "environment.json"
             environment = json.loads(env_path.read_text())
+            validate_proposer(mode, environment)
             hashes[str(env_path.relative_to(args.directory))] = hashlib.sha256(env_path.read_bytes()).hexdigest()
             common = {k: v for k, v in environment["config"].items() if not k.startswith("speculative_")}
             provenance = (environment["workload_sha256"], environment["integration_patch_sha256"],
@@ -173,6 +193,7 @@ def main():
                   ngram_limitation="Different responses and possibly lengths; descriptive NGRAM latency ratios cannot establish an exact-output speedup. One independently reproduced masked-tree rounding case does not attribute all divergences.",
                   measured_requests=5 * len(MODES) * sum(BLOCKS.values()),
                   metric="Paired ratio of summed request wall latency, ordinary/mode; includes host and streaming overhead",
+                  proposer_configurations_checked=True,
                   uncertainty="10,000 paired trial-block bootstrap samples, seed42; fixed workload, five trials, percentile interval",
                   common_config=controls,
                   gpu_uuid_by_trial={str(trial): environments[("ordinary", trial)] for trial in range(5)},

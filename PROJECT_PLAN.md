@@ -2,6 +2,10 @@
 
 Updated 2026-10-04 after independent attribution. **SUFFIX passes the complete 240-request exact-ID gate.** The unchanged v12 image is retained. Real NGRAM branch replay isolates a numerical layout effect with bitwise-equal Q and visible K/V; its upstream proposer remains unchanged. A single detached H100 campaign now runs five rotated trials. Earlier failures, flawed trace attribution and the rejected custom-mask prototype are preserved.
 
+**Operational reset, 2026-10-04 19:12 EDT:** the campaign remains active with four of 25 mode/trial combinations completed (960/6000 timed requests). Trial 0 ordinary, SUFFIX and suffix-fixed have zero exact-ID differences; NGRAM has 10/240 differences. Local-only suffix is starting. The idle CPU diagnostics and analysis apps, and the local automatic publication watcher, were stopped after the user's status request. No automatic follow-up GPU launch or publication remains. Resume later diagnostics and analysis explicitly after inspecting campaign completion; see `docs/STATUS.md`. Runtime and timed inputs were not changed.
+
+**Execution resumed:** continue the existing campaign, then launch diagnostics, final analysis and publication one stage at a time. The GPU runbook documents completion checks before each launch. Reporting now verifies each mode's recorded speculative configuration and SUFFIX ablation flags, with two negative fixtures preventing silent cache/bound misconfiguration. All sixteen host/report checks pass. No frozen GPU source or workload changed.
+
 ## Objective and frozen scope
 
 Public, reproducible linear greedy batch-one SuffixDecoding in SGLang, on one H100 80GB with Qwen2.5-7B-Instruct. Retain dual CPU caches and adaptive lengths; no training, tree/batch/graph expansion or upstream PR dependency. `configs/source-lock.json` pins SGLang v0.5.21 (`e00930c...`), ArcticInference (`aca5d9a...`), Spec-Bench, model revision and 212 hashed Linux packages. Author checkout stays separate and clean; SGLang development branch is `codex/suffix-decoding`.
@@ -23,6 +27,7 @@ Decision scores are engineering judgments, not probabilities:
 | Complete the isolated suffix gate | 97 | Completed: 240/240 exact ordinary IDs in the unchanged v12 configuration. |
 | Permit descriptive NGRAM timings with explicit differences | 93 | Exact visible-input replay isolates a tree-layout numerical effect; retain the upstream baseline, disclose every mismatch and exclude it from exact-output speedup figures. |
 | Change the NGRAM proposer to force a single anchor | 45 | Would change the requested upstream PROB baseline and proposal quality before isolating its numerical behavior. |
+| Stop idle follow-up controllers; retain the progressing campaign | 95 | Reduces active apps and idle CPU allocation, prevents an automatic later GPU launch, and preserves completed timed work. Resume stages individually with visible progress. |
 
 ## Integration design and invariants
 
@@ -54,4 +59,4 @@ Five rotated-order trials compare ordinary, upstream NGRAM PROB (per-anchor fano
 
 Separate profiling must show actual GPU launches/work, not only smaller masks. Existing v11 profiles match54 controlled-width outputs at contexts126/128/512: KV writes/reductions shrink, while 128-row attention/head tiles remain padded. They are valid diagnostic evidence for that configuration, not final serving results. Collect full-workload suffix traces for actual proposal/acceptance denominators; capacity-based SGLang metadata is misleading. Repeat final-candidate width profiles and quantify any changed ordinary route's cost.
 
-**Completed assets:** public repository, Linux/Mac CI, pinned native reuse, ten cache/worker checks plus four reporting-policy checks, initial 30-case GPU gates, 416 KV assertions, controlled profiles, public raw audit release with exact source snapshots. **Still required:** five serving trials, final-candidate width and baseline-cost controls, full-workload acceptance analysis and final report including negative results and the distinction from the paper's Llama/vLLM experimental setup.
+**Completed assets:** public repository, Linux/Mac CI, pinned native reuse, ten cache/worker checks plus six reporting-policy checks, initial 30-case GPU gates, 416 KV assertions, controlled profiles, public raw audit release with exact source snapshots. **Still required:** five serving trials, final-candidate width and baseline-cost controls, full-workload acceptance analysis and final report including negative results and the distinction from the paper's Llama/vLLM experimental setup.

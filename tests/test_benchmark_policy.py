@@ -15,7 +15,7 @@ spec.loader.exec_module(policy)
 
 
 class BenchmarkPolicyTests(unittest.TestCase):
-    def run_fixture(self, changed_mode, allow):
+    def run_fixture(self, changed_mode, allow, draft_override=None):
         root = Path(__file__).resolve().parents[1]
         with tempfile.TemporaryDirectory() as temporary:
             directory = Path(temporary)
@@ -28,7 +28,19 @@ class BenchmarkPolicyTests(unittest.TestCase):
                 for mode in ("ordinary", "ngram", "suffix", "suffix-fixed", "suffix-local"):
                     dest = directory / "gpu" / f"{mode}-{trial}"
                     dest.mkdir(parents=True)
-                    (dest / "environment.json").write_text(json.dumps(environment))
+                    recorded = dict(environment, config=dict(environment["config"]))
+                    if mode != "ordinary":
+                        recorded["config"].update(
+                            speculative_algorithm="SUFFIX" if mode.startswith("suffix") else "NGRAM",
+                            speculative_num_draft_tokens=33, speculative_ngram_match_type="PROB",
+                            speculative_ngram_max_trie_depth=64, speculative_ngram_max_bfs_breadth=1)
+                    recorded["draft_environment"] = dict(
+                        SUFFIX_FACTOR="1.0", SUFFIX_OFFSET="0.0", SUFFIX_MIN_PROB="0.1",
+                        SUFFIX_CACHE_REQUESTS="0" if mode == "suffix-local" else "128",
+                        SUFFIX_FIXED="1" if mode == "suffix-fixed" else "0", SUFFIX_ALLOW_WIDTH_PROBE="1")
+                    if draft_override and mode == draft_override[0]:
+                        recorded["draft_environment"][draft_override[1]] = draft_override[2]
+                    (dest / "environment.json").write_text(json.dumps(recorded))
                     rows = []
                     for block, count in (("independent", 52), ("refinement", 84), ("repeat", 104)):
                         for index in range(count):
@@ -45,7 +57,7 @@ class BenchmarkPolicyTests(unittest.TestCase):
             if allow:
                 command.append("--allow-ngram-numerical-differences")
             result = subprocess.run(command, capture_output=True, text=True, timeout=30)
-            return result.returncode, json.loads(output.read_text())
+            return result.returncode, json.loads(output.read_text()) if output.exists() else None
 
     def test_ngram_default_still_fails(self):
         code, report = self.run_fixture("ngram", False)
@@ -80,6 +92,16 @@ class BenchmarkPolicyTests(unittest.TestCase):
     def test_clean_report_can_include_ngram(self):
         report = dict(exact_ids_passed=True, exact_suffix_ids_passed=True, mismatches=[])
         self.assertIn("ngram", policy.exact_speedup_modes(report))
+
+    def test_local_ablation_cannot_silently_keep_global_cache(self):
+        code, report = self.run_fixture(None, True, ("suffix-local", "SUFFIX_CACHE_REQUESTS", "128"))
+        self.assertNotEqual(code, 0)
+        self.assertIsNone(report)
+
+    def test_unbounded_ablation_cannot_silently_keep_adaptive_bound(self):
+        code, report = self.run_fixture(None, True, ("suffix-fixed", "SUFFIX_FIXED", "0"))
+        self.assertNotEqual(code, 0)
+        self.assertIsNone(report)
 
 
 if __name__ == "__main__":

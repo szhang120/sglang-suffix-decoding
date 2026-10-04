@@ -1,5 +1,5 @@
 {
-  "cpu_tests": 14,
+  "cpu_tests": 16,
   "cpu_tests_passed": true,
   "native_compiler": "AppleClang 17.0.0",
   "patch_clean_apply": true,
@@ -206,7 +206,7 @@
       "status": "running",
       "run_id": "modal-20261004-final-campaign",
       "exact_output_policy": "ordinary/SUFFIX/ablations strict; upstream NGRAM differences descriptive",
-      "followup": "Queued GPU-free wait controller; single serialized GPU diagnostic stage after all6000 records validate"
+      "followup": "Stage-by-stage execution after campaign completion; idle cloud waiters and automatic publication watcher stopped"
     },
     "real_branch_replay": {
       "run_id": "modal-20261004-branch-attention",
@@ -216,10 +216,12 @@
       "scope": "One accepted NGRAM branch; no blanket attribution"
     }
   },
-  "reporting_policy_tests": 4,
+  "reporting_policy_tests": 6,
   "latest_ci": {
     "commit": "dbd1da453d3bad9e4ca22bc5e75b68d5c25c6701",
     "linux_and_macos": "passed",
     "url": "https://github.com/szhang120/sglang-suffix-decoding/actions/runs/37238090697"
-  }
+  },
+  "suffix_public_workload_correctness_passed": true,
+  "reporting_proposer_configurations_checked": true
 }
