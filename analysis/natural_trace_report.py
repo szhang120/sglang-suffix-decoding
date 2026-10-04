@@ -31,6 +31,7 @@ def summarize(requests, rounds):
         output_tokens=sum(len(r["response"]["output_ids"]) for r in requests),
         mean_verify_rows=statistics.mean(widths) if widths else None,
         median_verify_rows=statistics.median(widths) if widths else None,
+        mean_match_length=statistics.mean(r["match_len"] for r in rounds) if rounds else None,
         width_histogram=dict(sorted(Counter(widths).items())),
         proposed_drafts=proposed, target_accepted_drafts=accepted_drafts,
         target_draft_acceptance=accepted_drafts / proposed if proposed else None,
@@ -82,6 +83,9 @@ def main():
             width = row["verify_rows"]
             accepted = row["accepted_with_bonus"][0]
             assert 1 <= accepted <= width <= 33
+            assert width <= 256 - row["output_len_before"], "Proposal exceeds remaining output budget"
+            if variant != "suffix-fixed":
+                assert width - 1 <= row["match_len"], "Proposal violates the pinned alpha1/offset0 match bound"
             assert len(row["input_ids"]) == width
             remaining = len(request["response"]["output_ids"]) - row["output_len_before"]
             assert remaining > 0, "Round starts beyond committed completion"
@@ -112,6 +116,7 @@ def main():
                     **summarize([r for r in selected_requests if r["category"] == category],
                                 [r for r in selected_rounds if r["category"] == category])))
     report["workload_sha256"], report["common_config"], report["reference_run"] = provenance
+    report["adaptive_bound_checked"] = "Every adaptive/local round obeys drafts <= match_len at alpha1/offset0; all variants obey remaining256-token budget"
     if args.output.exists():
         raise SystemExit(f"Preserving {args.output}")
     args.output.parent.mkdir(parents=True, exist_ok=True)

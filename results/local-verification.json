@@ -1,5 +1,5 @@
 {
-  "cpu_tests": 13,
+  "cpu_tests": 14,
   "cpu_tests_passed": true,
   "native_compiler": "AppleClang 17.0.0",
   "patch_clean_apply": true,
@@ -216,7 +216,7 @@
       "scope": "One accepted NGRAM branch; no blanket attribution"
     }
   },
-  "reporting_policy_tests": 3,
+  "reporting_policy_tests": 4,
   "latest_ci": {
     "commit": "dbd1da453d3bad9e4ca22bc5e75b68d5c25c6701",
     "linux_and_macos": "passed",

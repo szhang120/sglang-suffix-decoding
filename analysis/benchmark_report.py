@@ -35,6 +35,21 @@ def intervals(pairs):
     return [percentile(ratios, 0.025), percentile(ratios, 0.975)]
 
 
+def exact_speedup_modes(report):
+    """Reject failed reports; exclude explicitly permitted differing NGRAM."""
+    if not report.get("exact_suffix_ids_passed", report.get("exact_ids_passed", False)):
+        raise ValueError("Suffix output equality failed")
+    mismatches = report.get("mismatches", [])
+    if mismatches:
+        if (not report.get("ngram_numerical_differences_permitted", False)
+                or any(row["mode"] != "ngram" for row in mismatches)):
+            raise ValueError("Report failed its explicit numerical policy")
+        return ("suffix", "suffix-fixed", "suffix-local")
+    if not report.get("exact_ids_passed", False):
+        raise ValueError("Report lacks a passing exact-output gate")
+    return ("ngram", "suffix", "suffix-fixed", "suffix-local")
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("directory", type=Path, help="Downloaded results directory containing gpu/")

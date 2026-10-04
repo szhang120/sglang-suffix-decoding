@@ -9,6 +9,7 @@ import matplotlib
 matplotlib.use("Agg")
 matplotlib.rcParams["svg.hashsalt"] = "sglang-suffix-decoding"
 import matplotlib.pyplot as plt
+from benchmark_report import exact_speedup_modes
 
 
 def main():
@@ -49,17 +50,18 @@ def main():
     report = args.root / "results/final/benchmark-report.json"
     if report.exists():
         results = json.loads(report.read_text())
-        if not results.get("exact_suffix_ids_passed", results["exact_ids_passed"]):
-            raise SystemExit("Output equality failed; refusing an unlabeled performance figure")
+        try:
+            permitted_modes = exact_speedup_modes(results)
+        except ValueError as exc:
+            raise SystemExit(f"Refusing an unlabeled performance figure: {exc}") from exc
         fig, ax = plt.subplots(figsize=(7, 4), layout="constrained")
         fig.get_layout_engine().set(rect=(0, 0.07, 1, 0.93))
         blocks = ("independent", "refinement", "repeat")
         modes = (("ngram", "NGRAM PROB", "#707070"), ("suffix", "Suffix adaptive", "#0072B2"),
                  ("suffix-fixed", "Suffix unbounded match cap", "#D55E00"),
                  ("suffix-local", "Suffix local only", "#009E73"))
-        ngram_excluded = any(r.get("different_outputs") for r in results["aggregate"] if r["mode"] == "ngram")
-        if ngram_excluded:
-            modes = tuple(m for m in modes if m[0] != "ngram")
+        ngram_excluded = "ngram" not in permitted_modes
+        modes = tuple(m for m in modes if m[0] in permitted_modes)
         positions = list(range(len(blocks)))
         for j, (mode, label, color) in enumerate(modes):
             rows = [next(r for r in results["aggregate"] if (r["mode"], r["block"]) == (mode, block)) for block in blocks]

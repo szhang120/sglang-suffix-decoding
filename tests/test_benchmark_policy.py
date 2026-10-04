@@ -5,7 +5,13 @@ import subprocess
 import sys
 import tempfile
 import unittest
+import importlib.util
 from pathlib import Path
+
+module_path = Path(__file__).resolve().parents[1] / "analysis/benchmark_report.py"
+spec = importlib.util.spec_from_file_location("benchmark_report_policy", module_path)
+policy = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(policy)
 
 
 class BenchmarkPolicyTests(unittest.TestCase):
@@ -45,6 +51,8 @@ class BenchmarkPolicyTests(unittest.TestCase):
         code, report = self.run_fixture("ngram", False)
         self.assertNotEqual(code, 0)
         self.assertFalse(report["exact_ids_passed"])
+        with self.assertRaises(ValueError):
+            policy.exact_speedup_modes(report)
 
     def test_descriptive_ngram_has_no_speedup_field(self):
         code, report = self.run_fixture("ngram", True)
@@ -60,11 +68,18 @@ class BenchmarkPolicyTests(unittest.TestCase):
         ngram = next(r for r in turns if r["mode"] == "ngram")
         self.assertNotIn("pooled_speedup", ngram)
         self.assertEqual(ngram["descriptive_latency_ratio"], 1.0)
+        self.assertNotIn("ngram", policy.exact_speedup_modes(report))
 
     def test_suffix_difference_still_fails_with_flag(self):
         code, report = self.run_fixture("suffix", True)
         self.assertNotEqual(code, 0)
         self.assertFalse(report["exact_suffix_ids_passed"])
+        with self.assertRaises(ValueError):
+            policy.exact_speedup_modes(report)
+
+    def test_clean_report_can_include_ngram(self):
+        report = dict(exact_ids_passed=True, exact_suffix_ids_passed=True, mismatches=[])
+        self.assertIn("ngram", policy.exact_speedup_modes(report))
 
 
 if __name__ == "__main__":

@@ -107,6 +107,10 @@ def main():
     assert subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip() == head, "HEAD changed; review collected evidence before publication"
     assert {name: digest(root / name) for name in working_files} == initial, "Documentation changed; preserving concurrent work"
     assert not subprocess.check_output(["git", "diff", "--cached", "--name-only"], cwd=root, text=True), "Preserving staged work"
+    ci = json.loads(subprocess.check_output([
+        args.gh, "run", "list", "--repo", "szhang120/sglang-suffix-decoding", "--commit", head,
+        "--json", "status,conclusion,url", "--limit", "10"], cwd=root, text=True))
+    assert ci and all(r["status"] == "completed" and r["conclusion"] == "success" for r in ci), "Source checkpoint CI has not passed"
     ngram = len(benchmark["mismatches"])
     p = root / "README.md"
     text = p.read_text()
@@ -132,6 +136,7 @@ def main():
     p.write_text(text)
     p = root / "results/local-verification.json"
     verification = json.loads(p.read_text())
+    verification["latest_ci"] = dict(commit=head, linux_and_macos="passed", url=ci[0]["url"])
     verification["independent_reassessment"]["serving_benchmarks"] = dict(
         status="complete", measured_requests=6000, exact_ordinary_suffix_ablation_requests=4800,
         ngram_differing_responses=ngram, campaign_run=status["campaign_run"],
