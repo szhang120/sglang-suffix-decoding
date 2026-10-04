@@ -1,4 +1,4 @@
-# Status at 2026-10-04 19:12 EDT
+# Status at 2026-10-04 19:38 EDT
 
 This is a saved checkpoint, not a live dashboard. Pausing Codex does not stop detached Modal apps.
 
@@ -14,7 +14,7 @@ This is a saved checkpoint, not a live dashboard. Pausing Codex does not stop de
 
 Only `ap-xoBixARmigL9i5dgUso8Je` (`sglang-suffix-validated-campaign`) remains active: one H100 running the frozen five-mode, five-trial campaign. GPU allocation continues until completion, failure, explicit stop or its 12-hour timeout.
 
-Latest committed progress: four of 25 mode/trial combinations, 960/6000 timed requests. All are trial 0:
+Latest checked progress: five of 25 mode/trial combinations, 1200/6000 timed requests validated. The first trial is complete:
 
 | Mode | Completed requests | Token-ID differences |
 |---|---:|---:|
@@ -22,8 +22,9 @@ Latest committed progress: four of 25 mode/trial combinations, 960/6000 timed re
 | NGRAM PROB | 240 | 10 |
 | SUFFIX | 240 | 0 |
 | SUFFIX without the adaptive match-length bound | 240 | 0 |
+| Local-cache-only SUFFIX | 240 | 0 |
 
-Local-cache-only SUFFIX was starting at the last live log read. No complete five-mode trial was yet recorded. The progress file's `success: false` is an initial completion flag; the final `campaign-status.json` determines success or failure.
+The rotated second trial is running NGRAM; at the last live read it had executed 38 additional requests. These partial records have not passed the mode's completion checks. The progress file's `success: false` is an initial completion flag; the final `campaign-status.json` determines success or failure. Its completed-trial array can lag the last mode checkpoint; the log confirms the next trial has started.
 
 ## Stopped deliberately
 
@@ -37,7 +38,7 @@ Decision score: **95/100** for retaining the progressing benchmark and stopping 
 
 ## Remaining
 
-1. Inspect campaign completion and all 6000 output comparisons; preserve NGRAM differences as descriptive results.
+1. Finish the remaining four trials, inspect campaign completion and all 6000 output comparisons; preserve NGRAM differences as descriptive results.
 2. Launch diagnostics as one separately tracked stage: full-workload acceptance traces, final-candidate GPU width profiles, and ordinary-route cost controls. Use a fresh run ID; the stopped controller directories already exist.
 3. Generate measured reports, inspect figures, verify raw archives and finish the technical write-up.
 4. Publish the measured release only after reviewing the completed evidence. No final paper-performance reproduction conclusion exists yet.
@@ -47,3 +48,5 @@ Future execution should announce each stage, report completed/total counts and a
 ## Resumed execution
 
 The user authorized continuation after the status reset. Continue the active campaign, then launch diagnostics, final analysis and publication sequentially. No persistent cloud waiter or automatic publisher was restarted. The runbook now states the required completion checks. The analysis verifies recorded proposer settings and rejects silent SUFFIX ablation misconfiguration; all sixteen host/report checks pass. GPU code and workload remain frozen.
+
+The public portable runner passes source-hash dry runs on Mac and Linux. Its brief CPU app stopped after completion; a fixed container-import error and an earlier image-ID typo are recorded. A four-request Linux/GPU smoke will run in the final diagnostic allocation (16 phases total); it does not establish a separate complete five-trial rerun. Both published source checkpoints have passed Linux/Mac CI. A transient automatic approval-service usage error interrupted a CI read; the normal reviewed retry succeeded after the user resumed.
