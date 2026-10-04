@@ -1,0 +1,15 @@
+{
+  "cpu_tests": 8,
+  "cpu_tests_passed": true,
+  "native_compiler": "AppleClang 17.0.0",
+  "patch_clean_apply": true,
+  "patch_reproduces_files": 6,
+  "syntax_checks": true,
+  "ruff_checks": "F401,F821,F823,UP037 pass; ruff 0.15.1",
+  "gpu_executed": false,
+  "gpu_blocker": "No rented host or SSH details available",
+  "public_github_remote_configured": false,
+  "binary_dependency_resolution": true,
+  "dependency_packages": 212,
+  "dependency_lock_sha256": "35f06a5eb466b07a94f23d0fa057914bf9632eca8a7a47eed1c2c1032aaa7941"
+}

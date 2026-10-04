@@ -1,0 +1,50 @@
+{
+  "sglang": {
+    "tag": "v0.5.21",
+    "commit": "e00930c5489053f26d86b179cee0d087f846acbb"
+  },
+  "author": {
+    "commit": "aca5d9a8a62474035c15d114d40a01abc8c94b51"
+  },
+  "specbench": {
+    "commit": "fd2c1cd7d2201ef71db4c5f4e455008f017967bf",
+    "path": "data/spec_bench/question.jsonl",
+    "source_sha256": "4b6d33e79484f9841c487ee87d1cf6aa8c6066f61d5d482ff09e5a007fafdf04",
+    "selection": "first 4 per category, original order",
+    "requests": 52
+  },
+  "model": {
+    "id": "Qwen/Qwen2.5-7B-Instruct",
+    "revision": "a09a35458c702b33eeacc393d103063234e8bc28"
+  },
+  "gpu_candidate": {
+    "gpu": "NVIDIA H100 80GB",
+    "os": "Ubuntu 24.04 x86_64",
+    "python": "3.12",
+    "cuda": "13.0.3",
+    "torch": "2.13.0",
+    "flashinfer": "0.6.18",
+    "sglang-kernel": "0.4.7",
+    "transformers": "5.12.1",
+    "dtype": "bfloat16",
+    "backend": "flashinfer",
+    "tp": 1,
+    "page_size": 1,
+    "status": "212-package Linux CPython 3.12 binary-wheel resolution succeeded using PyPI and NVIDIA indexes; GPU installation/runtime unverified"
+  },
+  "dependency_lock": {
+    "path": "configs/gpu-requirements.lock",
+    "sha256": "35f06a5eb466b07a94f23d0fa057914bf9632eca8a7a47eed1c2c1032aaa7941",
+    "resolver": "uv 0.11.18",
+    "platform": "x86_64-manylinux_2_39 (Ubuntu 24.04 glibc 2.39)",
+    "python": "3.12",
+    "packages": 212,
+    "rust_toolchain": "1.92 (upstream rust/rust-toolchain.toml)",
+    "runtime_verified": false,
+    "binary_wheel_resolution": true,
+    "indexes": [
+      "https://pypi.org/simple",
+      "https://pypi.nvidia.com"
+    ]
+  }
+}

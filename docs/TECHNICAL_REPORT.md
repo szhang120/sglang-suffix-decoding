@@ -1,0 +1,49 @@
+# A linear SuffixDecoding adaptation for SGLang
+
+**Status: implementation candidate; GPU correctness and performance unverified.** This project has not reproduced the paper's speedups. It contains source pins, a CPU implementation reused from the authors, SGLang integration code, passing host checks and reproducible GPU experiment scripts. GPU access remains the execution blocker.
+
+## Why suffix speculation can help
+
+A target model ordinarily computes one new token per decode forward. If a CPU cache proposes a likely continuation, a causal target forward can evaluate several positions together. For greedy generation, candidate token j is accepted only if the target prediction conditioned on the accepted prefix matches it. Stop at the first mismatch, emit the target correction, and discard the remaining candidates. If all candidates match, emit a target bonus token. Acceptance changes the number of sequential model calls, while target verification still pays for every input row it computes.
+
+The [SuffixDecoding paper, v3](https://arxiv.org/html/2411.04975v3) uses a per-request prompt/output suffix tree and a global prior-output tree. Matching suffix length controls speculation budget; occurrence statistics estimate continuation likelihood. Score sums estimated acceptance probabilities, selecting a candidate across matches and caches. This project starts with its linear greedy variant. Its public workload covers open-ended requests and refinement, where limited repetition can legitimately yield weak or negative gains.
+
+The adapted implementation deliberately retains both caches. A current prompt can contain a phrase that the model copies, while previously generated responses can reveal a template absent from the new prompt. Combining the two is useful, but neither cache is a guarantee of future target output. All cache suggestions remain untrusted drafts until the target verifies them.
+
+## Integration and KV accounting
+
+The SGLang v0.5.21 NGRAM worker already contains model-free draft verification, greedy prefix acceptance and KV movement. Reusing those routines makes the integration smaller and preserves scheduler conventions. `SUFFIX` routes through the NGRAM scheduler family with a distinct CPU proposer. No vLLM model execution occurs.
+
+The target verify input has k+1 rows: the last committed output token followed by k proposals. That committed token is the pending input root; it has been emitted but must still be processed into target KV. Its logits predict proposal 1, later rows predict successive candidates, and the final row provides the full-match bonus. On rejection, only the processed input prefix corresponding to accepted outputs is settled. The new correction remains pending until the next forward. “Emitted tokens” and “processed KV positions” are therefore offset; confusing them is a common off-by-one error.
+
+`NgramVerifyInput` carries actual width and a linear causal mask. The inherited greedy tree verifier operates on this chain. The inherited KV mover settles accepted input locations, and result stride tells the scheduler how to unpack output rows. Only scheduler-committed output is inserted into suffix caches on the next proposal or completion hook. Stop-truncated output uses `output_ids_through_stop`. Prefill-only completion has an explicit hook, and abort discards its cached response.
+
+The author implementation is vendored as a standalone C++20/nanobind module with Apache-2.0 notices. One Python wrapper bug is repaired: the unspecified proposal cap uses `max_tree_depth`, not the nonexistent `max_depth` attribute. Native matching and tie behavior remain unchanged, including the native loop's exclusive upper bound on context length. The SGLang worker limits lookup context to 64 tokens and global retention to 128 requests.
+
+## Adaptivity must change executed rows
+
+A fixed CUDA graph can still execute a full padded tensor after a proposer returns fewer meaningful tokens. In that situation adaptivity improves acceptance statistics but may save little GPU computation. This candidate disables graphs and overlap, slices preallocated storage to k+1 actual rows, updates verifier/backend width consistently, and forwards only those rows. A zero-length proposal executes one target row.
+
+The scheduler still reserves the maximum KV capacity. Reservation does not imply a padded target forward; it is a separate memory cost. Conversely, a smaller mask proves neither smaller GEMMs nor lower kernel time. GPU profiler shape evidence must establish projection/MLP rows and attention query lengths, then measure time. No such trace exists yet. Possible costs include eager kernel launches, CPU suffix lookup, cache synchronization and full-prefix mask construction. These can outweigh a reduction in target forwards on short or unpredictable continuations.
+
+## Evidence obtained locally
+
+Eight tests pass on Python 3.12.14 / Apple Silicon macOS. They cover local/global separation, FIFO eviction and request-ID reuse, adaptive proposal bounds/native tree integrity, 100 randomized oracle greedy generations, actual worker host shape contracts, output caps, non-ingestion of proposed tails and stop-truncated completion. The worker contract tests stub SGLang's target; they do not execute GPU sampling or KV movement.
+
+The saved CPU microbenchmark contains 12,800 draft lookups over synthetic periodic integer tokens. Median lookup time in this run is **4.25 microseconds**. This is a per-lookup measurement on a small artificial corpus and cannot establish target-model throughput, a paper timing comparison, or GPU speedup. Raw samples and platform information are in `results/cpu-profile.jsonl` and `results/cpu-profile-summary.json`.
+
+A Ubuntu 24.04 x86_64/Python 3.12 binary-wheel dependency resolution succeeds with 212 exact hashed packages. That checks package metadata consistency. PyTorch/FlashInfer/native-kernel binary compatibility, Rust build success and model startup remain unverified. A clean integration patch applies to the pinned SGLang source; syntax and local host tests pass.
+
+## GPU experiment contract
+
+Use Qwen2.5-7B-Instruct at the locked model revision on one H100 80GB, BF16, TP1, FlashInfer, page1, batch1. Every baseline disables graphs, overlap and radix prefix caching. This isolates the algorithm in a common eager configuration; it cannot characterize the fastest production SGLang configuration.
+
+The public Spec-Bench subset contains the first four prompts per category in original order: 52 questions across 13 categories. Freeze tokenizer IDs and baseline-derived second-turn refinement inputs. Measure independent requests, sequential initial/refinement pairs, and repeated identical prompts separately. Within a block, prior outputs become available causally; never seed the cache with future ground-truth answers. Warm kernel execution precedes a cache reset. NGRAM PROB uses 33 slots, breadth10 and trie depth64; suffix has a 33-slot capacity and adaptive actual width. Ablations remove the match-length bound or disable the global cache.
+
+Run exact token-ID checks before timings. Save five rotated-order trials, raw request timings/outputs, workload hash, resolved server settings, installed package versions and GPU state. Profile in separate runs so instrumentation synchronization does not contaminate timing results. Any output mismatch is a failure to investigate, even if text looks similar. Numerical differences between decode and verification shapes are a possible cause, not a reason to silently accept divergence.
+
+## Relationship to the original experiments
+
+The paper's single-GPU comparison uses Llama-3.1-8B-Instruct, batch one and H100; its end-to-end OpenHands experiment uses a different model and four-way tensor parallelism. This project uses Qwen2.5-7B-Instruct, SGLang and a small public Spec-Bench subset plus refinement. It does not have the proprietary AgenticSQL workload or reproduce a live SWE-Bench agent trajectory. See [the paper's evaluation methodology](https://arxiv.org/html/2411.04975v3#S4.SS1) for its setup.
+
+Current outcome: **performance behavior unresolved**, rather than positive or negative reproduction. Report independent/refinement/repetition results separately once measured. A gain restricted to repeated identical prompts would demonstrate an upper bound, not broad agentic workload value. No gain on open-ended prompts would be consistent with weak repetition; causality requires profiler evidence before attributing a slowdown to a particular systems cost.

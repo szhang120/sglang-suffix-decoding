@@ -1,0 +1,13 @@
+name: CPU cache and patch contracts
+on: [push, pull_request]
+jobs:
+  cpu:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: bash scripts/bootstrap.sh
+      - run: bash scripts/build_native.sh
+      - run: python -m compileall -q scripts sglang/python/sglang/srt/speculative/suffix_worker.py

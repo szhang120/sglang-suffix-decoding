@@ -1,0 +1,4 @@
+setuptools>=61
+setuptools-rust>=1.11
+setuptools-scm>=8
+wheel

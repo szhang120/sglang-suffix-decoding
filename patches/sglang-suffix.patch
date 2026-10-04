@@ -1,0 +1,292 @@
+diff --git a/python/sglang/srt/arg_groups/speculative_hook.py b/python/sglang/srt/arg_groups/speculative_hook.py
+index 539188b..79a4e83 100644
+--- a/python/sglang/srt/arg_groups/speculative_hook.py
++++ b/python/sglang/srt/arg_groups/speculative_hook.py
+@@ -1177,6 +1177,31 @@ def _handle_ngram(server_args: ServerArgs) -> None:
+             "Ngram speculative decoding only supports CUDA, CPU, or XPU devices."
+         )
+ 
++    if cfg.speculative_algorithm == "SUFFIX":
++        required = {
++            "disable_overlap_schedule": True,
++            "disable_decode_cuda_graph": True,
++            "disable_prefill_cuda_graph": True,
++            "max_running_requests": 1,
++            "tp_size": 1,
++            "pp_size": 1,
++            "page_size": 1,
++            "attention_backend": "flashinfer",
++            "speculative_ngram_max_bfs_breadth": 1,
++        }
++        for name, expected in required.items():
++            if getattr(resolved_view(server_args), name) != expected:
++                raise ValueError(f"SUFFIX requires {name}={expected}")
++        if cfg.device != "cuda" or cfg.speculative_adaptive:
++            raise ValueError("SUFFIX requires CUDA and its own suffix-length policy")
++        if cfg.speculative_ngram_external_corpus_path is not None:
++            raise ValueError("SUFFIX uses prior outputs, not external NGRAM corpora")
++        if (
++            cfg.speculative_num_draft_tokens is not None
++            and cfg.speculative_num_draft_tokens < 2
++        ):
++            raise ValueError("SUFFIX requires at least two verify slots")
++
+     _disable_overlap_schedule_for_cpu(server_args)
+ 
+     if cfg.max_running_requests is None:
+diff --git a/python/sglang/srt/managers/scheduler.py b/python/sglang/srt/managers/scheduler.py
+index a7d8bae..9106474 100644
+--- a/python/sglang/srt/managers/scheduler.py
++++ b/python/sglang/srt/managers/scheduler.py
+@@ -3329,6 +3329,8 @@ class Scheduler(
+     def _release_aborted_request(self, req: Req) -> None:
+         """Drop the cache-side state an aborted request left behind."""
+         self.tree_cache.finish(req.cache_request_handle, CacheRequestOutcome.ABORT)
++        if self.spec_algorithm.name == "SUFFIX":
++            self.draft_worker.discard_request(req.rid)
+ 
+     def _abort_on_queued_limit(self, recv_req: Req) -> bool:
+         """Abort an incoming or existing request if the waiting queue is full. Returns True if the incoming request is aborted."""
+diff --git a/python/sglang/srt/managers/scheduler_components/batch_result_processor.py b/python/sglang/srt/managers/scheduler_components/batch_result_processor.py
+index e0f922f..83a5823 100644
+--- a/python/sglang/srt/managers/scheduler_components/batch_result_processor.py
++++ b/python/sglang/srt/managers/scheduler_components/batch_result_processor.py
+@@ -370,6 +370,11 @@ class SchedulerBatchResultProcessor:
+                     ):
+                         req.kv.kv_committed_len += 1
+                     if req.finished():
++                        if batch.spec_algorithm.name == "SUFFIX":
++                            self.model_worker.note_request_finished(
++                                rid=req.rid,
++                                natural_stop=isinstance(req.finished_reason, FINISH_MATCHED_TOKEN),
++                            )
+                         if sampling_mask_finish_reason is None:
+                             self._maybe_collect_routed_experts(req)
+                             self._maybe_collect_indexer_topk(req)
+diff --git a/python/sglang/srt/speculative/ngram_worker.py b/python/sglang/srt/speculative/ngram_worker.py
+index c31157a..e9e16c2 100644
+--- a/python/sglang/srt/speculative/ngram_worker.py
++++ b/python/sglang/srt/speculative/ngram_worker.py
+@@ -118,16 +118,19 @@ class NGRAMWorker(BaseSpecWorker):
+         self._prev_decode_rids: set = set()
+         self.grammar_tree_host: Optional[tuple] = None
+ 
+-        self.ngram_corpus = NgramCorpus(
+-            min_bfs_breadth=get_spec().speculative_ngram_min_bfs_breadth,
+-            max_bfs_breadth=get_spec().speculative_ngram_max_bfs_breadth,
+-            match_type=get_spec().speculative_ngram_match_type,
+-            capacity=get_spec().speculative_ngram_capacity,
+-            max_trie_depth=get_spec().speculative_ngram_max_trie_depth,
+-            draft_token_num=get_spec().speculative_num_draft_tokens,
+-            external_sam_budget=get_spec().speculative_ngram_external_sam_budget,
+-            external_corpus_max_tokens=get_spec().speculative_ngram_external_corpus_max_tokens,
+-        )
++        if get_spec().speculative_algorithm == "SUFFIX":
++            self.ngram_corpus = None
++        else:
++            self.ngram_corpus = NgramCorpus(
++                min_bfs_breadth=get_spec().speculative_ngram_min_bfs_breadth,
++                max_bfs_breadth=get_spec().speculative_ngram_max_bfs_breadth,
++                match_type=get_spec().speculative_ngram_match_type,
++                capacity=get_spec().speculative_ngram_capacity,
++                max_trie_depth=get_spec().speculative_ngram_max_trie_depth,
++                draft_token_num=get_spec().speculative_num_draft_tokens,
++                external_sam_budget=get_spec().speculative_ngram_external_sam_budget,
++                external_corpus_max_tokens=get_spec().speculative_ngram_external_corpus_max_tokens,
++            )
+         if get_spec().speculative_ngram_external_corpus_path is not None:
+             from sglang.srt.speculative.cpp_ngram.external_corpus import (
+                 iter_external_corpus_chunks,
+diff --git a/python/sglang/srt/speculative/spec_info.py b/python/sglang/srt/speculative/spec_info.py
+index f72644a..4e37a88 100644
+--- a/python/sglang/srt/speculative/spec_info.py
++++ b/python/sglang/srt/speculative/spec_info.py
+@@ -44,6 +44,7 @@ class SpeculativeAlgorithm(Enum):
+     FROZEN_KV_MTP = auto()
+     STANDALONE = auto()
+     NGRAM = auto()
++    SUFFIX = auto()
+     NONE = auto()
+ 
+     @classmethod
+@@ -130,7 +131,7 @@ class SpeculativeAlgorithm(Enum):
+         return self == SpeculativeAlgorithm.STANDALONE
+ 
+     def is_ngram(self) -> bool:
+-        return self == SpeculativeAlgorithm.NGRAM
++        return self in (SpeculativeAlgorithm.NGRAM, SpeculativeAlgorithm.SUFFIX)
+ 
+     def supports_target_verify_for_draft(self) -> bool:
+         return self.is_dflash_family()
+@@ -353,6 +354,10 @@ class SpeculativeAlgorithm(Enum):
+             from sglang.srt.speculative.standalone_worker_v2 import StandaloneWorkerV2
+ 
+             return StandaloneWorkerV2
++        elif self == SpeculativeAlgorithm.SUFFIX:
++            from sglang.srt.speculative.suffix_worker import SuffixWorker
++
++            return SuffixWorker
+         elif self.is_ngram():
+             from sglang.srt.speculative.ngram_worker import NGRAMWorker
+ 
+diff --git a/python/sglang/srt/speculative/suffix_worker.py b/python/sglang/srt/speculative/suffix_worker.py
+new file mode 100644
+index 0000000..0ed85a0
+--- /dev/null
++++ b/python/sglang/srt/speculative/suffix_worker.py
+@@ -0,0 +1,155 @@
++"""Linear batch-one SuffixDecoding, using SGLang's NGRAM target verifier."""
++
++import json
++import os
++
++import numpy as np
++from sglang.srt.runtime_context import get_exec, get_spec
++from sglang.srt.speculative.ngram_worker import NGRAMWorker
++from suffix_native.cache import SuffixDecodingCache
++
++
++class SuffixWorker(NGRAMWorker):
++    def __init__(self, *args, **kwargs):
++        super().__init__(*args, **kwargs)
++        from sglang.srt.model_executor.cuda_graph_config import Backend
++
++        graphs = get_exec().graph.cuda_graph_config
++        if (
++            graphs.decode.backend != Backend.DISABLED
++            or graphs.prefill.backend != Backend.DISABLED
++        ):
++            raise ValueError("SUFFIX requires disabled prefill and decode CUDA graphs")
++        self.max_width = self.draft_token_num
++        self.suffix_cache = SuffixDecodingCache(
++            max_tree_depth=64,
++            max_cached_requests=int(os.environ.get("SUFFIX_CACHE_REQUESTS", "128")),
++        )
++        self.factor = float(os.environ.get("SUFFIX_FACTOR", "1.0"))
++        self.offset = float(os.environ.get("SUFFIX_OFFSET", "0.0"))
++        self.min_prob = float(os.environ.get("SUFFIX_MIN_PROB", "0.1"))
++        self.fixed = os.environ.get("SUFFIX_FIXED", "0") == "1"
++        self.requests = {}
++        self.seen = {}
++        self.prepared = None
++        self.trace = os.environ.get("SUFFIX_TRACE")
++
++    def clear_cache_pool(self):
++        self.suffix_cache = SuffixDecodingCache(
++            64, self.suffix_cache.max_cached_requests
++        )
++        self.requests.clear()
++        self.seen.clear()
++
++    def _sync_request(self, req):
++        rid = req.rid
++        if rid not in self.requests:
++            self.suffix_cache.start_request(rid, list(req.origin_input_ids))
++            self.requests[rid] = req
++            self.seen[rid] = 0
++        output = req.output_ids_through_stop
++        n = self.seen[rid]
++        if len(output) < n:
++            raise RuntimeError("Suffix cache cannot roll back committed output")
++        self.suffix_cache.add_active_response(rid, list(output[n:]))
++        self.seen[rid] = len(output)
++
++    def discard_request(self, rid):
++        if rid in self.requests:
++            self.suffix_cache.stop_request(rid)
++            if rid in self.suffix_cache.cached_requests:
++                self.suffix_cache.evict_cached_response(rid)
++            del self.requests[rid]
++            del self.seen[rid]
++
++    def note_request_finished(self, *, rid, natural_stop):
++        req = self.requests.get(rid)
++        if req is not None:
++            self._sync_request(req)
++            self.suffix_cache.stop_request(rid)
++            if not natural_stop:
++                # Length-limited outputs are useful too; aborts must not persist.
++                from sglang.srt.managers.schedule_batch import FINISH_ABORT
++
++                if isinstance(req.finished_reason, FINISH_ABORT):
++                    if rid in self.suffix_cache.cached_requests:
++                        self.suffix_cache.evict_cached_response(rid)
++            del self.requests[rid]
++            del self.seen[rid]
++
++    def _select_width(self, width):
++        # Reuse capacity-sized storage, with true width-sized views. No padded
++        # rows reach the target forward. Scheduler KV reservation stays maximal.
++        self.draft_token_num = self.speculative_num_draft_tokens = width
++        self.draft_tokens_batch[1] = self.draft_tokens[:width]
++        self.positions_batch[1] = self.positions[:width]
++        self.tree_mask_batch[1] = self.tree_mask[: width * width]
++        self.retrieve_indexes_batch[1] = self.retrieve_indexes[:1, :width]
++        self.retrieve_next_token_batch[1] = self.retrieve_next_token[:1, :width]
++        self.retrieve_next_sibling_batch[1] = self.retrieve_next_sibling[:1, :width]
++
++    def _prepare_draft_tokens(self, batch):
++        return self.prepared
++
++    def _update_ngram_corpus(self, batch):
++        # Only scheduler-committed output may enter either suffix tree. The
++        # next proposal (or completion hook) synchronizes req.output_ids.
++        pass
++
++    def forward_batch_generation(self, batch, on_publish=None, pp_proxy_tensors=None):
++        if len(batch.reqs) > 1:
++            raise ValueError("SUFFIX supports batch one only")
++        if batch.has_grammar or batch.return_logprob:
++            raise ValueError("SUFFIX initial scope excludes grammar/logprobs")
++        for req in batch.reqs:
++            self._sync_request(req)
++        width = self.max_width
++        match_len = 0
++        if batch.forward_mode.is_decode():
++            if not batch.sampling_info.is_all_greedy:
++                raise ValueError("SUFFIX requires greedy sampling")
++            req = batch.reqs[0]
++            context = self._efficient_concat_last_n(
++                list(req.origin_input_ids[-64:]), list(req.output_ids[-64:]), 64
++            )
++            if not req.output_ids:
++                raise RuntimeError("Decode requires a committed root token")
++            remaining = req.sampling_params.max_new_tokens - len(req.output_ids)
++            cap = max(0, min(self.max_width - 1, remaining - 1))
++            draft = self.suffix_cache.speculate(
++                req.rid,
++                context,
++                max_spec_tokens=cap,
++                max_spec_factor=1e6 if self.fixed else self.factor,
++                max_spec_offset=self.offset,
++                min_token_prob=self.min_prob,
++                use_tree_spec=False,
++            )
++            tokens = [context[-1]] + draft.token_ids
++            width = len(tokens)
++            match_len = draft.match_len
++            self.prepared = (
++                np.asarray(tokens, dtype=np.int64),
++                np.tril(np.ones((width, width), dtype=np.bool_)).flatten(),
++            )
++        self._select_width(width)
++        # Backend metadata and sampler must see the same active width. CUDA
++        # graphs are disabled by validation, so no capture can pad this shape.
++        with get_spec().override(speculative_num_draft_tokens=width):
++            result = super().forward_batch_generation(
++                batch, on_publish, pp_proxy_tensors
++            )
++        if self.trace and batch.forward_mode.is_decode():
++            with open(self.trace, "a") as f:
++                f.write(
++                    json.dumps(
++                        {
++                            "rid": batch.reqs[0].rid,
++                            "verify_rows": width,
++                            "match_len": match_len,
++                            "accepted_with_bonus": result.accept_lens.cpu().tolist(),
++                        }
++                    )
++                    + "\n"
++                )
++        return result

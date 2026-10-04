@@ -1,0 +1,7 @@
+{
+  "bindings.cc": "4fbc28596b4cdfa898e3341468fc6debed5a33bb4d9df37566907071ae60f41d",
+  "suffix_tree.cc": "cbd8b63b13fbf0beaab4e8736a54d52891b1aac959c5d292d083d88ed37dfc7c",
+  "suffix_tree.h": "d3c9a51fc57a974d680510bee8cfb1ba0a6f5ce6c582ed472cb5ef975b2f5aec",
+  "int32_map.h": "49fd3c8ffb900630f145958211d2e121a3347583ef4cf42910572ad2166e54ef",
+  "CMakeLists.txt": "d0ba0a52b33dc97466f3fe17a2f0207c7e6e3e2cf8b42409e99c3d12ecf13ff2"
+}
