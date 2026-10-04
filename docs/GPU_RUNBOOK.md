@@ -13,7 +13,16 @@ Use Modal CLI 1.6.1 in the isolated Mac environment `/tmp/sglang-modal-cli`. Tok
 /tmp/sglang-modal-cli/bin/modal run scripts/modal_runner.py --phase benchmark --run-id RUN_ID --trial 0
 ```
 
-For the current shared-attention candidate, run `public-gate` first (240 requests per mode). On success, use `audit-frozen` in the same run ID: it checks plain and instrumented 30-case equality, audits suffix KV, and copies the exact checked workload into the timing directory. It preserves the existing v11-generated refinement inputs; historical output IDs are not the new correctness reference or cache seeds. `benchmark` requires a passing full gate and the same workload hash, then checks every completed timed mode against the public ordinary reference before continuing. Use `public-probe --limit 8` only as a diagnostic subset.
+For the retained shared-attention candidate, the complete isolated suffix gate supplies the strict reference. Run the current campaign and queued follow-up with fresh IDs:
+
+```sh
+/tmp/sglang-modal-cli/bin/modal run --detach analysis/modal_final_campaign.py --run-id CAMPAIGN_ID
+/tmp/sglang-modal-cli/bin/modal run --detach analysis/modal_final_diagnostics.py --run-id DIAGNOSTIC_ID --reference-run CAMPAIGN_ID --wait-for-campaign
+```
+
+The follow-up waits with **no GPU**, validates all 6000 serving records, then starts one serialized diagnostic GPU function after the campaign completes. A failed campaign/report stops it before allocation. Natural traces, five separate profiles, six paired ordinary-route controls and 54 width probes follow. Its CPU analysis writes report hashes and never merges instrumented latencies into serving estimates. The controller and GPU statuses in the artifact volume are authoritative.
+
+The older `public-gate`/`audit-frozen`/`benchmark` phases require every NGRAM output to match and remain preserved for the original policy. They are not the launcher for the current explicitly disclosed descriptive-NGRAM policy. The frozen refinement inputs are retained; historical output IDs are provenance, never the new reference or cache seeds.
 
 Use `modal run --detach` for long allocations. The remote status in the artifact volume is authoritative if the local CLI disconnects. `analysis/modal_campaign.py` now recovers remote completion statuses and detaches each serialized phase. An interrupted status is failure; inspect the existing app before allocating another GPU. The current `analysis/modal_final_campaign.py` runs the entire sequence inside one detached remote function with a 12-hour operational timeout and no automatic retries. It records source hashes, the passed isolated suffix gate, the branch replay, direct KV assertions and progress after every mode. The older all-mode-exact controller is retained as historical code and is not used for this campaign.
 
@@ -101,6 +110,6 @@ multiple anchors into a tree, so it must not be described as a linear proposer.
 General tree tensor alignment requires actual masks; logical positions alone
 do not identify each query's ancestors.
 
-After the serving campaign has completed, use phase `natural-trace` in a fresh run ID for each of `suffix`, `suffix-fixed`, and `suffix-local`, passing `--variant VARIANT --reference-run VALIDATED_RUN`. These full public-workload runs enable per-round traces and are excluded from timings. Download each result tree and run `analysis/natural_trace_report.py`; it clips terminal discarded tails and uses actual proposal counts.
+`analysis/modal_final_diagnostics.py` collects all three complete 240-request natural traces after successful strict serving comparisons. Its directories are `results/natural-trace/VARIANT/results/`; `analysis/natural_trace_report.py` clips terminal discarded tails and uses actual proposals. Every traced suffix output must match the campaign's ordinary reference. The original `natural-trace` phase retains its all-mode-exact guard and is not silently bypassed.
 
 `analysis/modal_decode_control.py` performs six paired ordinary-decode trials, balancing shared/original route order. The two writing prompts were selected because their output IDs match in the prior eight-prompt diagnostic; this is a narrow baseline-cost control. Pass a fresh `--run-id`, `--reference-status` pointing to the validated source fingerprints, and `SUFFIX_MODAL_PREBUILT_IMAGE`. It owns one H100 and must run after other GPU work. `analysis/decode_control_report.py` checks all 24 outputs and reports shared/original latency ratios. Finally repeat `width-probe` in a fresh run ID to profile the final candidate.

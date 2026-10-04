@@ -47,6 +47,8 @@ PY
 
 The intended scope is one greedy request, one CUDA GPU, dense Qwen, eager execution and the common deterministic Triton/FP32-head configuration. Unsupported batching, graphs, overlap, sampling/history penalties and grammar/logprob requests are rejected. This is a research adaptation with bounded caches, not a general production speculator.
 
+The [independent attribution audit](https://github.com/szhang120/sglang-suffix-decoding/releases/tag/v0.2.0-attribution-audit) publishes selected operator tensors, exact branch Q/K/V and masks, source snapshots and per-file hashes. Earlier failures and the superseded trace analysis remain available.
+
 ## Sources and licensing
 
 [Paper v3](https://arxiv.org/abs/2411.04975v3), [ArcticInference](https://github.com/snowflakedb/ArcticInference), [SGLang](https://github.com/sgl-project/sglang), and [Spec-Bench](https://github.com/hemingkx/Spec-Bench). Apache-2.0 source notices are retained; see [third-party provenance](THIRD_PARTY.md). This is an adapted SGLang reproduction project, with no dependency on upstream PR acceptance. Final serving results remain pending.
