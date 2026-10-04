@@ -1,0 +1,207 @@
+{
+  "archive": "invalid-benchmark-v11.tar.gz",
+  "bytes": 1747428,
+  "sha256": "95d1dc9d5a463ef7bfb830abc2b1648c89db1a3eaafd3974589229893751a565",
+  "files": {
+    "invalid-benchmark/ngram-0/environment.json": {
+      "bytes": 20622,
+      "sha256": "d65b5d45004661f28885ec1bcb582abc0669914dabfa468dccd85e67894b43ae"
+    },
+    "invalid-benchmark/ngram-0/requests.jsonl": {
+      "bytes": 1998884,
+      "sha256": "6f994adefd2090612a81a39528be29a2d52220413efa5bbadca2f86ff7e43458"
+    },
+    "invalid-benchmark/ngram-0/server-info.json": {
+      "bytes": 45408,
+      "sha256": "0c568407e9366f15185b1e7c7720494624d528df0ee2929763372d990dbc48b4"
+    },
+    "invalid-benchmark/ordinary-0/environment.json": {
+      "bytes": 20413,
+      "sha256": "ea66662af6000bbecd14a32f240cf76d441dd7c2ea2c929ed512102f227a4655"
+    },
+    "invalid-benchmark/ordinary-0/requests.jsonl": {
+      "bytes": 2794815,
+      "sha256": "ec0adbad897cda74f3163712f39a774a26e3c01137affbb77623e91c5a2328a7"
+    },
+    "invalid-benchmark/ordinary-0/server-info.json": {
+      "bytes": 44822,
+      "sha256": "2b03e1c579be7f7878cb09890579c5599bc551ed554b3ef189e9dd744dede06c"
+    },
+    "invalid-benchmark/suffix-0/environment.json": {
+      "bytes": 20622,
+      "sha256": "6a8edcb091e4c0fcd6ba05f17b81f44cf83b16b32ebe36658cb57a0bb7f2af6b"
+    },
+    "invalid-benchmark/suffix-0/requests.jsonl": {
+      "bytes": 305908,
+      "sha256": "579951808acf4c403eb0d4c835f2e761e05700bf6df404aa3e85244534b6a66a"
+    },
+    "invalid-benchmark/suffix-0/server-info.json": {
+      "bytes": 45405,
+      "sha256": "2eccbe500f022c54656a2fdacfcacecee4e386b369d036943095cf7ec87e1374"
+    },
+    "sources/configs/SPECBENCH_LICENSE": {
+      "bytes": 11324,
+      "sha256": "50e6751797c50dedd75ef1b8a0d9e42f5f8472e9fbce91f34718e9f97b0c780a"
+    },
+    "sources/configs/build-requirements.in": {
+      "bytes": 61,
+      "sha256": "e643dcff03e023380b724b6b9793d00eb0d5218443f130072d8f8735c84aa359"
+    },
+    "sources/configs/cpu-requirements.txt": {
+      "bytes": 43,
+      "sha256": "b813a3a58923773beedaac94fbb9bc4b93e8306f800736b43d57727549e4bfe0"
+    },
+    "sources/configs/gpu-overrides.in": {
+      "bytes": 252,
+      "sha256": "dcb6befb2170ca7d13f508df2550d8be7e6f481ba5c210ce46bf9c6a7d9a008d"
+    },
+    "sources/configs/gpu-requirements.lock": {
+      "bytes": 396006,
+      "sha256": "c0a19671efe44499b964370a3932dcb1d6abca143c0fbf7f1fd65f0e44f85510"
+    },
+    "sources/configs/source-lock.json": {
+      "bytes": 2568,
+      "sha256": "9b113fa3a8b629e7e1026cbcbe0cf075cbed967900024e70e89ea0c4a4cab9e0"
+    },
+    "sources/configs/specbench-subset.jsonl": {
+      "bytes": 51420,
+      "sha256": "879b79ac29c4165890b82295748aa70b6a37b4149daf2f000d87b333e7f76655"
+    },
+    "sources/native/CMakeLists.txt": {
+      "bytes": 1451,
+      "sha256": "d0ba0a52b33dc97466f3fe17a2f0207c7e6e3e2cf8b42409e99c3d12ecf13ff2"
+    },
+    "sources/native/LICENSE": {
+      "bytes": 11357,
+      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+    },
+    "sources/native/UPSTREAM_SHA256.json": {
+      "bytes": 436,
+      "sha256": "c6bd054dc48baede9686a51fb4ef7b62243b6080d56d5a95c4929371a09c3aac"
+    },
+    "sources/native/bindings.cc": {
+      "bytes": 3447,
+      "sha256": "4fbc28596b4cdfa898e3341468fc6debed5a33bb4d9df37566907071ae60f41d"
+    },
+    "sources/native/int32_map.h": {
+      "bytes": 13285,
+      "sha256": "49fd3c8ffb900630f145958211d2e121a3347583ef4cf42910572ad2166e54ef"
+    },
+    "sources/native/suffix_native/__init__.py": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "sources/native/suffix_native/cache.py": {
+      "bytes": 14642,
+      "sha256": "a328505f80512b9b4f72af40237285a4ba74e72bae47f8a6179d12bc2664bab2"
+    },
+    "sources/native/suffix_tree.cc": {
+      "bytes": 38874,
+      "sha256": "cbd8b63b13fbf0beaab4e8736a54d52891b1aac959c5d292d083d88ed37dfc7c"
+    },
+    "sources/native/suffix_tree.h": {
+      "bytes": 5867,
+      "sha256": "d3c9a51fc57a974d680510bee8cfb1ba0a6f5ce6c582ed472cb5ef975b2f5aec"
+    },
+    "sources/patches/sglang-suffix.patch": {
+      "bytes": 22659,
+      "sha256": "2691fc4d9a04a4c6ad3d0dc77af9d3eef8ad08ac4fe4052be6dd8a697a9b8df9"
+    },
+    "sources/scripts/analyze_audit.py": {
+      "bytes": 2624,
+      "sha256": "9f793ec5e5fc7ea24b5e7cd65ab54ad856523231481b06a2a7b912a513f6f960"
+    },
+    "sources/scripts/analyze_gpu.py": {
+      "bytes": 4132,
+      "sha256": "c5809e0aed4eb2af028eb6aed5357d23548cff19a3a0ec63a2ceeb9a411ce37c"
+    },
+    "sources/scripts/analyze_width_probe.py": {
+      "bytes": 5892,
+      "sha256": "3dd0fcf5785e766f89d7af1f31fa49f336540ef42b669e8fcc2188465b723b21"
+    },
+    "sources/scripts/bootstrap.sh": {
+      "bytes": 1273,
+      "sha256": "ce220aa7fc3c00da5a4200868410737f9fa72ebe3000b4c62fe59b805b0b6a74"
+    },
+    "sources/scripts/build_native.sh": {
+      "bytes": 476,
+      "sha256": "c0b04d542d63de4b39662170dde5c1fbee62f6230a14ef4d963c4e4b5f994cd4"
+    },
+    "sources/scripts/cpu_profile.py": {
+      "bytes": 1583,
+      "sha256": "e3b4494653c30482eafe02feb1d50f2a4e283ba649583091e32c8219b30c462b"
+    },
+    "sources/scripts/export_patch.py": {
+      "bytes": 1018,
+      "sha256": "55bd30b3a48c89fc74dfc5995fa9134a2b23574f5420551af2b5f20a8d967796"
+    },
+    "sources/scripts/gpu_bench.py": {
+      "bytes": 7031,
+      "sha256": "44ebf37f0818c6acd1c11c3df4971b1ed79ede33136826b02c473c990ea5662a"
+    },
+    "sources/scripts/gpu_common.py": {
+      "bytes": 1228,
+      "sha256": "413e4a836e4905b2938207b446db44825cd70726924400ad5294e70d4cdab2c6"
+    },
+    "sources/scripts/gpu_correctness.py": {
+      "bytes": 3474,
+      "sha256": "8d1896621493fbd7f646d28eb5d9b764999659d7484ec1343030e672879776a9"
+    },
+    "sources/scripts/gpu_setup.sh": {
+      "bytes": 731,
+      "sha256": "642c0868afc6a2e609b803132d6dada10e0f6dd445382c8a674b6401a670618c"
+    },
+    "sources/scripts/gpu_width_probe.py": {
+      "bytes": 4331,
+      "sha256": "3e252e32ba8dd6239473eaf65aea4f21cbd8be904367fba392c4d366e08cec3a"
+    },
+    "sources/scripts/materialize_workload.py": {
+      "bytes": 3031,
+      "sha256": "c8e8ad18295b15464482cecde48e97449a0219667fbec0a11f717d3eb89887ff"
+    },
+    "sources/scripts/run_gpu.sh": {
+      "bytes": 1011,
+      "sha256": "e547c3f0b09905663749d1d694ab23fe9390e60301d1085b2153dde5d9643bbd"
+    },
+    "sources/sglang/python/sglang/srt/arg_groups/speculative_hook.py": {
+      "bytes": 53089,
+      "sha256": "90703640af00d21267b971508d1850b092da06fe7436446454323a37e389a2c2"
+    },
+    "sources/sglang/python/sglang/srt/batch_invariant_ops/batch_invariant_ops.py": {
+      "bytes": 35530,
+      "sha256": "a1ea29333689cbe6082c697a6bb07d9b8f28bbb3f5b4f2b9062a41115498f980"
+    },
+    "sources/sglang/python/sglang/srt/managers/scheduler.py": {
+      "bytes": 268906,
+      "sha256": "993a5bbcbe009a5a7d4f2d7081fe5f20dc4bbf5ffaa581697bfacb9d6445925e"
+    },
+    "sources/sglang/python/sglang/srt/managers/scheduler_components/batch_result_processor.py": {
+      "bytes": 65277,
+      "sha256": "a1d37b80fd6ee44f82dfcbaaf79a6438ba258cbc1d39bc676186e63058e47f77"
+    },
+    "sources/sglang/python/sglang/srt/speculative/ngram_worker.py": {
+      "bytes": 24111,
+      "sha256": "78d5af5bc4848cb5a2cccaafb83879e220327f41277dfc47fcb06170251cdb23"
+    },
+    "sources/sglang/python/sglang/srt/speculative/spec_info.py": {
+      "bytes": 19880,
+      "sha256": "7e6dfe542318a892a77315b7add0cfab3cbb964d19b861766972aac9ab5af016"
+    },
+    "sources/sglang/python/sglang/srt/speculative/suffix_worker.py": {
+      "bytes": 12556,
+      "sha256": "aca5d822b984d5f6d243cf35795e29b627e492baa164e46ef9b3c7a265f0db89"
+    },
+    "sources/source-sha256.json": {
+      "bytes": 4155,
+      "sha256": "e29caadf1359439774354371836ab749ee0817a5523627f524ea50d6ea93af38"
+    },
+    "sources/tests/test_cache.py": {
+      "bytes": 3413,
+      "sha256": "677aa77c7ba3424e58b4d501955c9361fcdc314031329ec3d70d188e222a251d"
+    },
+    "sources/tests/test_worker_contract.py": {
+      "bytes": 7240,
+      "sha256": "c4cbddabe50e36ced186469cfb50766cd20f5d6aa498d47fa01e2e83f43443bc"
+    }
+  }
+}

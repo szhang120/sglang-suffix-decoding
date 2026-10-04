@@ -1,6 +1,6 @@
 # SuffixDecoding in SGLang
 
-A reproducible **linear, greedy, batch-one** implementation using the author CPU suffix tree and SGLang target verification. **The initial GPU correctness gate passes; serving benchmarks are in progress.** Modal executes Qwen on one H100, with 30 exact-ID cases and 416 verification/KV checks. Controlled-width profiling establishes some saved GPU work and substantial internal tile padding. Earlier numerical divergences and diagnostic failures are retained. No serving speedup is claimed.
+A reproducible **linear, greedy, batch-one** implementation using the author CPU suffix tree and SGLang target verification. **The initial 30-case GPU gate passes, but the broader public-workload equality check fails.** Modal executes Qwen on one H100, with 30 exact-ID cases and 416 verification/KV checks. Controlled-width profiling establishes some saved GPU work and substantial internal tile padding. Earlier numerical divergences and diagnostic failures are retained. No serving speedup is claimed. NGRAM differs on 123/240 public requests; the interrupted suffix run differs on 13/28 completed requests. Timing trials are stopped while common target execution is investigated.
 
 - [Project plan](PROJECT_PLAN.md): code-grounded design, invariants, milestones and 0–100 decision scores.
 - [Technical report](docs/TECHNICAL_REPORT.md): inference/KV reasoning, local evidence and limits.

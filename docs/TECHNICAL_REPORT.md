@@ -1,6 +1,6 @@
 # A linear SuffixDecoding adaptation for SGLang
 
-**Status: GPU correctness and controlled-width profiling pass; serving benchmark trials are running.** No serving speedup or reproduction of the paper’s headline performance is established yet. SGLang executes Qwen2.5-7B-Instruct on one H100 80GB. All failed configurations remain available alongside the passing configuration.
+**Status: the initial GPU gate and width profiles pass; the broader public-workload equality gate fails.** No serving speedup or reproduction of the paper’s headline performance is established yet. SGLang executes Qwen2.5-7B-Instruct on one H100 80GB. All failed configurations remain available alongside the passing configuration.
 
 ## Algorithm and integration
 
@@ -42,7 +42,7 @@ Earlier failures informed the final settings rather than being discarded:
 | Triton with native BF16 logits | 24/30 | 24/30 | Often near ties; unsuitable for the exact-ID gate. |
 | Triton/FP32, preserved weight strides | 30/30 | 30/30 | Final configuration also passes without audit instrumentation. |
 
-One new KV diagnostic initially indexed an extra layer and failed before suffix generation. That was our diagnostic error; it was corrected and the failed run preserved. Logit margins and passing acceptance/KV assertions narrow the earlier investigation, but do not identify every kernel responsible for the numerical differences. The project therefore makes no blanket attribution to SGLang or to harmless rounding. Public-workload token equality remains an additional gate before performance aggregation.
+One new KV diagnostic initially indexed an extra layer and failed before suffix generation. That was our diagnostic error; it was corrected and the failed run preserved. Logit margins and passing acceptance/KV assertions narrow the earlier investigation, but do not identify every kernel responsible for the numerical differences. The project therefore makes no blanket attribution to SGLang or to harmless rounding. The broader public gate exposed a substantial limitation: NGRAM differs from ordinary on 123/240 requests (27 independent, 43 refinement, 53 repetition). The interrupted suffix run differs on 13/28 completed requests. Ordinary initial outputs reproduce the frozen baseline. Timing trials and their controller were stopped; these raw times cannot establish an exact-output performance comparison. Both speculators failing broader prompts makes the shared target execution path a concrete investigation target. Ordinary Triton decode uses a different attention kernel from deterministic target verification; a shared-kernel experiment is planned, without asserting that this is the entire cause.
 
 ## Do adaptive widths reduce GPU work?
 

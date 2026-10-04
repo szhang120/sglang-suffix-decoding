@@ -24,4 +24,4 @@ MPLCONFIGDIR=/tmp/suffix-matplotlib python analysis/plot_results.py
 
 `modal/` and `setup/` retain earlier attempts, failures and diagnostic logs. A phase status can fail after successful GPU execution if its subsequent analysis failed. The initial width study had that outcome; its corrected local analysis is retained. The ambiguous single file `modal/modal-20261004-v2/raw` resulted from an incorrectly specified recursive download destination and is not a complete artifact collection. Explicit per-mode correctness files in that directory are authoritative.
 
-`local-verification.json` records the current verification status. CPU microbenchmarks use synthetic integer sequences and establish no model speedup. No serving benchmark conclusion is available yet.
+`local-verification.json` records the current verification status. CPU microbenchmarks use synthetic integer sequences and establish no model speedup. The first serving trial failed the broader equality gate: see `invalid-benchmark-v11/equality-failure.json`. Completed ordinary/NGRAM records and 28 partial suffix records are preserved; no comparative speedup is valid from that attempt.

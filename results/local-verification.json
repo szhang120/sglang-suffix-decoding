@@ -145,5 +145,31 @@
     "commit": "3b81de986a863df0a88d51c2c7e251f481ece753",
     "ubuntu_24_04": "passed",
     "macos_14": "passed"
-  }
+  },
+  "initial_gpu_correctness_passed": true,
+  "public_workload_correctness_passed": false,
+  "public_workload_attempts": [
+    {
+      "run_id": "modal-20261004-v11",
+      "counts": {
+        "ngram": {
+          "completed_requests": 240,
+          "mismatched_requests": 123,
+          "by_block": {
+            "independent": 27,
+            "refinement": 43,
+            "repeat": 53
+          }
+        },
+        "suffix": {
+          "completed_requests": 28,
+          "mismatched_requests": 13,
+          "by_block": {
+            "independent": 13
+          }
+        }
+      },
+      "status": "Stopped before ablations and remaining trials"
+    }
+  ]
 }

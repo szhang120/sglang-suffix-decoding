@@ -1,0 +1,3812 @@
+{
+  "run_id": "modal-20261004-v11",
+  "status": "Stopped before further trials; timings are not an exact-output comparison",
+  "counts": {
+    "ngram": {
+      "completed_requests": 240,
+      "mismatched_requests": 123,
+      "by_block": {
+        "independent": 27,
+        "refinement": 43,
+        "repeat": 53
+      }
+    },
+    "suffix": {
+      "completed_requests": 28,
+      "mismatched_requests": 13,
+      "by_block": {
+        "independent": 13
+      }
+    }
+  },
+  "mismatches": [
+    {
+      "mode": "ngram",
+      "block": "independent",
+      "index": 2,
+      "question_id": 83,
+      "category": "writing",
+      "first_difference": 189,
+      "ordinary_ids": [
+        16928,
+        624,
+        256,
+        481,
+        23208,
+        4419,
+        1075,
+        46419
+      ],
+      "mode_ids": [
+        323,
+        6032,
+        23375,
+        4763,
+        624,
+        256,
+        481,
+        23208
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "independent",
+      "index": 3,
+      "question_id": 84,
+      "category": "writing",
+      "first_difference": 22,
+      "ordinary_ids": [
+        2551,
+        13719,
+        498,
+        1632,
+        13,
+        358,
+        3982,
+        1012
+      ],
+      "mode_ids": [
+        1943,
+        13719,
+        498,
+        1632,
+        13,
+        358,
+        3982,
+        1012
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "independent",
+      "index": 4,
+      "question_id": 91,
+      "category": "roleplay",
+      "first_difference": 98,
+      "ordinary_ids": [
+        7039,
+        11,
+        1077,
+        594,
+        1744,
+        911,
+        279,
+        1293
+      ],
+      "mode_ids": [
+        785,
+        1293,
+        9663,
+        5795,
+        374,
+        311,
+        5695,
+        264
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "independent",
+      "index": 5,
+      "question_id": 92,
+      "category": "roleplay",
+      "first_difference": 8,
+      "ordinary_ids": [
+        52915,
+        13,
+        2379,
+        525,
+        537,
+        1172,
+        63381,
+        714
+      ],
+      "mode_ids": [
+        5310,
+        979,
+        7707,
+        311,
+        279,
+        63443,
+        323,
+        15024
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "independent",
+      "index": 6,
+      "question_id": 93,
+      "category": "roleplay",
+      "first_difference": 79,
+      "ordinary_ids": [
+        26977,
+        5267,
+        256,
+        481,
+        12553,
+        279,
+        6646,
+        2525
+      ],
+      "mode_ids": [
+        6783,
+        77731,
+        5267,
+        256,
+        481,
+        12553,
+        279,
+        6646
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "independent",
+      "index": 7,
+      "question_id": 94,
+      "category": "roleplay",
+      "first_difference": 233,
+      "ordinary_ids": [
+        2513,
+        13,
+        34006,
+        24392,
+        6001,
+        4714,
+        979,
+        2987
+      ],
+      "mode_ids": [
+        4714,
+        13,
+        34006,
+        24392,
+        6001,
+        12850,
+        979,
+        2987
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "independent",
+      "index": 9,
+      "question_id": 102,
+      "category": "reasoning",
+      "first_difference": 23,
+      "ordinary_ids": [
+        279,
+        7482,
+        13,
+        576,
+        5807,
+        4678,
+        374,
+        264
+      ],
+      "mode_ids": [
+        7482,
+        13,
+        576,
+        5807,
+        4678,
+        374,
+        264,
+        1632
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "independent",
+      "index": 10,
+      "question_id": 103,
+      "category": "reasoning",
+      "first_difference": 45,
+      "ordinary_ids": [
+        21051,
+        311,
+        279,
+        8777,
+        13,
+        4220,
+        21051,
+        1410
+      ],
+      "mode_ids": [
+        8777,
+        21051,
+        13,
+        4220,
+        21051,
+        1410,
+        387,
+        369
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "independent",
+      "index": 13,
+      "question_id": 112,
+      "category": "math",
+      "first_difference": 26,
+      "ordinary_ids": [
+        3311,
+        27991,
+        304,
+        279,
+        1156,
+        1042,
+        624,
+        17
+      ],
+      "mode_ids": [
+        9162,
+        304,
+        279,
+        1156,
+        1042,
+        25,
+        400,
+        23
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "independent",
+      "index": 15,
+      "question_id": 114,
+      "category": "math",
+      "first_difference": 138,
+      "ordinary_ids": [
+        510,
+        256,
+        1124,
+        9640,
+        256,
+        320,
+        16,
+        11
+      ],
+      "mode_ids": [
+        382,
+        18,
+        13,
+        3070,
+        47866,
+        279,
+        1372,
+        315
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "independent",
+      "index": 16,
+      "question_id": 121,
+      "category": "coding",
+      "first_difference": 234,
+      "ordinary_ids": [
+        1089,
+        18981,
+        36289,
+        11,
+        308,
+        28,
+        20,
+        982
+      ],
+      "mode_ids": [
+        62,
+        20,
+        18981,
+        38608,
+        982,
+        262,
+        3190,
+        262
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "independent",
+      "index": 18,
+      "question_id": 123,
+      "category": "coding",
+      "first_difference": 219,
+      "ordinary_ids": [
+        619,
+        4740,
+        522,
+        2159,
+        1339,
+        262,
+        366,
+        2282
+      ],
+      "mode_ids": [
+        10612,
+        619,
+        4740,
+        522,
+        2159,
+        1339,
+        262,
+        366
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "independent",
+      "index": 24,
+      "question_id": 141,
+      "category": "stem",
+      "first_difference": 235,
+      "ordinary_ids": [
+        279,
+        2266,
+        315,
+        1197,
+        524,
+        986,
+        11,
+        2256
+      ],
+      "mode_ids": [
+        2097,
+        11,
+        1197,
+        524,
+        986,
+        646,
+        387,
+        3884
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "independent",
+      "index": 25,
+      "question_id": 142,
+      "category": "stem",
+      "first_difference": 28,
+      "ordinary_ids": [
+        20668,
+        594,
+        6872,
+        315,
+        11379,
+        323,
+        279,
+        28611
+      ],
+      "mode_ids": [
+        279,
+        28611,
+        315,
+        20314,
+        23270,
+        323,
+        279,
+        5025
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "independent",
+      "index": 28,
+      "question_id": 151,
+      "category": "humanities",
+      "first_difference": 184,
+      "ordinary_ids": [
+        525,
+        3545,
+        39546,
+        48293,
+        13,
+        1634,
+        279,
+        8584
+      ],
+      "mode_ids": [
+        3545,
+        3271,
+        304,
+        279,
+        1852,
+        5106,
+        13,
+        1634
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "independent",
+      "index": 29,
+      "question_id": 152,
+      "category": "humanities",
+      "first_difference": 97,
+      "ordinary_ids": [
+        13482,
+        11,
+        32930,
+        1616,
+        13,
+        2379,
+        1231,
+        537
+      ],
+      "mode_ids": [
+        32930,
+        11566,
+        13,
+        2379,
+        1231,
+        537,
+        7225,
+        33377
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "independent",
+      "index": 30,
+      "question_id": 153,
+      "category": "humanities",
+      "first_difference": 14,
+      "ordinary_ids": [
+        74153,
+        550,
+        323,
+        1008,
+        7147,
+        12,
+        92399,
+        12378
+      ],
+      "mode_ids": [
+        7147,
+        12,
+        92399,
+        12378,
+        323,
+        74153,
+        4532,
+        7709
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "independent",
+      "index": 31,
+      "question_id": 154,
+      "category": "humanities",
+      "first_difference": 61,
+      "ordinary_ids": [
+        7361,
+        11,
+        18379,
+        862,
+        5726,
+        311,
+        35581,
+        551
+      ],
+      "mode_ids": [
+        11,
+        47351,
+        11,
+        323,
+        10535,
+        7361,
+        1526,
+        3476
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "independent",
+      "index": 34,
+      "question_id": 163,
+      "category": "translation",
+      "first_difference": 1,
+      "ordinary_ids": [
+        24999,
+        10895,
+        311,
+        82340,
+        2143,
+        98918,
+        594,
+        38348
+      ],
+      "mode_ids": [
+        51396,
+        10895,
+        311,
+        279,
+        38348,
+        47826,
+        311,
+        5358
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "independent",
+      "index": 39,
+      "question_id": 244,
+      "category": "summarization",
+      "first_difference": 61,
+      "ordinary_ids": [
+        264,
+        3746,
+        10815,
+        448,
+        1435,
+        13,
+        730,
+        757
+      ],
+      "mode_ids": [
+        458,
+        53582,
+        49156,
+        10815,
+        448,
+        1435,
+        13,
+        730
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "independent",
+      "index": 41,
+      "question_id": 322,
+      "category": "qa",
+      "first_difference": 35,
+      "ordinary_ids": [
+        17,
+        15,
+        11,
+        220,
+        17,
+        15,
+        16,
+        20
+      ],
+      "mode_ids": [
+        16,
+        11,
+        220,
+        17,
+        15,
+        16,
+        20,
+        13
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "independent",
+      "index": 43,
+      "question_id": 324,
+      "category": "qa",
+      "first_difference": 22,
+      "ordinary_ids": [
+        825,
+        374,
+        1863,
+        39129,
+        11,
+        879,
+        374,
+        264
+      ],
+      "mode_ids": [
+        11958,
+        374,
+        1863,
+        39129,
+        11,
+        879,
+        374,
+        279
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "independent",
+      "index": 46,
+      "question_id": 403,
+      "category": "math_reasoning",
+      "first_difference": 8,
+      "ordinary_ids": [
+        1973,
+        11,
+        582,
+        1184,
+        311,
+        1795,
+        1493,
+        7354
+      ],
+      "mode_ids": [
+        11497,
+        1973,
+        11,
+        582,
+        1184,
+        311,
+        1795,
+        1493
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "independent",
+      "index": 47,
+      "question_id": 404,
+      "category": "math_reasoning",
+      "first_difference": 52,
+      "ordinary_ids": [
+        92076,
+        518,
+        6022,
+        25,
+        1019,
+        256,
+        11387,
+        521
+      ],
+      "mode_ids": [
+        78410,
+        518,
+        6022,
+        25,
+        1019,
+        256,
+        481,
+        11387
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "independent",
+      "index": 48,
+      "question_id": 481,
+      "category": "rag",
+      "first_difference": 52,
+      "ordinary_ids": [
+        7565,
+        369,
+        8086,
+        11,
+        14549,
+        11,
+        5567,
+        11
+      ],
+      "mode_ids": [
+        1483,
+        369,
+        8086,
+        11,
+        14549,
+        11,
+        5567,
+        11
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "independent",
+      "index": 49,
+      "question_id": 482,
+      "category": "rag",
+      "first_difference": 78,
+      "ordinary_ids": [
+        576,
+        10861,
+        61992,
+        320,
+        16,
+        24,
+        21,
+        18
+      ],
+      "mode_ids": [
+        28708,
+        12066,
+        20607,
+        320,
+        16,
+        24,
+        21,
+        20
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "independent",
+      "index": 51,
+      "question_id": 484,
+      "category": "rag",
+      "first_difference": 52,
+      "ordinary_ids": [
+        1948,
+        350,
+        10965,
+        263,
+        323,
+        83520,
+        13,
+        1096
+      ],
+      "mode_ids": [
+        13,
+        1096,
+        5666,
+        19469,
+        311,
+        1787,
+        264,
+        2086
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "refinement",
+      "index": 1,
+      "question_id": 81,
+      "category": "writing",
+      "first_difference": 150,
+      "ordinary_ids": [
+        311,
+        279,
+        467,
+        2143,
+        16022,
+        11278,
+        3362,
+        328
+      ],
+      "mode_ids": [
+        1526,
+        279,
+        57267,
+        11174,
+        1324,
+        36279,
+        315,
+        27521
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "refinement",
+      "index": 3,
+      "question_id": 82,
+      "category": "writing",
+      "first_difference": 63,
+      "ordinary_ids": [
+        16800,
+        624,
+        18,
+        13,
+        3070,
+        47514,
+        50882,
+        95518
+      ],
+      "mode_ids": [
+        2487,
+        429,
+        14230,
+        279,
+        1376,
+        3501,
+        624,
+        18
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "refinement",
+      "index": 4,
+      "question_id": 83,
+      "category": "writing",
+      "first_difference": 189,
+      "ordinary_ids": [
+        16928,
+        624,
+        256,
+        481,
+        23208,
+        4419,
+        1075,
+        46419
+      ],
+      "mode_ids": [
+        323,
+        6032,
+        23375,
+        4763,
+        624,
+        256,
+        481,
+        23208
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "refinement",
+      "index": 6,
+      "question_id": 84,
+      "category": "writing",
+      "first_difference": 22,
+      "ordinary_ids": [
+        2551,
+        13719,
+        498,
+        1632,
+        13,
+        358,
+        3982,
+        1012
+      ],
+      "mode_ids": [
+        1943,
+        13719,
+        498,
+        1632,
+        13,
+        358,
+        3982,
+        1012
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "refinement",
+      "index": 7,
+      "question_id": 84,
+      "category": "writing",
+      "first_difference": 182,
+      "ordinary_ids": [
+        2090,
+        315,
+        279,
+        15494,
+        382,
+        334,
+        4286,
+        287
+      ],
+      "mode_ids": [
+        505,
+        94419,
+        315,
+        279,
+        15494,
+        382,
+        334,
+        4286
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "refinement",
+      "index": 8,
+      "question_id": 91,
+      "category": "roleplay",
+      "first_difference": 98,
+      "ordinary_ids": [
+        7039,
+        11,
+        1077,
+        594,
+        1744,
+        911,
+        279,
+        1293
+      ],
+      "mode_ids": [
+        785,
+        1293,
+        9663,
+        5795,
+        374,
+        311,
+        5695,
+        264
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "refinement",
+      "index": 9,
+      "question_id": 91,
+      "category": "roleplay",
+      "first_difference": 41,
+      "ordinary_ids": [
+        10414,
+        389,
+        1246,
+        311,
+        633,
+        3855,
+        323,
+        7196
+      ],
+      "mode_ids": [
+        27454,
+        389,
+        1246,
+        311,
+        633,
+        3855,
+        323,
+        7196
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "refinement",
+      "index": 10,
+      "question_id": 92,
+      "category": "roleplay",
+      "first_difference": 8,
+      "ordinary_ids": [
+        52915,
+        13,
+        2379,
+        525,
+        537,
+        1172,
+        63381,
+        714
+      ],
+      "mode_ids": [
+        5310,
+        979,
+        7707,
+        311,
+        279,
+        63443,
+        323,
+        15024
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "refinement",
+      "index": 11,
+      "question_id": 92,
+      "category": "roleplay",
+      "first_difference": 50,
+      "ordinary_ids": [
+        369,
+        7775,
+        879,
+        653,
+        537,
+        4332,
+        847,
+        19634
+      ],
+      "mode_ids": [
+        11,
+        323,
+        358,
+        10702,
+        311,
+        5648,
+        1741,
+        14740
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "refinement",
+      "index": 12,
+      "question_id": 93,
+      "category": "roleplay",
+      "first_difference": 79,
+      "ordinary_ids": [
+        26977,
+        5267,
+        256,
+        481,
+        12553,
+        279,
+        6646,
+        2525
+      ],
+      "mode_ids": [
+        6783,
+        77731,
+        5267,
+        256,
+        481,
+        12553,
+        279,
+        6646
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "refinement",
+      "index": 13,
+      "question_id": 93,
+      "category": "roleplay",
+      "first_difference": 25,
+      "ordinary_ids": [
+        27830,
+        323,
+        2908,
+        2176,
+        8606,
+        323,
+        5810,
+        50136
+      ],
+      "mode_ids": [
+        2453,
+        323,
+        17879,
+        369,
+        2176,
+        697,
+        2820,
+        323
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "refinement",
+      "index": 14,
+      "question_id": 94,
+      "category": "roleplay",
+      "first_difference": 233,
+      "ordinary_ids": [
+        2513,
+        13,
+        34006,
+        24392,
+        6001,
+        4714,
+        979,
+        2987
+      ],
+      "mode_ids": [
+        4714,
+        13,
+        34006,
+        24392,
+        6001,
+        12850,
+        979,
+        2987
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "refinement",
+      "index": 18,
+      "question_id": 102,
+      "category": "reasoning",
+      "first_difference": 23,
+      "ordinary_ids": [
+        279,
+        7482,
+        13,
+        576,
+        5807,
+        4678,
+        374,
+        264
+      ],
+      "mode_ids": [
+        7482,
+        13,
+        576,
+        5807,
+        4678,
+        374,
+        264,
+        1632
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "refinement",
+      "index": 19,
+      "question_id": 102,
+      "category": "reasoning",
+      "first_difference": 154,
+      "ordinary_ids": [
+        2679,
+        582,
+        525,
+        311,
+        8253,
+        279,
+        3728,
+        315
+      ],
+      "mode_ids": [
+        22043,
+        1493,
+        42675,
+        11,
+        432,
+        594,
+        7548,
+        17367
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "refinement",
+      "index": 20,
+      "question_id": 103,
+      "category": "reasoning",
+      "first_difference": 45,
+      "ordinary_ids": [
+        21051,
+        311,
+        279,
+        8777,
+        13,
+        4220,
+        21051,
+        1410
+      ],
+      "mode_ids": [
+        8777,
+        21051,
+        13,
+        4220,
+        21051,
+        1410,
+        387,
+        369
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "refinement",
+      "index": 21,
+      "question_id": 103,
+      "category": "reasoning",
+      "first_difference": 117,
+      "ordinary_ids": [
+        369,
+        264,
+        9314,
+        1697,
+        382,
+        18,
+        13,
+        3070
+      ],
+      "mode_ids": [
+        382,
+        18,
+        13,
+        3070,
+        95611,
+        369,
+        28811,
+        1374
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "refinement",
+      "index": 26,
+      "question_id": 112,
+      "category": "math",
+      "first_difference": 26,
+      "ordinary_ids": [
+        3311,
+        27991,
+        304,
+        279,
+        1156,
+        1042,
+        624,
+        17
+      ],
+      "mode_ids": [
+        9162,
+        304,
+        279,
+        1156,
+        1042,
+        25,
+        400,
+        23
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "refinement",
+      "index": 29,
+      "question_id": 113,
+      "category": "math",
+      "first_difference": 207,
+      "ordinary_ids": [
+        220,
+        15,
+        13,
+        23,
+        16,
+        284,
+        220,
+        15
+      ],
+      "mode_ids": [
+        393,
+        5349,
+        1124,
+        36665,
+        479,
+        8,
+        284,
+        220
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "refinement",
+      "index": 30,
+      "question_id": 114,
+      "category": "math",
+      "first_difference": 29,
+      "ordinary_ids": [
+        28301,
+        1437,
+        279,
+        2790,
+        1372,
+        315,
+        3204,
+        19554
+      ],
+      "mode_ids": [
+        35,
+        24308,
+        279,
+        2790,
+        1372,
+        315,
+        3204,
+        19554
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "refinement",
+      "index": 32,
+      "question_id": 121,
+      "category": "coding",
+      "first_difference": 234,
+      "ordinary_ids": [
+        1089,
+        18981,
+        36289,
+        11,
+        308,
+        28,
+        20,
+        982
+      ],
+      "mode_ids": [
+        62,
+        20,
+        18981,
+        38608,
+        982,
+        262,
+        3190,
+        262
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "refinement",
+      "index": 33,
+      "question_id": 121,
+      "category": "coding",
+      "first_difference": 254,
+      "ordinary_ids": [
+        14579,
+        279
+      ],
+      "mode_ids": [
+        4675,
+        279
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "refinement",
+      "index": 36,
+      "question_id": 123,
+      "category": "coding",
+      "first_difference": 219,
+      "ordinary_ids": [
+        619,
+        4740,
+        522,
+        2159,
+        1339,
+        262,
+        366,
+        2282
+      ],
+      "mode_ids": [
+        10612,
+        619,
+        4740,
+        522,
+        2159,
+        1339,
+        262,
+        366
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "refinement",
+      "index": 39,
+      "question_id": 124,
+      "category": "coding",
+      "first_difference": 3,
+      "ordinary_ids": [
+        374,
+        1083,
+        4396,
+        323,
+        11017,
+        279,
+        1852,
+        8741
+      ],
+      "mode_ids": [
+        369,
+        9271,
+        279,
+        3084,
+        315,
+        279,
+        22032,
+        4185
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "refinement",
+      "index": 47,
+      "question_id": 134,
+      "category": "extraction",
+      "first_difference": 250,
+      "ordinary_ids": [
+        34332,
+        54815,
+        11,
+        8188,
+        1863,
+        1030
+      ],
+      "mode_ids": [
+        14360,
+        151645
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "refinement",
+      "index": 48,
+      "question_id": 141,
+      "category": "stem",
+      "first_difference": 235,
+      "ordinary_ids": [
+        279,
+        2266,
+        315,
+        1197,
+        524,
+        986,
+        11,
+        2256
+      ],
+      "mode_ids": [
+        2097,
+        11,
+        1197,
+        524,
+        986,
+        646,
+        387,
+        3884
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "refinement",
+      "index": 49,
+      "question_id": 141,
+      "category": "stem",
+      "first_difference": 29,
+      "ordinary_ids": [
+        264,
+        30128,
+        1849,
+        646,
+        3000,
+        304,
+        264,
+        2256
+      ],
+      "mode_ids": [
+        279,
+        2256,
+        3487,
+        17508,
+        374,
+        264,
+        15811,
+        12893
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "refinement",
+      "index": 50,
+      "question_id": 142,
+      "category": "stem",
+      "first_difference": 28,
+      "ordinary_ids": [
+        20668,
+        594,
+        6872,
+        315,
+        11379,
+        323,
+        279,
+        28611
+      ],
+      "mode_ids": [
+        279,
+        28611,
+        315,
+        20314,
+        23270,
+        323,
+        279,
+        5025
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "refinement",
+      "index": 53,
+      "question_id": 143,
+      "category": "stem",
+      "first_difference": 238,
+      "ordinary_ids": [
+        80496,
+        30841,
+        33364,
+        92,
+        284,
+        1124,
+        1318,
+        90
+      ],
+      "mode_ids": [
+        85215,
+        33364,
+        817,
+        9742,
+        92,
+        284,
+        1124,
+        1318
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "refinement",
+      "index": 56,
+      "question_id": 151,
+      "category": "humanities",
+      "first_difference": 184,
+      "ordinary_ids": [
+        525,
+        3545,
+        39546,
+        48293,
+        13,
+        1634,
+        279,
+        8584
+      ],
+      "mode_ids": [
+        3545,
+        3271,
+        304,
+        279,
+        1852,
+        5106,
+        13,
+        1634
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "refinement",
+      "index": 58,
+      "question_id": 152,
+      "category": "humanities",
+      "first_difference": 97,
+      "ordinary_ids": [
+        13482,
+        11,
+        32930,
+        1616,
+        13,
+        2379,
+        1231,
+        537
+      ],
+      "mode_ids": [
+        32930,
+        11566,
+        13,
+        2379,
+        1231,
+        537,
+        7225,
+        33377
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "refinement",
+      "index": 59,
+      "question_id": 152,
+      "category": "humanities",
+      "first_difference": 189,
+      "ordinary_ids": [
+        26179,
+        382,
+        19602,
+        21371,
+        11,
+        279,
+        62933,
+        11
+      ],
+      "mode_ids": [
+        304,
+        26179,
+        382,
+        19602,
+        21371,
+        11,
+        279,
+        62933
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "refinement",
+      "index": 60,
+      "question_id": 153,
+      "category": "humanities",
+      "first_difference": 14,
+      "ordinary_ids": [
+        74153,
+        550,
+        323,
+        1008,
+        7147,
+        12,
+        92399,
+        12378
+      ],
+      "mode_ids": [
+        7147,
+        12,
+        92399,
+        12378,
+        323,
+        74153,
+        4532,
+        7709
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "refinement",
+      "index": 62,
+      "question_id": 154,
+      "category": "humanities",
+      "first_difference": 61,
+      "ordinary_ids": [
+        7361,
+        11,
+        18379,
+        862,
+        5726,
+        311,
+        35581,
+        551
+      ],
+      "mode_ids": [
+        11,
+        47351,
+        11,
+        323,
+        10535,
+        7361,
+        1526,
+        3476
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "refinement",
+      "index": 63,
+      "question_id": 154,
+      "category": "humanities",
+      "first_difference": 137,
+      "ordinary_ids": [
+        369,
+        5785,
+        382,
+        334,
+        4052,
+        220,
+        17,
+        25
+      ],
+      "mode_ids": [
+        320,
+        68,
+        1302,
+        2572,
+        51031,
+        315,
+        451,
+        32334
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "refinement",
+      "index": 66,
+      "question_id": 163,
+      "category": "translation",
+      "first_difference": 1,
+      "ordinary_ids": [
+        24999,
+        10895,
+        311,
+        82340,
+        2143,
+        98918,
+        594,
+        38348
+      ],
+      "mode_ids": [
+        51396,
+        10895,
+        311,
+        279,
+        38348,
+        47826,
+        311,
+        5358
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "refinement",
+      "index": 71,
+      "question_id": 244,
+      "category": "summarization",
+      "first_difference": 61,
+      "ordinary_ids": [
+        264,
+        3746,
+        10815,
+        448,
+        1435,
+        13,
+        730,
+        757
+      ],
+      "mode_ids": [
+        458,
+        53582,
+        49156,
+        10815,
+        448,
+        1435,
+        13,
+        730
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "refinement",
+      "index": 73,
+      "question_id": 322,
+      "category": "qa",
+      "first_difference": 35,
+      "ordinary_ids": [
+        17,
+        15,
+        11,
+        220,
+        17,
+        15,
+        16,
+        20
+      ],
+      "mode_ids": [
+        16,
+        11,
+        220,
+        17,
+        15,
+        16,
+        20,
+        13
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "refinement",
+      "index": 75,
+      "question_id": 324,
+      "category": "qa",
+      "first_difference": 22,
+      "ordinary_ids": [
+        825,
+        374,
+        1863,
+        39129,
+        11,
+        879,
+        374,
+        264
+      ],
+      "mode_ids": [
+        11958,
+        374,
+        1863,
+        39129,
+        11,
+        879,
+        374,
+        279
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "refinement",
+      "index": 78,
+      "question_id": 403,
+      "category": "math_reasoning",
+      "first_difference": 8,
+      "ordinary_ids": [
+        1973,
+        11,
+        582,
+        1184,
+        311,
+        1795,
+        1493,
+        7354
+      ],
+      "mode_ids": [
+        11497,
+        1973,
+        11,
+        582,
+        1184,
+        311,
+        1795,
+        1493
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "refinement",
+      "index": 79,
+      "question_id": 404,
+      "category": "math_reasoning",
+      "first_difference": 52,
+      "ordinary_ids": [
+        92076,
+        518,
+        6022,
+        25,
+        1019,
+        256,
+        11387,
+        521
+      ],
+      "mode_ids": [
+        78410,
+        518,
+        6022,
+        25,
+        1019,
+        256,
+        481,
+        11387
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "refinement",
+      "index": 80,
+      "question_id": 481,
+      "category": "rag",
+      "first_difference": 52,
+      "ordinary_ids": [
+        7565,
+        369,
+        8086,
+        11,
+        14549,
+        11,
+        5567,
+        11
+      ],
+      "mode_ids": [
+        1483,
+        369,
+        8086,
+        11,
+        14549,
+        11,
+        5567,
+        11
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "refinement",
+      "index": 81,
+      "question_id": 482,
+      "category": "rag",
+      "first_difference": 78,
+      "ordinary_ids": [
+        576,
+        10861,
+        61992,
+        320,
+        16,
+        24,
+        21,
+        18
+      ],
+      "mode_ids": [
+        28708,
+        12066,
+        20607,
+        320,
+        16,
+        24,
+        21,
+        20
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "refinement",
+      "index": 83,
+      "question_id": 484,
+      "category": "rag",
+      "first_difference": 52,
+      "ordinary_ids": [
+        1948,
+        350,
+        10965,
+        263,
+        323,
+        83520,
+        13,
+        1096
+      ],
+      "mode_ids": [
+        13,
+        1096,
+        5666,
+        19469,
+        311,
+        1787,
+        264,
+        2086
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "repeat",
+      "index": 2,
+      "question_id": 83,
+      "category": "writing",
+      "first_difference": 189,
+      "ordinary_ids": [
+        16928,
+        624,
+        256,
+        481,
+        23208,
+        4419,
+        1075,
+        46419
+      ],
+      "mode_ids": [
+        323,
+        6032,
+        23375,
+        4763,
+        624,
+        256,
+        481,
+        23208
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "repeat",
+      "index": 3,
+      "question_id": 84,
+      "category": "writing",
+      "first_difference": 22,
+      "ordinary_ids": [
+        2551,
+        13719,
+        498,
+        1632,
+        13,
+        358,
+        3982,
+        1012
+      ],
+      "mode_ids": [
+        1943,
+        13719,
+        498,
+        1632,
+        13,
+        358,
+        3982,
+        1012
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "repeat",
+      "index": 4,
+      "question_id": 91,
+      "category": "roleplay",
+      "first_difference": 98,
+      "ordinary_ids": [
+        7039,
+        11,
+        1077,
+        594,
+        1744,
+        911,
+        279,
+        1293
+      ],
+      "mode_ids": [
+        785,
+        1293,
+        9663,
+        5795,
+        374,
+        311,
+        5695,
+        264
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "repeat",
+      "index": 5,
+      "question_id": 92,
+      "category": "roleplay",
+      "first_difference": 8,
+      "ordinary_ids": [
+        52915,
+        13,
+        2379,
+        525,
+        537,
+        1172,
+        63381,
+        714
+      ],
+      "mode_ids": [
+        5310,
+        979,
+        7707,
+        311,
+        279,
+        63443,
+        323,
+        15024
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "repeat",
+      "index": 6,
+      "question_id": 93,
+      "category": "roleplay",
+      "first_difference": 79,
+      "ordinary_ids": [
+        26977,
+        5267,
+        256,
+        481,
+        12553,
+        279,
+        6646,
+        2525
+      ],
+      "mode_ids": [
+        6783,
+        77731,
+        5267,
+        256,
+        481,
+        12553,
+        279,
+        6646
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "repeat",
+      "index": 7,
+      "question_id": 94,
+      "category": "roleplay",
+      "first_difference": 233,
+      "ordinary_ids": [
+        2513,
+        13,
+        34006,
+        24392,
+        6001,
+        4714,
+        979,
+        2987
+      ],
+      "mode_ids": [
+        4714,
+        13,
+        34006,
+        24392,
+        6001,
+        12850,
+        979,
+        2987
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "repeat",
+      "index": 9,
+      "question_id": 102,
+      "category": "reasoning",
+      "first_difference": 23,
+      "ordinary_ids": [
+        279,
+        7482,
+        13,
+        576,
+        5807,
+        4678,
+        374,
+        264
+      ],
+      "mode_ids": [
+        7482,
+        13,
+        576,
+        5807,
+        4678,
+        374,
+        264,
+        1632
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "repeat",
+      "index": 10,
+      "question_id": 103,
+      "category": "reasoning",
+      "first_difference": 45,
+      "ordinary_ids": [
+        21051,
+        311,
+        279,
+        8777,
+        13,
+        4220,
+        21051,
+        1410
+      ],
+      "mode_ids": [
+        8777,
+        21051,
+        13,
+        4220,
+        21051,
+        1410,
+        387,
+        369
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "repeat",
+      "index": 13,
+      "question_id": 112,
+      "category": "math",
+      "first_difference": 26,
+      "ordinary_ids": [
+        3311,
+        27991,
+        304,
+        279,
+        1156,
+        1042,
+        624,
+        17
+      ],
+      "mode_ids": [
+        9162,
+        304,
+        279,
+        1156,
+        1042,
+        25,
+        400,
+        23
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "repeat",
+      "index": 15,
+      "question_id": 114,
+      "category": "math",
+      "first_difference": 138,
+      "ordinary_ids": [
+        510,
+        256,
+        1124,
+        9640,
+        256,
+        320,
+        16,
+        11
+      ],
+      "mode_ids": [
+        382,
+        18,
+        13,
+        3070,
+        47866,
+        279,
+        1372,
+        315
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "repeat",
+      "index": 16,
+      "question_id": 121,
+      "category": "coding",
+      "first_difference": 234,
+      "ordinary_ids": [
+        1089,
+        18981,
+        36289,
+        11,
+        308,
+        28,
+        20,
+        982
+      ],
+      "mode_ids": [
+        62,
+        20,
+        18981,
+        38608,
+        982,
+        262,
+        3190,
+        262
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "repeat",
+      "index": 18,
+      "question_id": 123,
+      "category": "coding",
+      "first_difference": 219,
+      "ordinary_ids": [
+        619,
+        4740,
+        522,
+        2159,
+        1339,
+        262,
+        366,
+        2282
+      ],
+      "mode_ids": [
+        10612,
+        619,
+        4740,
+        522,
+        2159,
+        1339,
+        262,
+        366
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "repeat",
+      "index": 24,
+      "question_id": 141,
+      "category": "stem",
+      "first_difference": 235,
+      "ordinary_ids": [
+        279,
+        2266,
+        315,
+        1197,
+        524,
+        986,
+        11,
+        2256
+      ],
+      "mode_ids": [
+        2097,
+        11,
+        1197,
+        524,
+        986,
+        646,
+        387,
+        3884
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "repeat",
+      "index": 25,
+      "question_id": 142,
+      "category": "stem",
+      "first_difference": 28,
+      "ordinary_ids": [
+        20668,
+        594,
+        6872,
+        315,
+        11379,
+        323,
+        279,
+        28611
+      ],
+      "mode_ids": [
+        279,
+        28611,
+        315,
+        20314,
+        23270,
+        323,
+        279,
+        5025
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "repeat",
+      "index": 28,
+      "question_id": 151,
+      "category": "humanities",
+      "first_difference": 184,
+      "ordinary_ids": [
+        525,
+        3545,
+        39546,
+        48293,
+        13,
+        1634,
+        279,
+        8584
+      ],
+      "mode_ids": [
+        3545,
+        3271,
+        304,
+        279,
+        1852,
+        5106,
+        13,
+        1634
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "repeat",
+      "index": 29,
+      "question_id": 152,
+      "category": "humanities",
+      "first_difference": 97,
+      "ordinary_ids": [
+        13482,
+        11,
+        32930,
+        1616,
+        13,
+        2379,
+        1231,
+        537
+      ],
+      "mode_ids": [
+        32930,
+        11566,
+        13,
+        2379,
+        1231,
+        537,
+        7225,
+        33377
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "repeat",
+      "index": 30,
+      "question_id": 153,
+      "category": "humanities",
+      "first_difference": 14,
+      "ordinary_ids": [
+        74153,
+        550,
+        323,
+        1008,
+        7147,
+        12,
+        92399,
+        12378
+      ],
+      "mode_ids": [
+        7147,
+        12,
+        92399,
+        12378,
+        323,
+        74153,
+        4532,
+        7709
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "repeat",
+      "index": 31,
+      "question_id": 154,
+      "category": "humanities",
+      "first_difference": 61,
+      "ordinary_ids": [
+        7361,
+        11,
+        18379,
+        862,
+        5726,
+        311,
+        35581,
+        551
+      ],
+      "mode_ids": [
+        11,
+        47351,
+        11,
+        323,
+        10535,
+        7361,
+        1526,
+        3476
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "repeat",
+      "index": 34,
+      "question_id": 163,
+      "category": "translation",
+      "first_difference": 1,
+      "ordinary_ids": [
+        24999,
+        10895,
+        311,
+        82340,
+        2143,
+        98918,
+        594,
+        38348
+      ],
+      "mode_ids": [
+        51396,
+        10895,
+        311,
+        279,
+        38348,
+        47826,
+        311,
+        5358
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "repeat",
+      "index": 39,
+      "question_id": 244,
+      "category": "summarization",
+      "first_difference": 61,
+      "ordinary_ids": [
+        264,
+        3746,
+        10815,
+        448,
+        1435,
+        13,
+        730,
+        757
+      ],
+      "mode_ids": [
+        458,
+        53582,
+        49156,
+        10815,
+        448,
+        1435,
+        13,
+        730
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "repeat",
+      "index": 41,
+      "question_id": 322,
+      "category": "qa",
+      "first_difference": 35,
+      "ordinary_ids": [
+        17,
+        15,
+        11,
+        220,
+        17,
+        15,
+        16,
+        20
+      ],
+      "mode_ids": [
+        16,
+        11,
+        220,
+        17,
+        15,
+        16,
+        20,
+        13
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "repeat",
+      "index": 43,
+      "question_id": 324,
+      "category": "qa",
+      "first_difference": 22,
+      "ordinary_ids": [
+        825,
+        374,
+        1863,
+        39129,
+        11,
+        879,
+        374,
+        264
+      ],
+      "mode_ids": [
+        11958,
+        374,
+        1863,
+        39129,
+        11,
+        879,
+        374,
+        279
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "repeat",
+      "index": 46,
+      "question_id": 403,
+      "category": "math_reasoning",
+      "first_difference": 8,
+      "ordinary_ids": [
+        1973,
+        11,
+        582,
+        1184,
+        311,
+        1795,
+        1493,
+        7354
+      ],
+      "mode_ids": [
+        11497,
+        1973,
+        11,
+        582,
+        1184,
+        311,
+        1795,
+        1493
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "repeat",
+      "index": 47,
+      "question_id": 404,
+      "category": "math_reasoning",
+      "first_difference": 52,
+      "ordinary_ids": [
+        92076,
+        518,
+        6022,
+        25,
+        1019,
+        256,
+        11387,
+        521
+      ],
+      "mode_ids": [
+        78410,
+        518,
+        6022,
+        25,
+        1019,
+        256,
+        481,
+        11387
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "repeat",
+      "index": 48,
+      "question_id": 481,
+      "category": "rag",
+      "first_difference": 52,
+      "ordinary_ids": [
+        7565,
+        369,
+        8086,
+        11,
+        14549,
+        11,
+        5567,
+        11
+      ],
+      "mode_ids": [
+        1483,
+        369,
+        8086,
+        11,
+        14549,
+        11,
+        5567,
+        11
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "repeat",
+      "index": 49,
+      "question_id": 482,
+      "category": "rag",
+      "first_difference": 78,
+      "ordinary_ids": [
+        576,
+        10861,
+        61992,
+        320,
+        16,
+        24,
+        21,
+        18
+      ],
+      "mode_ids": [
+        28708,
+        12066,
+        20607,
+        320,
+        16,
+        24,
+        21,
+        20
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "repeat",
+      "index": 51,
+      "question_id": 484,
+      "category": "rag",
+      "first_difference": 52,
+      "ordinary_ids": [
+        1948,
+        350,
+        10965,
+        263,
+        323,
+        83520,
+        13,
+        1096
+      ],
+      "mode_ids": [
+        13,
+        1096,
+        5666,
+        19469,
+        311,
+        1787,
+        264,
+        2086
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "repeat",
+      "index": 54,
+      "question_id": 83,
+      "category": "writing",
+      "first_difference": 189,
+      "ordinary_ids": [
+        16928,
+        624,
+        256,
+        481,
+        23208,
+        4419,
+        1075,
+        46419
+      ],
+      "mode_ids": [
+        323,
+        6032,
+        23375,
+        4763,
+        624,
+        256,
+        481,
+        23208
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "repeat",
+      "index": 55,
+      "question_id": 84,
+      "category": "writing",
+      "first_difference": 22,
+      "ordinary_ids": [
+        2551,
+        13719,
+        498,
+        1632,
+        13,
+        358,
+        3982,
+        1012
+      ],
+      "mode_ids": [
+        1943,
+        13719,
+        498,
+        1632,
+        13,
+        358,
+        3982,
+        1012
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "repeat",
+      "index": 56,
+      "question_id": 91,
+      "category": "roleplay",
+      "first_difference": 98,
+      "ordinary_ids": [
+        7039,
+        11,
+        1077,
+        594,
+        1744,
+        911,
+        279,
+        1293
+      ],
+      "mode_ids": [
+        785,
+        1293,
+        9663,
+        5795,
+        374,
+        311,
+        5695,
+        264
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "repeat",
+      "index": 57,
+      "question_id": 92,
+      "category": "roleplay",
+      "first_difference": 8,
+      "ordinary_ids": [
+        52915,
+        13,
+        2379,
+        525,
+        537,
+        1172,
+        63381,
+        714
+      ],
+      "mode_ids": [
+        5310,
+        979,
+        7707,
+        311,
+        279,
+        63443,
+        323,
+        15024
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "repeat",
+      "index": 58,
+      "question_id": 93,
+      "category": "roleplay",
+      "first_difference": 79,
+      "ordinary_ids": [
+        26977,
+        5267,
+        256,
+        481,
+        12553,
+        279,
+        6646,
+        2525
+      ],
+      "mode_ids": [
+        6783,
+        77731,
+        5267,
+        256,
+        481,
+        12553,
+        279,
+        6646
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "repeat",
+      "index": 59,
+      "question_id": 94,
+      "category": "roleplay",
+      "first_difference": 233,
+      "ordinary_ids": [
+        2513,
+        13,
+        34006,
+        24392,
+        6001,
+        4714,
+        979,
+        2987
+      ],
+      "mode_ids": [
+        4714,
+        13,
+        34006,
+        24392,
+        6001,
+        12850,
+        979,
+        2987
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "repeat",
+      "index": 61,
+      "question_id": 102,
+      "category": "reasoning",
+      "first_difference": 23,
+      "ordinary_ids": [
+        279,
+        7482,
+        13,
+        576,
+        5807,
+        4678,
+        374,
+        264
+      ],
+      "mode_ids": [
+        7482,
+        13,
+        576,
+        5807,
+        4678,
+        374,
+        264,
+        1632
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "repeat",
+      "index": 62,
+      "question_id": 103,
+      "category": "reasoning",
+      "first_difference": 45,
+      "ordinary_ids": [
+        21051,
+        311,
+        279,
+        8777,
+        13,
+        4220,
+        21051,
+        1410
+      ],
+      "mode_ids": [
+        8777,
+        21051,
+        13,
+        4220,
+        21051,
+        1410,
+        387,
+        369
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "repeat",
+      "index": 65,
+      "question_id": 112,
+      "category": "math",
+      "first_difference": 125,
+      "ordinary_ids": [
+        311,
+        1477,
+        279,
+        2790,
+        9162,
+        1447,
+        78045,
+        220
+      ],
+      "mode_ids": [
+        1447,
+        78045,
+        220,
+        23,
+        15,
+        15,
+        15,
+        488
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "repeat",
+      "index": 67,
+      "question_id": 114,
+      "category": "math",
+      "first_difference": 29,
+      "ordinary_ids": [
+        28301,
+        1437,
+        279,
+        2790,
+        1372,
+        315,
+        3204,
+        19554
+      ],
+      "mode_ids": [
+        35,
+        24308,
+        279,
+        2790,
+        1372,
+        315,
+        3204,
+        19554
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "repeat",
+      "index": 68,
+      "question_id": 121,
+      "category": "coding",
+      "first_difference": 234,
+      "ordinary_ids": [
+        1089,
+        18981,
+        36289,
+        11,
+        308,
+        28,
+        20,
+        982
+      ],
+      "mode_ids": [
+        62,
+        20,
+        18981,
+        38608,
+        982,
+        262,
+        3190,
+        262
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "repeat",
+      "index": 70,
+      "question_id": 123,
+      "category": "coding",
+      "first_difference": 219,
+      "ordinary_ids": [
+        619,
+        4740,
+        522,
+        2159,
+        1339,
+        262,
+        366,
+        2282
+      ],
+      "mode_ids": [
+        10612,
+        619,
+        4740,
+        522,
+        2159,
+        1339,
+        262,
+        366
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "repeat",
+      "index": 76,
+      "question_id": 141,
+      "category": "stem",
+      "first_difference": 235,
+      "ordinary_ids": [
+        279,
+        2266,
+        315,
+        1197,
+        524,
+        986,
+        11,
+        2256
+      ],
+      "mode_ids": [
+        2097,
+        11,
+        1197,
+        524,
+        986,
+        646,
+        387,
+        3884
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "repeat",
+      "index": 77,
+      "question_id": 142,
+      "category": "stem",
+      "first_difference": 28,
+      "ordinary_ids": [
+        20668,
+        594,
+        6872,
+        315,
+        11379,
+        323,
+        279,
+        28611
+      ],
+      "mode_ids": [
+        279,
+        28611,
+        315,
+        20314,
+        23270,
+        323,
+        279,
+        5025
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "repeat",
+      "index": 81,
+      "question_id": 152,
+      "category": "humanities",
+      "first_difference": 97,
+      "ordinary_ids": [
+        13482,
+        11,
+        32930,
+        1616,
+        13,
+        2379,
+        1231,
+        537
+      ],
+      "mode_ids": [
+        32930,
+        11566,
+        13,
+        2379,
+        1231,
+        537,
+        7225,
+        33377
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "repeat",
+      "index": 82,
+      "question_id": 153,
+      "category": "humanities",
+      "first_difference": 14,
+      "ordinary_ids": [
+        74153,
+        550,
+        323,
+        1008,
+        7147,
+        12,
+        92399,
+        12378
+      ],
+      "mode_ids": [
+        7147,
+        12,
+        92399,
+        12378,
+        323,
+        74153,
+        4532,
+        7709
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "repeat",
+      "index": 83,
+      "question_id": 154,
+      "category": "humanities",
+      "first_difference": 61,
+      "ordinary_ids": [
+        7361,
+        11,
+        18379,
+        862,
+        5726,
+        311,
+        35581,
+        551
+      ],
+      "mode_ids": [
+        11,
+        47351,
+        11,
+        323,
+        10535,
+        7361,
+        1526,
+        3476
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "repeat",
+      "index": 86,
+      "question_id": 163,
+      "category": "translation",
+      "first_difference": 1,
+      "ordinary_ids": [
+        24999,
+        10895,
+        311,
+        82340,
+        2143,
+        98918,
+        594,
+        38348
+      ],
+      "mode_ids": [
+        51396,
+        10895,
+        311,
+        279,
+        38348,
+        47826,
+        311,
+        5358
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "repeat",
+      "index": 91,
+      "question_id": 244,
+      "category": "summarization",
+      "first_difference": 61,
+      "ordinary_ids": [
+        264,
+        3746,
+        10815,
+        448,
+        1435,
+        13,
+        730,
+        757
+      ],
+      "mode_ids": [
+        458,
+        53582,
+        49156,
+        10815,
+        448,
+        1435,
+        13,
+        730
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "repeat",
+      "index": 93,
+      "question_id": 322,
+      "category": "qa",
+      "first_difference": 35,
+      "ordinary_ids": [
+        17,
+        15,
+        11,
+        220,
+        17,
+        15,
+        16,
+        20
+      ],
+      "mode_ids": [
+        16,
+        11,
+        220,
+        17,
+        15,
+        16,
+        20,
+        13
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "repeat",
+      "index": 95,
+      "question_id": 324,
+      "category": "qa",
+      "first_difference": 22,
+      "ordinary_ids": [
+        825,
+        374,
+        1863,
+        39129,
+        11,
+        879,
+        374,
+        264
+      ],
+      "mode_ids": [
+        11958,
+        374,
+        1863,
+        39129,
+        11,
+        879,
+        374,
+        279
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "repeat",
+      "index": 98,
+      "question_id": 403,
+      "category": "math_reasoning",
+      "first_difference": 8,
+      "ordinary_ids": [
+        1973,
+        11,
+        582,
+        1184,
+        311,
+        1795,
+        1493,
+        7354
+      ],
+      "mode_ids": [
+        11497,
+        1973,
+        11,
+        582,
+        1184,
+        311,
+        1795,
+        1493
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "repeat",
+      "index": 99,
+      "question_id": 404,
+      "category": "math_reasoning",
+      "first_difference": 52,
+      "ordinary_ids": [
+        92076,
+        518,
+        6022,
+        25,
+        1019,
+        256,
+        11387,
+        521
+      ],
+      "mode_ids": [
+        78410,
+        518,
+        6022,
+        25,
+        1019,
+        256,
+        481,
+        11387
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "repeat",
+      "index": 100,
+      "question_id": 481,
+      "category": "rag",
+      "first_difference": 52,
+      "ordinary_ids": [
+        7565,
+        369,
+        8086,
+        11,
+        14549,
+        11,
+        5567,
+        11
+      ],
+      "mode_ids": [
+        1483,
+        369,
+        8086,
+        11,
+        14549,
+        11,
+        5567,
+        11
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "repeat",
+      "index": 101,
+      "question_id": 482,
+      "category": "rag",
+      "first_difference": 78,
+      "ordinary_ids": [
+        576,
+        10861,
+        61992,
+        320,
+        16,
+        24,
+        21,
+        18
+      ],
+      "mode_ids": [
+        28708,
+        12066,
+        20607,
+        320,
+        16,
+        24,
+        21,
+        20
+      ]
+    },
+    {
+      "mode": "ngram",
+      "block": "repeat",
+      "index": 103,
+      "question_id": 484,
+      "category": "rag",
+      "first_difference": 52,
+      "ordinary_ids": [
+        1948,
+        350,
+        10965,
+        263,
+        323,
+        83520,
+        13,
+        1096
+      ],
+      "mode_ids": [
+        13,
+        1096,
+        5666,
+        19469,
+        311,
+        1787,
+        264,
+        2086
+      ]
+    },
+    {
+      "mode": "suffix",
+      "block": "independent",
+      "index": 2,
+      "question_id": 83,
+      "category": "writing",
+      "first_difference": 189,
+      "ordinary_ids": [
+        16928,
+        624,
+        256,
+        481,
+        23208,
+        4419,
+        1075,
+        46419
+      ],
+      "mode_ids": [
+        323,
+        6032,
+        23375,
+        4763,
+        624,
+        256,
+        481,
+        23208
+      ]
+    },
+    {
+      "mode": "suffix",
+      "block": "independent",
+      "index": 3,
+      "question_id": 84,
+      "category": "writing",
+      "first_difference": 22,
+      "ordinary_ids": [
+        2551,
+        13719,
+        498,
+        1632,
+        13,
+        358,
+        3982,
+        1012
+      ],
+      "mode_ids": [
+        1943,
+        13719,
+        498,
+        1632,
+        13,
+        358,
+        3982,
+        1012
+      ]
+    },
+    {
+      "mode": "suffix",
+      "block": "independent",
+      "index": 4,
+      "question_id": 91,
+      "category": "roleplay",
+      "first_difference": 98,
+      "ordinary_ids": [
+        7039,
+        11,
+        1077,
+        594,
+        1744,
+        911,
+        279,
+        1293
+      ],
+      "mode_ids": [
+        785,
+        1293,
+        9663,
+        5795,
+        374,
+        311,
+        5695,
+        264
+      ]
+    },
+    {
+      "mode": "suffix",
+      "block": "independent",
+      "index": 5,
+      "question_id": 92,
+      "category": "roleplay",
+      "first_difference": 8,
+      "ordinary_ids": [
+        52915,
+        13,
+        2379,
+        525,
+        537,
+        1172,
+        63381,
+        714
+      ],
+      "mode_ids": [
+        5310,
+        979,
+        7707,
+        311,
+        279,
+        63443,
+        323,
+        15024
+      ]
+    },
+    {
+      "mode": "suffix",
+      "block": "independent",
+      "index": 6,
+      "question_id": 93,
+      "category": "roleplay",
+      "first_difference": 79,
+      "ordinary_ids": [
+        26977,
+        5267,
+        256,
+        481,
+        12553,
+        279,
+        6646,
+        2525
+      ],
+      "mode_ids": [
+        6783,
+        77731,
+        5267,
+        256,
+        481,
+        12553,
+        279,
+        6646
+      ]
+    },
+    {
+      "mode": "suffix",
+      "block": "independent",
+      "index": 7,
+      "question_id": 94,
+      "category": "roleplay",
+      "first_difference": 233,
+      "ordinary_ids": [
+        2513,
+        13,
+        34006,
+        24392,
+        6001,
+        4714,
+        979,
+        2987
+      ],
+      "mode_ids": [
+        4714,
+        13,
+        34006,
+        24392,
+        6001,
+        12850,
+        979,
+        2987
+      ]
+    },
+    {
+      "mode": "suffix",
+      "block": "independent",
+      "index": 9,
+      "question_id": 102,
+      "category": "reasoning",
+      "first_difference": 23,
+      "ordinary_ids": [
+        279,
+        7482,
+        13,
+        576,
+        5807,
+        4678,
+        374,
+        264
+      ],
+      "mode_ids": [
+        7482,
+        13,
+        576,
+        5807,
+        4678,
+        374,
+        264,
+        1632
+      ]
+    },
+    {
+      "mode": "suffix",
+      "block": "independent",
+      "index": 10,
+      "question_id": 103,
+      "category": "reasoning",
+      "first_difference": 45,
+      "ordinary_ids": [
+        21051,
+        311,
+        279,
+        8777,
+        13,
+        4220,
+        21051,
+        1410
+      ],
+      "mode_ids": [
+        8777,
+        21051,
+        13,
+        4220,
+        21051,
+        1410,
+        387,
+        369
+      ]
+    },
+    {
+      "mode": "suffix",
+      "block": "independent",
+      "index": 15,
+      "question_id": 114,
+      "category": "math",
+      "first_difference": 29,
+      "ordinary_ids": [
+        28301,
+        1437,
+        279,
+        2790,
+        1372,
+        315,
+        3204,
+        19554
+      ],
+      "mode_ids": [
+        35,
+        24308,
+        279,
+        2790,
+        1372,
+        315,
+        3204,
+        19554
+      ]
+    },
+    {
+      "mode": "suffix",
+      "block": "independent",
+      "index": 16,
+      "question_id": 121,
+      "category": "coding",
+      "first_difference": 234,
+      "ordinary_ids": [
+        1089,
+        18981,
+        36289,
+        11,
+        308,
+        28,
+        20,
+        982
+      ],
+      "mode_ids": [
+        62,
+        20,
+        18981,
+        38608,
+        982,
+        262,
+        3190,
+        262
+      ]
+    },
+    {
+      "mode": "suffix",
+      "block": "independent",
+      "index": 18,
+      "question_id": 123,
+      "category": "coding",
+      "first_difference": 219,
+      "ordinary_ids": [
+        619,
+        4740,
+        522,
+        2159,
+        1339,
+        262,
+        366,
+        2282
+      ],
+      "mode_ids": [
+        10612,
+        619,
+        4740,
+        522,
+        2159,
+        1339,
+        262,
+        366
+      ]
+    },
+    {
+      "mode": "suffix",
+      "block": "independent",
+      "index": 24,
+      "question_id": 141,
+      "category": "stem",
+      "first_difference": 235,
+      "ordinary_ids": [
+        279,
+        2266,
+        315,
+        1197,
+        524,
+        986,
+        11,
+        2256
+      ],
+      "mode_ids": [
+        2097,
+        11,
+        1197,
+        524,
+        986,
+        646,
+        387,
+        3884
+      ]
+    },
+    {
+      "mode": "suffix",
+      "block": "independent",
+      "index": 25,
+      "question_id": 142,
+      "category": "stem",
+      "first_difference": 28,
+      "ordinary_ids": [
+        20668,
+        594,
+        6872,
+        315,
+        11379,
+        323,
+        279,
+        28611
+      ],
+      "mode_ids": [
+        279,
+        28611,
+        315,
+        20314,
+        23270,
+        323,
+        279,
+        5025
+      ]
+    }
+  ]
+}
