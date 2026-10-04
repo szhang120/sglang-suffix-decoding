@@ -1,0 +1,10 @@
+{
+  "success": true,
+  "run_id": "modal-20261004-independent-audit",
+  "image_id": "im-j008pljEZGTNXdCClQMMbR",
+  "base_image": "im-96vGJgQDElG1UZq72yqyhI",
+  "sglang_commit": "e00930c5489053f26d86b179cee0d087f846acbb",
+  "patch_sha256": "19fc2ced20cde74fef8bfb0e7baeaada3430fc2a4d8096597e1778da1d2327bf",
+  "diagnostic_script_sha256": "e4dec6b28841a3d0f48717b26b3b9c0c72fcef24f74fe2645fb6a74623d93a26",
+  "elapsed_seconds": 520.7492652990001
+}

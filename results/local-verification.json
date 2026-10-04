@@ -141,8 +141,8 @@
   },
   "public_repository": "https://github.com/szhang120/sglang-suffix-decoding",
   "ci": {
-    "url": "https://github.com/szhang120/sglang-suffix-decoding/actions/runs/37193733550",
-    "commit": "3b81de986a863df0a88d51c2c7e251f481ece753",
+    "url": "https://github.com/szhang120/sglang-suffix-decoding/actions/runs/37197939132",
+    "commit": "6689897881633f2859dab54cb4774a4851dbc194",
     "ubuntu_24_04": "passed",
     "macos_14": "passed"
   },

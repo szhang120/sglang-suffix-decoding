@@ -1,0 +1,26 @@
+✓ Initialized. View run at 
+https://modal.com/apps/szhanggg/main/ap-042nYTCLngNAOAFIQ8vin1
+Building image im-HkB4LvrvaForDXiIMUOEu7
+
+=> Step 0: FROM base
+
+=> Step 1: ENV SUFFIX_SOURCE_IMAGE=im-96vGJgQDElG1UZq72yqyhI
+Saving image...
+Image saved, took 2.07s
+
+Built image im-HkB4LvrvaForDXiIMUOEu7 in 5.18s
+
+
+✓ Created objects.
+├── ✓ Uploaded 
+│   /Users/seanzhang/Documents/ChatGPT/sglang-suffix-decoding/analysis/export_mo
+│   dal_sources.py
+└── ✓ Created Function export.
+{
+  "image": "im-96vGJgQDElG1UZq72yqyhI",
+  "source_files": 45,
+  "path": "/artifacts/source-snapshots/im-96vGJgQDElG1UZq72yqyhI"
+}
+Stopping app - local entrypoint completed.
+✓ App completed. View run at 
+https://modal.com/apps/szhanggg/main/ap-042nYTCLngNAOAFIQ8vin1

@@ -1,0 +1,101 @@
+Note that running a local entrypoint in detached mode only keeps the last triggered Modal function alive after the parent process has been killed or disconnected.
+✓ Initialized. View run at 
+https://modal.com/apps/szhanggg/main/ap-JuseoUyc4p3s4hALfhxsDh
+Building image im-HYMOXbb3bk3FzFIndXe2E9
+
+=> Step 0: FROM base
+
+=> Step 1: RUN test $(git -C /project/sglang rev-parse HEAD) = e00930c5489053f26d86b179cee0d087f846acbb
+
+=> Step 2: RUN python -c "import hashlib; assert hashlib.sha256(open('/project/patches/sglang-suffix.patch','rb').read()).hexdigest() == '19fc2ced20cde74fef8bfb0e7baeaada3430fc2a4d8096597e1778da1d2327bf'"
+
+=> Step 3: RUN git -C /project/sglang apply --reverse --check /project/patches/sglang-suffix.patch
+
+=> Step 4: RUN git -C /project/sglang apply --reverse /project/patches/sglang-suffix.patch
+
+=> Step 5: RUN git -C /project/sglang diff --exit-code
+Saving image...
+Image saved, took 2.10s
+
+Built image im-HYMOXbb3bk3FzFIndXe2E9 in 10.41s
+
+
+Building image im-j008pljEZGTNXdCClQMMbR
+
+=> Step 0: FROM base
+
+=> Step 1: COPY . /
+Saving image...
+Image saved, took 2.72s
+
+Built image im-j008pljEZGTNXdCClQMMbR in 5.50s
+
+
+✓ Created objects.
+├── ✓ Uploaded 
+│   /Users/seanzhang/Documents/ChatGPT/sglang-suffix-decoding/analysis/modal_rea
+│   ssessment.py
+├── ✓ Uploaded 
+│   /Users/seanzhang/Documents/ChatGPT/sglang-suffix-decoding/analysis/reassessm
+│   ent_gpu.py
+└── ✓ Created Function execute.
+PROGRESS: pristine ordinary q112 initial repeat0
+PROGRESS: pristine ordinary q114 initial repeat0
+PROGRESS: pristine ordinary q151 initial repeat0
+PROGRESS: pristine ordinary q114 refinement repeat0
+PROGRESS: pristine ordinary q112 initial repeat1
+PROGRESS: pristine ordinary q114 initial repeat1
+PROGRESS: pristine ordinary q151 initial repeat1
+PROGRESS: pristine ordinary q114 refinement repeat1
+PROGRESS: pristine ngram q112 initial repeat0
+PROGRESS: pristine ngram q114 initial repeat0
+PROGRESS: pristine ngram q151 initial repeat0
+PROGRESS: pristine ngram q114 refinement repeat0
+PROGRESS: pristine ngram q112 initial repeat1
+PROGRESS: pristine ngram q114 initial repeat1
+PROGRESS: pristine ngram q151 initial repeat1
+PROGRESS: pristine ngram q114 refinement repeat1
+PROGRESS: head-only ordinary q112 initial repeat0
+PROGRESS: head-only ordinary q114 initial repeat0
+PROGRESS: head-only ordinary q151 initial repeat0
+PROGRESS: head-only ordinary q114 refinement repeat0
+PROGRESS: head-only ordinary q112 initial repeat1
+PROGRESS: head-only ordinary q114 initial repeat1
+PROGRESS: head-only ordinary q151 initial repeat1
+PROGRESS: head-only ordinary q114 refinement repeat1
+PROGRESS: head-only ngram q112 initial repeat0
+PROGRESS: head-only ngram q114 initial repeat0
+PROGRESS: head-only ngram q151 initial repeat0
+PROGRESS: head-only ngram q114 refinement repeat0
+PROGRESS: head-only ngram q112 initial repeat1
+PROGRESS: head-only ngram q114 initial repeat1
+PROGRESS: head-only ngram q151 initial repeat1
+PROGRESS: head-only ngram q114 refinement repeat1
+PROGRESS: shared-v12 ordinary q112 initial repeat0
+PROGRESS: shared-v12 ordinary q114 initial repeat0
+PROGRESS: shared-v12 ordinary q151 initial repeat0
+PROGRESS: shared-v12 ordinary q114 refinement repeat0
+PROGRESS: shared-v12 ordinary q112 initial repeat1
+PROGRESS: shared-v12 ordinary q114 initial repeat1
+PROGRESS: shared-v12 ordinary q151 initial repeat1
+PROGRESS: shared-v12 ordinary q114 refinement repeat1
+PROGRESS: shared-v12 ngram q112 initial repeat0
+PROGRESS: shared-v12 ngram q114 initial repeat0
+PROGRESS: shared-v12 ngram q151 initial repeat0
+PROGRESS: shared-v12 ngram q114 refinement repeat0
+PROGRESS: shared-v12 ngram q112 initial repeat1
+PROGRESS: shared-v12 ngram q114 initial repeat1
+PROGRESS: shared-v12 ngram q151 initial repeat1
+PROGRESS: shared-v12 ngram q114 refinement repeat1
+{
+  "success": true,
+  "run_id": "modal-20261004-independent-audit",
+  "image_id": "im-j008pljEZGTNXdCClQMMbR",
+  "base_image": "im-96vGJgQDElG1UZq72yqyhI",
+  "sglang_commit": "e00930c5489053f26d86b179cee0d087f846acbb",
+  "patch_sha256": "19fc2ced20cde74fef8bfb0e7baeaada3430fc2a4d8096597e1778da1d2327bf",
+  "diagnostic_script_sha256": "e4dec6b28841a3d0f48717b26b3b9c0c72fcef24f74fe2645fb6a74623d93a26",
+  "elapsed_seconds": 520.7492652990001
+}
+✓ App completed. View run at 
+https://modal.com/apps/szhanggg/main/ap-JuseoUyc4p3s4hALfhxsDh

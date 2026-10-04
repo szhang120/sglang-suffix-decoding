@@ -1,0 +1,10 @@
+{
+  "success": true,
+  "image_id": "im-Sw0TTFndEnpfYhEZKoDfsG",
+  "run_id": "modal-20261004-tensor-equivalence",
+  "script_sha256": {
+    "model_tensor_trace_gpu.py": "7464002fa320d059ee55603c6a95ca13d52137b4c084b2ef5ce65b0ab46863f4",
+    "tensor_trace_report.py": "723585bc11ab787221d2ddbd23a26ff580f7512fa5ad5d424f8394d4eb207011"
+  },
+  "elapsed_seconds": 299.153412042
+}

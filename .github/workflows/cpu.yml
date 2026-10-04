@@ -21,7 +21,7 @@ jobs:
       - name: Verify already-applied patch and Python syntax
         run: |
           git -C sglang apply --reverse --check ../patches/sglang-suffix.patch
-          python -m compileall -q scripts tests native/suffix_native
+          python -m compileall -q scripts analysis tests native/suffix_native
           python - <<'PY'
           import py_compile
           from pathlib import Path

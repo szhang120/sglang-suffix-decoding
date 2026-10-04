@@ -1,6 +1,6 @@
 # Provisioning and execution
 
-Modal authentication/payment setup is complete; net spend limit is$0. The v11 Triton/FP32-logit configuration passes30 exact-ID cases and direct GPU KV checks, but fails the broader public workload. The v12 shared decode/verification attention experiment passes eight diagnostic prompts; its full gate is pending. A stride-preserving head matmul removes a measured1.09GB weight-copy operation. No serving benchmark result is established yet. All earlier numerical and diagnostic failures are retained.
+Modal authentication/payment setup is complete; net spend limit is $0. The v11 Triton/FP32-logit configuration passes 30 exact-ID cases and direct GPU KV checks, but fails the broader public workload. The v12 shared-attention gate was interrupted after six NGRAM differences on 136 completed requests. Independent pristine controls reproduce selected failures without the suffix adapter; fixed-Q/K/V attention controls all match. A stride-preserving head matmul removes a measured 1.09GB weight-copy operation. Serving timings remain stopped; all failures are retained.
 
 ## Modal execution
 
@@ -13,7 +13,9 @@ Use Modal CLI 1.6.1 in the isolated Mac environment `/tmp/sglang-modal-cli`. Tok
 /tmp/sglang-modal-cli/bin/modal run scripts/modal_runner.py --phase benchmark --run-id RUN_ID --trial 0
 ```
 
-For the current shared-attention candidate, run `public-gate` first (240 requests per mode). On success, use `audit-frozen` in the same run ID: it checks plain and instrumented 30-case equality, audits suffix KV, and copies the exact checked workload into the timing directory. It preserves the existing v11-generated refinement inputs; historical output IDs are not the new correctness reference or cache seeds. `benchmark` requires a passing full gate and the same workload hash. Use `public-probe --limit 8` only as a diagnostic subset.
+For the current shared-attention candidate, run `public-gate` first (240 requests per mode). On success, use `audit-frozen` in the same run ID: it checks plain and instrumented 30-case equality, audits suffix KV, and copies the exact checked workload into the timing directory. It preserves the existing v11-generated refinement inputs; historical output IDs are not the new correctness reference or cache seeds. `benchmark` requires a passing full gate and the same workload hash, then checks every completed timed mode against the public ordinary reference before continuing. Use `public-probe --limit 8` only as a diagnostic subset.
+
+Use `modal run --detach` for long allocations. The remote status in the artifact volume is authoritative if the local CLI disconnects. `analysis/modal_campaign.py` now recovers remote completion statuses and detaches each serialized phase. An interrupted status is failure; inspect the existing app before allocating another GPU. No controller is currently running while correctness is diagnosed.
 
 Use phase `audit` for target-logit/acceptance/KV diagnostics after a failure, and `width-probe` for controlled row-count profiling. After downloading width artifacts, run `python scripts/analyze_width_probe.py PATH/width-probe` locally. The streaming reader selects CPU annotations and correlates their launches with GPU kernels; matching GPU annotation labels are excluded. Phase `prepare` combines plain correctness and workload freezing in one GPU allocation. Repeat benchmark trials1–4, then run phases `profile` and `analyze`. Each trial runs every mode sequentially on the same GPU. Commands refuse to overwrite completed phases. Download artifacts from volume `sglang-suffix-artifacts`, under RUN_ID. Create the destination directory before a recursive download; the CLI otherwise treats it as a single filename:
 
@@ -79,3 +81,9 @@ Separate profile runs add per-round suffix traces and SGLang's real scheduler CP
 Streaming request timings include host/tokenization output handling. Record TTFT, total wall time, tokens/sec and per-trial aggregate speedup. Prefer paired trial summaries and uncertainty ranges; do not mix profiler runs into timing results. Root analysis script refuses output-ID divergence and refuses to produce a summary without real measurements.
 
 Download `results/gpu`, correctness files, `workload.jsonl`, its hash and environment logs. Inspect logs for unintended GPU contention, thermal/clocks changes and errors. Update the technical report and plan with results, including failures. Preserve raw artifacts; the `.gitignore` excludes bulky GPU traces so they can be published as release artifacts rather than accidentally committed.
+
+## Additional controls for the shared-attention candidate
+
+After the serving campaign has completed, use phase `natural-trace` in a fresh run ID for each of `suffix`, `suffix-fixed`, and `suffix-local`, passing `--variant VARIANT --reference-run VALIDATED_RUN`. These full public-workload runs enable per-round traces and are excluded from timings. Download each result tree and run `analysis/natural_trace_report.py`; it clips terminal discarded tails and uses actual proposal counts.
+
+`analysis/modal_decode_control.py` performs six paired ordinary-decode trials, balancing shared/original route order. The two writing prompts were selected because their output IDs match in the prior eight-prompt diagnostic; this is a narrow baseline-cost control. Pass a fresh `--run-id`, `--reference-status` pointing to the validated source fingerprints, and `SUFFIX_MODAL_PREBUILT_IMAGE`. It owns one H100 and must run after other GPU work. `analysis/decode_control_report.py` checks all 24 outputs and reports shared/original latency ratios. Finally repeat `width-probe` in a fresh run ID to profile the final candidate.

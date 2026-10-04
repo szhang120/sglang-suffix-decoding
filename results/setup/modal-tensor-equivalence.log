@@ -1,0 +1,66 @@
+Note that running a local entrypoint in detached mode only keeps the last triggered Modal function alive after the parent process has been killed or disconnected.
+✓ Initialized. View run at 
+https://modal.com/apps/szhanggg/main/ap-dw5jsokZ6iv9bdMj4FA0EG
+Building image im-T28JhWXP8ZJ0oIxP40FB6B
+
+=> Step 0: FROM base
+
+=> Step 1: RUN git -C /project/sglang diff --exit-code
+
+=> Step 2: RUN git -C /project/sglang apply --include=python/sglang/srt/batch_invariant_ops/batch_invariant_ops.py /project/patches/sglang-suffix.patch
+
+=> Step 3: RUN git -C /project/sglang apply --include=python/sglang/srt/layers/attention/triton_backend.py /project/patches/sglang-suffix.patch
+Saving image...
+Image saved, took 2.09s
+
+Built image im-T28JhWXP8ZJ0oIxP40FB6B in 12.05s
+
+
+Building image im-t4PppUmDTjCu09L3Nk80T8
+
+=> Step 0: FROM base
+
+=> Step 1: COPY . /
+Saving image...
+Image saved, took 2.59s
+
+Built image im-t4PppUmDTjCu09L3Nk80T8 in 5.77s
+
+
+Building image im-Sw0TTFndEnpfYhEZKoDfsG
+
+=> Step 0: FROM base
+
+=> Step 1: COPY . /
+Saving image...
+Image saved, took 1.96s
+
+Built image im-Sw0TTFndEnpfYhEZKoDfsG in 5.33s
+
+
+✓ Created objects.
+├── ✓ Uploaded 
+│   /Users/seanzhang/Documents/ChatGPT/sglang-suffix-decoding/analysis/modal_ten
+│   sor_trace.py
+├── ✓ Uploaded 
+│   /Users/seanzhang/Documents/ChatGPT/sglang-suffix-decoding/analysis/model_ten
+│   sor_trace_gpu.py
+├── ✓ Uploaded 
+│   /Users/seanzhang/Documents/ChatGPT/sglang-suffix-decoding/analysis/tensor_tr
+│   ace_report.py
+└── ✓ Created Function execute.
+PROGRESS: tensor trace ordinary complete
+PROGRESS: tensor trace ngram complete
+{
+  "success": true,
+  "image_id": "im-Sw0TTFndEnpfYhEZKoDfsG",
+  "run_id": "modal-20261004-tensor-equivalence",
+  "script_sha256": {
+    "model_tensor_trace_gpu.py": "7464002fa320d059ee55603c6a95ca13d52137b4c084b2ef5ce65b0ab46863f4",
+    "tensor_trace_report.py": "723585bc11ab787221d2ddbd23a26ff580f7512fa5ad5d424f8394d4eb207011"
+  },
+  "elapsed_seconds": 299.153412042
+}
+[modal-client] 2026-10-04T16:53:04-0400 Timed out waiting for final app logs.
+✓ App completed. View run at 
+https://modal.com/apps/szhanggg/main/ap-dw5jsokZ6iv9bdMj4FA0EG

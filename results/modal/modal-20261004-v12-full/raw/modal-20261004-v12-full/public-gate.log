@@ -1,0 +1,324 @@
+COMMAND: ["nvidia-smi", "-q"]
+
+==============NVSMI LOG==============
+
+Timestamp                                 : Sun Oct  4 10:58:02 2026
+Driver Version                            : 580.95.05
+CUDA Version                              : 13.0
+
+Attached GPUs                             : 1
+GPU 00000000:00:0D.0
+    Product Name                          : NVIDIA H100 80GB HBM3
+    Product Brand                         : NVIDIA
+    Product Architecture                  : Hopper
+    Display Mode                          : Requested functionality has been deprecated
+    Display Attached                      : Yes
+    Display Active                        : Disabled
+    Persistence Mode                      : Enabled
+    Addressing Mode                       : None
+    MIG Mode
+        Current                           : Disabled
+        Pending                           : Disabled
+    Accounting Mode                       : Disabled
+    Accounting Mode Buffer Size           : 4000
+    Driver Model
+        Current                           : N/A
+        Pending                           : N/A
+    Serial Number                         : 1652223004571
+    GPU UUID                              : GPU-af29f36f-afb6-b782-2981-991958122cd0
+    GPU PDI                               : 0xb06a90f9bc277852
+    Minor Number                          : 3
+    VBIOS Version                         : 96.00.A5.00.16
+    MultiGPU Board                        : No
+    Board ID                              : 0xd
+    Board Part Number                     : 692-2G520-0202-000
+    GPU Part Number                       : 2330-885-A1
+    FRU Part Number                       : N/A
+    Platform Info
+        Chassis Serial Number             : N/A
+        Slot Number                       : N/A
+        Tray Index                        : N/A
+        Host ID                           : N/A
+        Peer Type                         : N/A
+        Module Id                         : N/A
+        GPU Fabric GUID                   : N/A
+    Inforom Version
+        Image Version                     : G520.0202.00.03
+        OEM Object                        : 2.1
+        ECC Object                        : 7.16
+        Power Management Object           : N/A
+    Inforom BBX Object Flush
+        Latest Timestamp                  : N/A
+        Latest Duration                   : N/A
+    GPU Operation Mode
+        Current                           : N/A
+        Pending                           : N/A
+    GPU C2C Mode                          : Disabled
+    GPU Virtualization Mode
+        Virtualization Mode               : Pass-Through
+        Host VGPU Mode                    : N/A
+        vGPU Heterogeneous Mode           : N/A
+    GPU Recovery Action                   : None
+    GSP Firmware Version                  : 580.95.05
+    IBMNPU
+        Relaxed Ordering Mode             : N/A
+    PCI
+        Bus                               : Unknown Error
+        Device                            : Unknown Error
+        Domain                            : Unknown Error
+        Base Classcode                    : Unknown Error
+        Sub Classcode                     : Unknown Error
+        Device Id                         : Unknown Error
+        Bus Id                            : Unknown Error
+        Sub System Id                     : Unknown Error
+        GPU Link Info
+            PCIe Generation
+                Max                       : 5
+                Current                   : 5
+                Device Current            : 5
+                Device Max                : 5
+                Host Max                  : N/A
+            Link Width
+                Max                       : 16x
+                Current                   : 16x
+        Bridge Chip
+            Type                          : N/A
+            Firmware                      : N/A
+        Replays Since Reset               : 5
+        Replay Number Rollovers           : 0
+        Tx Throughput                     : 461 KB/s
+        Rx Throughput                     : 2757 KB/s
+        Atomic Caps Outbound              : N/A
+        Atomic Caps Inbound               : N/A
+    Fan Speed                             : N/A
+    Performance State                     : P0
+    Clocks Event Reasons
+        Idle                              : Active
+        Applications Clocks Setting       : Not Active
+        SW Power Cap                      : Not Active
+        HW Slowdown                       : Not Active
+            HW Thermal Slowdown           : Not Active
+            HW Power Brake Slowdown       : Not Active
+        Sync Boost                        : Not Active
+        SW Thermal Slowdown               : Not Active
+        Display Clock Setting             : Not Active
+    Clocks Event Reasons Counters
+        SW Power Capping                  : 84800794370 us
+        Sync Boost                        : 0 us
+        SW Thermal Slowdown               : 0 us
+        HW Thermal Slowdown               : 0 us
+        HW Power Braking                  : 0 us
+    Sparse Operation Mode                 : Disabled
+    FB Memory Usage
+        Total                             : 81559 MiB
+        Reserved                          : 480 MiB
+        Used                              : 4 MiB
+        Free                              : 81076 MiB
+    BAR1 Memory Usage
+        Total                             : 131072 MiB
+        Used                              : 5 MiB
+        Free                              : 131067 MiB
+    Conf Compute Protected Memory Usage
+        Total                             : 0 MiB
+        Used                              : 0 MiB
+        Free                              : 0 MiB
+    Compute Mode                          : Default
+    Utilization
+        GPU                               : 0 %
+        Memory                            : 0 %
+        Encoder                           : 0 %
+        Decoder                           : 0 %
+        JPEG                              : 0 %
+        OFA                               : 0 %
+    Encoder Stats
+        Active Sessions                   : 0
+        Average FPS                       : 0
+        Average Latency                   : 0
+    FBC Stats
+        Active Sessions                   : 0
+        Average FPS                       : 0
+        Average Latency                   : 0
+    DRAM Encryption Mode
+        Current                           : N/A
+        Pending                           : N/A
+    ECC Mode
+        Current                           : Enabled
+        Pending                           : Enabled
+    ECC Errors
+        Volatile
+            SRAM Correctable              : 0
+            SRAM Uncorrectable Parity     : 0
+            SRAM Uncorrectable SEC-DED    : 0
+            DRAM Correctable              : 0
+            DRAM Uncorrectable            : 0
+        Aggregate
+            SRAM Correctable              : 0
+            SRAM Uncorrectable Parity     : 0
+            SRAM Uncorrectable SEC-DED    : 0
+            DRAM Correctable              : 0
+            DRAM Uncorrectable            : 0
+            SRAM Threshold Exceeded       : No
+        Aggregate Uncorrectable SRAM Sources
+            SRAM L2                       : 0
+            SRAM SM                       : 0
+            SRAM Microcontroller          : 0
+            SRAM PCIE                     : 0
+            SRAM Other                    : 0
+        Channel Repair Pending            : No
+        TPC Repair Pending                : No
+    Retired Pages
+        Single Bit ECC                    : N/A
+        Double Bit ECC                    : N/A
+        Pending Page Blacklist            : N/A
+    Remapped Rows
+        Correctable Error                 : 0
+        Uncorrectable Error               : 0
+        Pending                           : No
+        Remapping Failure Occurred        : No
+        Bank Remap Availability Histogram
+            Max                           : 2560 bank(s)
+            High                          : 0 bank(s)
+            Partial                       : 0 bank(s)
+            Low                           : 0 bank(s)
+            None                          : 0 bank(s)
+    Temperature
+        GPU Current Temp                  : 24 C
+        GPU T.Limit Temp                  : 61 C
+        GPU Shutdown T.Limit Temp         : -8 C
+        GPU Slowdown T.Limit Temp         : -2 C
+        GPU Max Operating T.Limit Temp    : 0 C
+        GPU Target Temperature            : N/A
+        Memory Current Temp               : 34 C
+        Memory Max Operating T.Limit Temp : 0 C
+    GPU Power Readings
+        Average Power Draw                : 71.07 W
+        Instantaneous Power Draw          : 70.87 W
+        Current Power Limit               : 700.00 W
+        Requested Power Limit             : 700.00 W
+        Default Power Limit               : 700.00 W
+        Min Power Limit                   : 200.00 W
+        Max Power Limit                   : 700.00 W
+    GPU Memory Power Readings 
+        Average Power Draw                : 33.23 W
+        Instantaneous Power Draw          : N/A
+    Module Power Readings
+        Average Power Draw                : N/A
+        Instantaneous Power Draw          : N/A
+        Current Power Limit               : N/A
+        Requested Power Limit             : N/A
+        Default Power Limit               : N/A
+        Min Power Limit                   : N/A
+        Max Power Limit                   : N/A
+    Power Smoothing                       : N/A
+    Workload Power Profiles
+        Requested Profiles                : N/A
+        Enforced Profiles                 : N/A
+    Clocks
+        Graphics                          : 345 MHz
+        SM                                : 345 MHz
+        Memory                            : 2619 MHz
+        Video                             : 765 MHz
+    Applications Clocks
+        Graphics                          : 1980 MHz
+        Memory                            : 2619 MHz
+    Default Applications Clocks
+        Graphics                          : 1980 MHz
+        Memory                            : 2619 MHz
+    Deferred Clocks
+        Memory                            : N/A
+    Max Clocks
+        Graphics                          : 1980 MHz
+        SM                                : 1980 MHz
+        Memory                            : 2619 MHz
+        Video                             : 1545 MHz
+    Max Customer Boost Clocks
+        Graphics                          : 1980 MHz
+    Clock Policy
+        Auto Boost                        : N/A
+        Auto Boost Default                : N/A
+    Fabric
+        State                             : Completed
+        Status                            : Success
+        CliqueId                          : 0
+        ClusterUUID                       : 00000000-0000-0000-0000-000000000000
+        Health
+            Summary                       : N/A
+            Bandwidth                     : N/A
+            Route Recovery in progress    : N/A
+            Route Unhealthy               : N/A
+            Access Timeout Recovery       : N/A
+            Incorrect Configuration       : N/A
+    Processes                             : None
+    Capabilities
+        EGM                               : disabled
+
+COMMAND: ["python", "-c", "import torch; from suffix_native.cache import SuffixDecodingCache; assert torch.cuda.device_count()==1; assert 'H100' in torch.cuda.get_device_name(0); print(torch.__version__,torch.version.cuda,torch.cuda.get_device_name(0)); x=torch.randn(32,4096,device='cuda',dtype=torch.bfloat16); print((x@x.T).shape); torch.cuda.synchronize(); from sglang.srt.server_args import ServerArgs; print('SGLang import OK')"]
+2.13.0+cu130 13.0 NVIDIA H100 80GB HBM3
+torch.Size([32, 32])
+SGLang import OK
+COMMAND: ["python", "scripts/gpu_public_gate.py", "--mode", "ordinary", "--shared", "1", "--limit", "0"]
+[2026-10-04 10:58:30] Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+
+Multi-thread loading shards:   0% Completed | 0/4 [00:00<?, ?it/s]
+Multi-thread loading shards:  25% Completed | 1/4 [00:02<00:06,  2.02s/it]
+Multi-thread loading shards:  50% Completed | 2/4 [00:03<00:02,  1.45s/it]
+Multi-thread loading shards:  75% Completed | 3/4 [00:04<00:01,  1.27s/it]
+Multi-thread loading shards: 100% Completed | 4/4 [00:05<00:00,  1.18s/it]
+Multi-thread loading shards: 100% Completed | 4/4 [00:05<00:00,  1.29s/it]
+PROGRESS: public-gate-ordinary-shared1 8 public requests
+PROGRESS: public-gate-ordinary-shared1 16 public requests
+PROGRESS: public-gate-ordinary-shared1 24 public requests
+PROGRESS: public-gate-ordinary-shared1 32 public requests
+PROGRESS: public-gate-ordinary-shared1 40 public requests
+PROGRESS: public-gate-ordinary-shared1 48 public requests
+PROGRESS: public-gate-ordinary-shared1 52 public requests
+PROGRESS: public-gate-ordinary-shared1 56 public requests
+PROGRESS: public-gate-ordinary-shared1 64 public requests
+PROGRESS: public-gate-ordinary-shared1 72 public requests
+PROGRESS: public-gate-ordinary-shared1 80 public requests
+PROGRESS: public-gate-ordinary-shared1 88 public requests
+PROGRESS: public-gate-ordinary-shared1 96 public requests
+PROGRESS: public-gate-ordinary-shared1 104 public requests
+PROGRESS: public-gate-ordinary-shared1 112 public requests
+PROGRESS: public-gate-ordinary-shared1 120 public requests
+PROGRESS: public-gate-ordinary-shared1 128 public requests
+PROGRESS: public-gate-ordinary-shared1 136 public requests
+PROGRESS: public-gate-ordinary-shared1 144 public requests
+PROGRESS: public-gate-ordinary-shared1 152 public requests
+PROGRESS: public-gate-ordinary-shared1 160 public requests
+PROGRESS: public-gate-ordinary-shared1 168 public requests
+PROGRESS: public-gate-ordinary-shared1 176 public requests
+PROGRESS: public-gate-ordinary-shared1 184 public requests
+PROGRESS: public-gate-ordinary-shared1 192 public requests
+PROGRESS: public-gate-ordinary-shared1 200 public requests
+PROGRESS: public-gate-ordinary-shared1 208 public requests
+PROGRESS: public-gate-ordinary-shared1 216 public requests
+PROGRESS: public-gate-ordinary-shared1 224 public requests
+PROGRESS: public-gate-ordinary-shared1 232 public requests
+PROGRESS: public-gate-ordinary-shared1 240 public requests
+COMMAND: ["python", "scripts/gpu_public_gate.py", "--mode", "ngram", "--shared", "1", "--limit", "0"]
+[2026-10-04 11:18:41] Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+
+Multi-thread loading shards:   0% Completed | 0/4 [00:00<?, ?it/s]
+Multi-thread loading shards:  25% Completed | 1/4 [00:00<00:01,  1.63it/s]
+Multi-thread loading shards:  50% Completed | 2/4 [00:01<00:01,  1.61it/s]
+Multi-thread loading shards:  75% Completed | 3/4 [00:01<00:00,  1.62it/s]
+Multi-thread loading shards: 100% Completed | 4/4 [00:02<00:00,  1.66it/s]
+Multi-thread loading shards: 100% Completed | 4/4 [00:02<00:00,  1.64it/s]
+PROGRESS: public-gate-ngram-shared1 8 public requests
+PROGRESS: public-gate-ngram-shared1 16 public requests
+PROGRESS: public-gate-ngram-shared1 24 public requests
+PROGRESS: public-gate-ngram-shared1 32 public requests
+PROGRESS: public-gate-ngram-shared1 40 public requests
+PROGRESS: public-gate-ngram-shared1 48 public requests
+PROGRESS: public-gate-ngram-shared1 52 public requests
+PROGRESS: public-gate-ngram-shared1 56 public requests
+PROGRESS: public-gate-ngram-shared1 64 public requests
+PROGRESS: public-gate-ngram-shared1 72 public requests
+PROGRESS: public-gate-ngram-shared1 80 public requests
+PROGRESS: public-gate-ngram-shared1 88 public requests
+PROGRESS: public-gate-ngram-shared1 96 public requests
+PROGRESS: public-gate-ngram-shared1 104 public requests
+PROGRESS: public-gate-ngram-shared1 112 public requests
+PROGRESS: public-gate-ngram-shared1 120 public requests
+PROGRESS: public-gate-ngram-shared1 128 public requests

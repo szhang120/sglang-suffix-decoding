@@ -1,0 +1,9 @@
+Waiting for the already-running public-gate; no second GPU allocated
+Traceback (most recent call last):
+  File "/Users/seanzhang/Documents/ChatGPT/sglang-suffix-decoding/analysis/modal_campaign.py", line 111, in <module>
+    main()
+  File "/Users/seanzhang/Documents/ChatGPT/sglang-suffix-decoding/analysis/modal_campaign.py", line 74, in main
+    wait_for("public-gate")
+  File "/Users/seanzhang/Documents/ChatGPT/sglang-suffix-decoding/analysis/modal_campaign.py", line 68, in wait_for
+    raise RuntimeError(f"No local {phase} completion status after six hours; inspect the existing app")
+RuntimeError: No local public-gate completion status after six hours; inspect the existing app

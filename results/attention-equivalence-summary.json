@@ -1,0 +1,48 @@
+{
+  "synthetic": true,
+  "fixtures": 3840,
+  "torch": "2.13.0+cu130",
+  "cuda": "13.0",
+  "gpu": "NVIDIA H100 80GB HBM3",
+  "blocks": [
+    128,
+    0,
+    128,
+    128,
+    64,
+    8
+  ],
+  "script_sha256": "e16499b92cfaf8be79451b23f17530225045246353c647e75bb198cc9112a4f8",
+  "causal_vs_verify_unequal": 0,
+  "custom_vs_verify_unequal": 0,
+  "causal_vs_custom_unequal": 0,
+  "raw_path": "results/modal/modal-20261004-attention-equivalence/raw/modal-20261004-attention-equivalence/attention-equivalence.json.gz",
+  "raw_sha256": "88a980d6400f093858d43aff6b185126b184b93d8bcc0b391ba4023514392df2",
+  "prefixes": [
+    79,
+    104,
+    128,
+    240,
+    512
+  ],
+  "widths": [
+    1,
+    2,
+    4,
+    8,
+    16,
+    33
+  ],
+  "layouts": [
+    "contiguous",
+    "packed-qkv"
+  ],
+  "addressing": [
+    "linear",
+    "permuted"
+  ],
+  "every_query_row": true,
+  "limitation": "Synthetic fixed Q/K/V, BF16, Qwen dimensions, pinned H100 kernel. Does not prove real-model hidden-state equivalence or broad correctness.",
+  "raw_encoding": "gzip; raw_sha256 applies to decompressed bytes",
+  "compressed_sha256": "3c366c5b6db6ecce581200a1926c057f44b7a038df5a6b86f32c97e7333edeff"
+}

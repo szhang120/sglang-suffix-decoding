@@ -1,0 +1,314 @@
+{
+  "diagnostic": true,
+  "measured_requests": 48,
+  "suffix_adapter_present": false,
+  "common_config": {
+    "model_path": "Qwen/Qwen2.5-7B-Instruct",
+    "revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+    "dtype": "bfloat16",
+    "attention_backend": "triton",
+    "enable_deterministic_inference": true,
+    "enable_fp32_lm_head": true,
+    "tp_size": 1,
+    "pp_size": 1,
+    "page_size": 1,
+    "max_running_requests": 1,
+    "disable_overlap_schedule": true,
+    "disable_decode_cuda_graph": true,
+    "disable_prefill_cuda_graph": true,
+    "disable_radix_cache": true,
+    "context_length": 16384,
+    "mem_fraction_static": 0.75,
+    "random_seed": 42
+  },
+  "comparisons": {
+    "pristine: ordinary_vs_ngram": {
+      "requests": 8,
+      "exact_cases": 5,
+      "mismatches": [
+        {
+          "repeat": 0,
+          "question_id": 112,
+          "kind": "initial",
+          "first_difference": 125,
+          "a_ids": [
+            311,
+            1477,
+            279,
+            2790,
+            9162,
+            1447,
+            78045,
+            220
+          ],
+          "b_ids": [
+            1447,
+            78045,
+            220,
+            23,
+            15,
+            15,
+            15,
+            488
+          ]
+        },
+        {
+          "repeat": 0,
+          "question_id": 114,
+          "kind": "initial",
+          "first_difference": 29,
+          "a_ids": [
+            28301,
+            1437,
+            279,
+            2790,
+            1372,
+            315,
+            3204,
+            19554
+          ],
+          "b_ids": [
+            35,
+            24308,
+            279,
+            2790,
+            1372,
+            315,
+            3204,
+            19554
+          ]
+        },
+        {
+          "repeat": 1,
+          "question_id": 114,
+          "kind": "initial",
+          "first_difference": 29,
+          "a_ids": [
+            28301,
+            1437,
+            279,
+            2790,
+            1372,
+            315,
+            3204,
+            19554
+          ],
+          "b_ids": [
+            35,
+            24308,
+            279,
+            2790,
+            1372,
+            315,
+            3204,
+            19554
+          ]
+        }
+      ]
+    },
+    "head-only: ordinary_vs_ngram": {
+      "requests": 8,
+      "exact_cases": 5,
+      "mismatches": [
+        {
+          "repeat": 0,
+          "question_id": 112,
+          "kind": "initial",
+          "first_difference": 125,
+          "a_ids": [
+            311,
+            1477,
+            279,
+            2790,
+            9162,
+            1447,
+            78045,
+            220
+          ],
+          "b_ids": [
+            1447,
+            78045,
+            220,
+            23,
+            15,
+            15,
+            15,
+            488
+          ]
+        },
+        {
+          "repeat": 0,
+          "question_id": 114,
+          "kind": "initial",
+          "first_difference": 29,
+          "a_ids": [
+            28301,
+            1437,
+            279,
+            2790,
+            1372,
+            315,
+            3204,
+            19554
+          ],
+          "b_ids": [
+            35,
+            24308,
+            279,
+            2790,
+            1372,
+            315,
+            3204,
+            19554
+          ]
+        },
+        {
+          "repeat": 1,
+          "question_id": 114,
+          "kind": "initial",
+          "first_difference": 29,
+          "a_ids": [
+            28301,
+            1437,
+            279,
+            2790,
+            1372,
+            315,
+            3204,
+            19554
+          ],
+          "b_ids": [
+            35,
+            24308,
+            279,
+            2790,
+            1372,
+            315,
+            3204,
+            19554
+          ]
+        }
+      ]
+    },
+    "shared-v12: ordinary_vs_ngram": {
+      "requests": 8,
+      "exact_cases": 7,
+      "mismatches": [
+        {
+          "repeat": 0,
+          "question_id": 112,
+          "kind": "initial",
+          "first_difference": 125,
+          "a_ids": [
+            311,
+            1477,
+            279,
+            2790,
+            9162,
+            1447,
+            78045,
+            220
+          ],
+          "b_ids": [
+            1447,
+            78045,
+            220,
+            23,
+            15,
+            15,
+            15,
+            488
+          ]
+        }
+      ]
+    },
+    "ordinary: pristine_vs_head-only": {
+      "requests": 8,
+      "exact_cases": 8,
+      "mismatches": []
+    },
+    "ordinary: head-only_vs_shared-v12": {
+      "requests": 8,
+      "exact_cases": 6,
+      "mismatches": [
+        {
+          "repeat": 0,
+          "question_id": 114,
+          "kind": "initial",
+          "first_difference": 29,
+          "a_ids": [
+            28301,
+            1437,
+            279,
+            2790,
+            1372,
+            315,
+            3204,
+            19554
+          ],
+          "b_ids": [
+            35,
+            24308,
+            279,
+            2790,
+            1372,
+            315,
+            3204,
+            19554
+          ]
+        },
+        {
+          "repeat": 1,
+          "question_id": 114,
+          "kind": "initial",
+          "first_difference": 29,
+          "a_ids": [
+            28301,
+            1437,
+            279,
+            2790,
+            1372,
+            315,
+            3204,
+            19554
+          ],
+          "b_ids": [
+            35,
+            24308,
+            279,
+            2790,
+            1372,
+            315,
+            3204,
+            19554
+          ]
+        }
+      ]
+    },
+    "ngram: pristine_vs_head-only": {
+      "requests": 8,
+      "exact_cases": 8,
+      "mismatches": []
+    },
+    "ngram: head-only_vs_shared-v12": {
+      "requests": 8,
+      "exact_cases": 8,
+      "mismatches": []
+    }
+  },
+  "raw_sha256": {
+    "pristine/ordinary/requests.jsonl": "a0f670e72bf7de10f452d331b7786ef815e012caa9f5aafddf71984063ca672d",
+    "pristine/ordinary/environment.json": "f7b5584fe16836c0c7a11d264434fbb5d1eb0ccedcb025abc2610369369b742c",
+    "pristine/ngram/requests.jsonl": "edb9532dd76559ba473ed255ffb515a16735e8d10b32766ee73f7f07631d93e7",
+    "pristine/ngram/environment.json": "8149759964e6f4c7ec7b2e8f0a4f8af94006834fb69467db43982357cddacb62",
+    "head-only/ordinary/requests.jsonl": "28b0c324073199f80caf55759e0562700ceebc55e4a6e4066f4bae8445c84043",
+    "head-only/ordinary/environment.json": "0274afb18bb1258f3f2e38c60dd75e3e24057b6919efb2afaf70535bfc808e55",
+    "head-only/ngram/requests.jsonl": "1ecee9fb545401ff24ae65f488bdff219dd37265c303099d3394fcf851c46392",
+    "head-only/ngram/environment.json": "2fd46dcf1e5a86e9d3aee0f2a8a2fb2a279bd9d45c746406fbc25387d0814d45",
+    "shared-v12/ordinary/requests.jsonl": "ac511a81e5d1b9009d27ce44ec701a31f54a3f56531eb3a81e3f96d4d91455c0",
+    "shared-v12/ordinary/environment.json": "82eb2adc883400a944a519833b1e33d777d76069282a58770b0826e678f1c511",
+    "shared-v12/ngram/requests.jsonl": "87abaff4a27ade399cc129f615cd06f3454e0d6ccb3023e106534fb2ae0848d8",
+    "shared-v12/ngram/environment.json": "a3700bf9cb429c2ab116e7d80798cbcf3b2b23abe4bd10e6d5ab167989e9bdba"
+  },
+  "limitation": "Four selected failing contexts, cold and warm passes; not a broad correctness gate or serving benchmark"
+}

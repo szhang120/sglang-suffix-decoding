@@ -129,6 +129,8 @@ def execute(
     gpu_requested: bool = True,
     function_timeout: int = 14400,
     public_gate_limit: int = 0,
+    trace_variant: str = "suffix",
+    reference_run: str = "",
 ):
     import hashlib
     import subprocess
@@ -155,7 +157,7 @@ def execute(
             f"Preserving completed phase {phase_key}; use a new run ID to repeat"
         )
     started = time.time()
-    status = {"phase": phase, "trial": trial, "run_id": run_id, "start_unix": started}
+    status = {"success": False, "phase": phase, "trial": trial, "run_id": run_id, "start_unix": started}
     try:
         with log.open("a", buffering=1) as f:
 
@@ -317,6 +319,40 @@ def execute(
                         print(f"PROGRESS: timed {mode} trial{trial} matches all240 public reference outputs", flush=True)
             elif phase == "width-probe":
                 run(["python", "scripts/gpu_width_probe.py"])
+            elif phase == "natural-trace":
+                if trace_variant not in ("suffix", "suffix-fixed", "suffix-local"):
+                    raise ValueError("Unknown suffix trace variant")
+                if not reference_run or any(c not in "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_" for c in reference_run):
+                    raise ValueError("A validated reference run ID is required")
+                reference_dir = Path("/artifacts") / reference_run / "results"
+                checks = json.loads((reference_dir / "public-gate-summary.json").read_text())["checks"]
+                current = [c for c in checks if c["shared_decode"] == 1]
+                if ({c["mode"] for c in current} != {"ngram", "suffix"}
+                        or any(not c["complete"] or c["mismatches"] for c in current)):
+                    raise ValueError("Natural traces require a passing public gate")
+                os.environ["SUFFIX_TRACE"] = str(results / "suffix-rounds.jsonl")
+                os.environ["SUFFIX_FIXED"] = "1" if trace_variant == "suffix-fixed" else "0"
+                os.environ["SUFFIX_CACHE_REQUESTS"] = "0" if trace_variant == "suffix-local" else "128"
+                status["trace_variant"] = trace_variant
+                status["reference_run"] = reference_run
+                run(["python", "scripts/gpu_public_gate.py", "--mode", "suffix", "--shared", "1"])
+                reference = [json.loads(line) for line in
+                             (reference_dir / "public-gate-ordinary-shared1.jsonl").read_text().splitlines()]
+                traced = [json.loads(line) for line in
+                          (results / "public-gate-suffix-shared1.jsonl").read_text().splitlines()]
+                if len(reference) != 240 or len(traced) != 240:
+                    raise ValueError("Incomplete natural trace workload")
+                mismatches = []
+                for a, b in zip(reference, traced):
+                    if any(a[k] != b[k] for k in ("block", "index", "question_id")):
+                        raise ValueError("Traced/public request identities differ")
+                    if a["response"]["output_ids"] != b["response"]["output_ids"]:
+                        mismatches.append(dict(block=b["block"], index=b["index"], question_id=b["question_id"]))
+                (results / "trace-equality.json").write_text(json.dumps(
+                    dict(reference_run=reference_run, variant=trace_variant,
+                         requests=240, mismatches=mismatches), indent=2) + "\n")
+                if mismatches:
+                    raise ValueError("Natural trace output differs from public reference")
             elif phase in ("public-probe", "public-gate"):
                 variants = [(1, "ordinary"), (1, "ngram"), (1, "suffix")]
                 if phase == "public-probe":
@@ -349,6 +385,8 @@ def execute(
     except Exception as exc:
         status.update(success=False, error=str(exc))
     finally:
+        if not status["success"] and "error" not in status:
+            status["error"] = "Interrupted before completion"
         status["elapsed_seconds"] = time.time() - started
         # Indicative list-price compute estimate, not an account invoice.
         status["compute_estimate_usd"] = status["elapsed_seconds"] * (
@@ -364,7 +402,8 @@ def execute(
 
 
 @app.local_entrypoint()
-def main(phase: str = "preflight", run_id: str = "", trial: int = 0, limit: int = 0):
+def main(phase: str = "preflight", run_id: str = "", trial: int = 0, limit: int = 0,
+         variant: str = "suffix", reference_run: str = ""):
     import datetime
     import hashlib
 
@@ -396,7 +435,8 @@ def main(phase: str = "preflight", run_id: str = "", trial: int = 0, limit: int 
         for name in source_names
     }
     output = execute.remote(
-        phase, run_id, trial, image.object_id, expected, not CPU_ONLY, FUNCTION_TIMEOUT, limit
+        phase, run_id, trial, image.object_id, expected, not CPU_ONLY, FUNCTION_TIMEOUT,
+        limit, variant, reference_run
     )
     print(json.dumps(output, indent=2))
     destination = ROOT / "results/modal" / run_id
