@@ -1,11 +1,12 @@
 # SuffixDecoding in SGLang
 
-A reproducible **linear, greedy, batch-one** implementation using the author CPU suffix tree and SGLang target verification. **The initial 30-case GPU gate passes, but the broader public-workload equality check fails.** Modal executes Qwen on one H100, with 30 exact-ID cases and 416 verification/KV checks. Controlled-width profiling establishes some saved GPU work and substantial internal tile padding. Earlier numerical divergences and diagnostic failures are retained. No serving speedup is claimed. NGRAM differs on 123/240 public requests; the interrupted suffix run differs on 13/28 completed requests. Timing trials are stopped while common target execution is investigated.
+A reproducible **linear, greedy, batch-one** implementation using the author CPU suffix tree and SGLang target verification. **The initial 30-case GPU gate passes, but the broader public-workload equality check fails.** Modal executes Qwen on one H100, with 30 exact-ID cases and 416 verification/KV checks. Controlled-width profiling establishes some saved GPU work and substantial internal tile padding. Earlier numerical divergences and diagnostic failures are retained. No serving speedup is claimed. NGRAM differs on 123/240 public requests; the interrupted suffix run differs on 13/28 completed requests. Timing trials remain stopped. An opt-in common-attention-kernel experiment passes eight public prompts for both speculators; full-workload validation is running. This experiment also changes ordinary decode cost.
 
 - [Project plan](PROJECT_PLAN.md): code-grounded design, invariants, milestones and 0–100 decision scores.
 - [Technical report](docs/TECHNICAL_REPORT.md): inference/KV reasoning, local evidence and limits.
 - [GPU runbook](docs/GPU_RUNBOOK.md): Modal and SSH execution workflows.
 - [Source lock](configs/source-lock.json) and [hashed Linux dependency lock](configs/gpu-requirements.lock).
+- [Public audit release](https://github.com/szhang120/sglang-suffix-decoding/releases/tag/v0.1.0-audit): raw width traces, invalid broader run and exact source snapshots, with SHA256 manifests.
 - [Passing correctness records and frozen workload](results/final/) and [controlled-width profile summaries](results/width-probe-final/).
 
 ## Local CPU verification
@@ -44,7 +45,7 @@ finally:
 PY
 ```
 
-The validated scope is one greedy request, one CUDA GPU, dense Qwen, eager execution and the common deterministic Triton/FP32-head configuration. Unsupported batching, graphs, overlap, sampling/history penalties and grammar/logprob requests are rejected. This is a research adaptation with bounded caches, not a general production speculator.
+The intended scope is one greedy request, one CUDA GPU, dense Qwen, eager execution and the common deterministic Triton/FP32-head configuration. Unsupported batching, graphs, overlap, sampling/history penalties and grammar/logprob requests are rejected. This is a research adaptation with bounded caches, not a general production speculator.
 
 ## Sources and licensing
 

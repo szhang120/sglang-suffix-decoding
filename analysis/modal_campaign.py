@@ -7,7 +7,6 @@ Run from the repository root. No retries or concurrent GPU functions.
 import argparse
 import json
 import os
-import shutil
 import subprocess
 import time
 from pathlib import Path
@@ -40,6 +39,8 @@ def main():
     parser.add_argument("--run-id", required=True)
     parser.add_argument("--image", required=True)
     parser.add_argument("--modal", default="/tmp/sglang-modal-cli/bin/modal")
+    parser.add_argument("--after-public-gate", action="store_true",
+                        help="Wait for the running full gate, then audit frozen inputs and start trial0")
     args = parser.parse_args()
     root = Path(__file__).resolve().parents[1]
     os.chdir(root)
@@ -58,12 +59,25 @@ def main():
                             "--run-id", args.run_id, "--trial", str(trial)],
                            env=env, stdout=f, stderr=subprocess.STDOUT, check=True)
 
-    initial = statuses / "benchmark-0-status.json"
-    print("Waiting for the already-running trial0; no second GPU allocated", flush=True)
-    while not initial.exists():
-        time.sleep(10)
-    if not json.loads(initial.read_text())["success"]:
-        raise RuntimeError("Existing trial0 failed; preserve status and investigate")
+    def wait_for(phase):
+        path = statuses / f"{phase}-0-status.json"
+        deadline = time.monotonic() + 6 * 3600
+        print(f"Waiting for the already-running {phase}; no second GPU allocated", flush=True)
+        while not path.exists():
+            if time.monotonic() >= deadline:
+                raise RuntimeError(f"No local {phase} completion status after six hours; inspect the existing app")
+            time.sleep(10)
+        if not json.loads(path.read_text())["success"]:
+            raise RuntimeError(f"Existing {phase} failed; preserve status and investigate")
+
+    if args.after_public_gate:
+        wait_for("public-gate")
+        print("Full public gate passed; starting plain and direct-KV audit on frozen inputs", flush=True)
+        run("audit-frozen")
+        print("Audit passed; starting trial0", flush=True)
+        run("benchmark")
+    else:
+        wait_for("benchmark")
     for trial in range(5):
         if trial:
             print(f"Starting trial{trial}", flush=True)
@@ -78,8 +92,16 @@ def main():
     for mode in MODES[:3]:
         subprocess.run([args.modal, "volume", "get", "sglang-suffix-artifacts",
                         f"{args.run_id}/results/gpu/{mode}-0-profile", str(dest / "gpu")], check=True)
-    for path in (root / "results/final").iterdir():
-        shutil.copyfile(path, dest / path.name)
+    # Fetch this campaign's evidence; do not silently relabel old-image gates.
+    evidence = ["workload.jsonl", "workload.sha256", "public-gate-summary.json",
+                "audit-summary.json", "audit-suffix-trace.jsonl"]
+    evidence += [f"correctness-{mode}.jsonl" for mode in MODES[:3]]
+    evidence += [f"correctness-plain-{mode}.jsonl" for mode in MODES[:3]]
+    evidence += [f"public-gate-{mode}-shared1.jsonl" for mode in MODES[:3]]
+    evidence += [f"public-gate-{mode}-shared1-environment.json" for mode in MODES[:3]]
+    for name in evidence:
+        subprocess.run([args.modal, "volume", "get", "sglang-suffix-artifacts",
+                        f"{args.run_id}/results/{name}", str(dest / name)], check=True)
     subprocess.run([str(root / ".venv/bin/python"), "analysis/benchmark_report.py", str(dest),
                     "--output", "results/final/benchmark-report.json"], check=True)
     print("Campaign completed; final raw outputs and benchmark report saved locally", flush=True)

@@ -30,13 +30,14 @@
     "backend": "triton",
     "tp": 1,
     "page_size": 1,
-    "status": "Validated30-case exact-ID and direct KV gate on H100 with Triton, deterministic ops, FP32 logits and stride-preserving FP32-output head matmul. Final benchmarks pending.",
+    "status": "Initial30-case gate passed, broader v11 public gate failed. Shared decode/verification attention kernel is an unvalidated diagnostic candidate.",
     "deterministic_inference": true,
     "flashinfer_split_tile_size": 4096,
     "fp32_lm_head": true,
     "triton_split_tile_size": 4096,
     "ngram_breadth": 1,
-    "fp32_matmul_weight_copy_removed": true
+    "fp32_matmul_weight_copy_removed": true,
+    "unified_decode": true
   },
   "dependency_lock": {
     "path": "configs/gpu-requirements.lock",
@@ -59,7 +60,7 @@
   },
   "integration_patch": {
     "path": "patches/sglang-suffix.patch",
-    "sha256": "2691fc4d9a04a4c6ad3d0dc77af9d3eef8ad08ac4fe4052be6dd8a697a9b8df9"
+    "sha256": "19fc2ced20cde74fef8bfb0e7baeaada3430fc2a4d8096597e1778da1d2327bf"
   },
   "modal": {
     "sdk": "1.6.1",
@@ -80,5 +81,15 @@
     "max_spec_offset": 0.0,
     "min_token_prob": 0.1,
     "use_tree_spec": false
+  },
+  "frozen_workload": {
+    "path": "configs/frozen-workload.jsonl",
+    "sha256": "8b94953aa6e1c8ec18e4f9c405f82cf87d4c330ad172be118e0547e4c657132c",
+    "rows": 84,
+    "initial": 52,
+    "refinement": 32,
+    "baseline_generated_run": "modal-20261004-v11",
+    "baseline_unified_decode": false,
+    "purpose": "Fixed public inputs; historical baseline outputs do not seed caches and are not the new candidate correctness reference"
   }
 }

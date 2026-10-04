@@ -3,7 +3,7 @@
   "cpu_tests_passed": true,
   "native_compiler": "AppleClang 17.0.0",
   "patch_clean_apply": true,
-  "patch_reproduces_files": 7,
+  "patch_reproduces_files": 8,
   "syntax_checks": true,
   "ruff_checks": "F401,F821,F823,UP037 pass; ruff 0.15.1",
   "gpu_executed": true,
@@ -171,5 +171,14 @@
       },
       "status": "Stopped before ablations and remaining trials"
     }
-  ]
+  ],
+  "shared_attention_subset": {
+    "run_id": "modal-20261004-v12",
+    "requests": 8,
+    "ngram_mismatches_original_decode": 6,
+    "ngram_mismatches_shared_decode": 0,
+    "suffix_mismatches_shared_decode": 0,
+    "new_ordinary_equals_old_ngram": 8,
+    "full_gate_passed": false
+  }
 }

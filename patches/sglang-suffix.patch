@@ -69,6 +69,83 @@ index b6a7a58..c01bc1a 100644
      return matmul_persistent(self.contiguous(), mat2.contiguous(), out_dtype=out_dtype)
  
  
+diff --git a/python/sglang/srt/layers/attention/triton_backend.py b/python/sglang/srt/layers/attention/triton_backend.py
+index 914def7..3b4437a 100644
+--- a/python/sglang/srt/layers/attention/triton_backend.py
++++ b/python/sglang/srt/layers/attention/triton_backend.py
+@@ -1,5 +1,8 @@
+ from __future__ import annotations
+ 
++# Modified for this reproduction: opt-in common deterministic attention
++# kernel for ordinary batch-one decode and speculative verification.
++
+ from dataclasses import dataclass
+ from typing import TYPE_CHECKING, List, Optional
+ 
+@@ -345,6 +348,23 @@ class TritonAttnBackend(AttentionBackend):
+         self.enable_deterministic = (
+             get_exec().deterministic.enable_deterministic_inference
+         )
++        self.suffix_unified_decode = get_bool_env_var(
++            "SGLANG_SUFFIX_UNIFIED_DECODE", "false"
++        )
++        if self.suffix_unified_decode:
++            if (
++                not _is_cuda
++                or not self.enable_deterministic
++                or not cuda_graph_fully_disabled()
++                or self.use_mla
++                or self.dcp_size != 1
++                or self.page_size != 1
++                or (self.sliding_window_size is not None and self.sliding_window_size > 0)
++            ):
++                raise ValueError("Shared suffix decode requires eager deterministic dense CUDA attention, page1 and no DCP/window")
++            self.suffix_decode_qo_indptr = torch.arange(
++                2, dtype=torch.int32, device=self.device
++            )
+ 
+         if self.enable_deterministic:
+             # Fixed split tile size for batch invariance
+@@ -2243,6 +2263,39 @@ class TritonAttnBackend(AttentionBackend):
+             k_descale = 1.0
+             v_descale = 1.0
+ 
++        if self.suffix_unified_decode:
++            if (
++                forward_batch.batch_size != 1
++                or layer.attn_type != AttentionType.DECODER
++                or layer.is_cross_attention
++            ):
++                raise ValueError("Shared suffix decode supports one causal decoder request")
++            # Decode metadata already contains the just-written pending root.
++            # Do not append its slot a second time. The sole query is at the
++            # last KV position; all prior positions form its causal prefix.
++            self.extend_attention_fwd_unified(
++                q.view(-1, layer.tp_q_head_num, layer.qk_head_dim),
++                o.view(-1, layer.tp_q_head_num, layer.v_head_dim),
++                self.token_to_kv_pool.get_key_buffer(layer.layer_id),
++                self.token_to_kv_pool.get_value_buffer(layer.layer_id),
++                k_descale,
++                v_descale,
++                self.suffix_decode_qo_indptr,
++                kv_indptr,
++                kv_indices,
++                forward_batch.seq_lens[:1].to(torch.int32) - 1,
++                1,
++                sm_scale=layer.scaling,
++                logit_cap=logits_soft_cap,
++                is_causal=True,
++                sinks=sinks,
++                xai_temperature_len=layer.xai_temperature_len,
++                page_size=1,
++                score_mod=score_mod,
++                aux_tensors=aux_tensors,
++            )
++            return o
++
+         # Select the correctly-sized attn_logits buffer for this layer.
+         # The triton kernel's // Lv stride trick requires attn_logits.shape[-1]
+         # to exactly match the layer's v_head_dim.
 diff --git a/python/sglang/srt/managers/scheduler.py b/python/sglang/srt/managers/scheduler.py
 index a7d8bae..fcfddf4 100644
 --- a/python/sglang/srt/managers/scheduler.py

@@ -55,6 +55,7 @@ def main():
             name: os.environ.get(name)
             for name in (
                 "SGLANG_TRITON_DECODE_SPLIT_TILE_SIZE",
+                "SGLANG_SUFFIX_UNIFIED_DECODE",
                 "SGLANG_BATCH_INVARIANT_OPS_ENABLE_MM_DEEPGEMM",
                 "SGLANG_BATCH_INVARIANT_OPS_ENABLE_MM_FALLBACK_VARIANT",
                 "SGLANG_CACHE_DIR",

@@ -128,6 +128,7 @@ def execute(
     expected_sources: dict = None,
     gpu_requested: bool = True,
     function_timeout: int = 14400,
+    public_gate_limit: int = 0,
 ):
     import hashlib
     import subprocess
@@ -237,10 +238,47 @@ def execute(
                     run(["python", "scripts/gpu_correctness.py", "--mode", mode, "--audit"])
                 run(["python", "scripts/analyze_audit.py", str(results)])
                 run(["python", "scripts/analyze_gpu.py", "--correctness-only"])
+            elif phase == "audit-frozen":
+                # Validate the new target route without regenerating second
+                # turns: timings must use the inputs checked by public-gate.
+                checks = json.loads((results / "public-gate-summary.json").read_text())["checks"]
+                current = [c for c in checks if c["shared_decode"] == 1]
+                if ({c["mode"] for c in current} != {"ngram", "suffix"}
+                        or any(not c["complete"] or c["mismatches"] for c in current)):
+                    raise ValueError("Full public equality gate must pass before audit-frozen")
+                frozen = Path("/project/configs/frozen-workload.jsonl").read_bytes()
+                frozen_lock = json.loads(Path("/project/configs/source-lock.json").read_text())["frozen_workload"]
+                if hashlib.sha256(frozen).hexdigest() != frozen_lock["sha256"]:
+                    raise ValueError("Frozen public workload hash differs")
+                if (results / "workload.jsonl").exists():
+                    raise ValueError("Preserving existing workload")
+                for mode in ("ordinary", "ngram", "suffix"):
+                    run(["python", "scripts/gpu_correctness.py", "--mode", mode])
+                run(["python", "scripts/analyze_gpu.py", "--correctness-only"])
+                for mode in ("ordinary", "ngram", "suffix"):
+                    (results / f"correctness-{mode}.jsonl").rename(
+                        results / f"correctness-plain-{mode}.jsonl"
+                    )
+                for mode in ("ordinary", "ngram", "suffix"):
+                    run(["python", "scripts/gpu_correctness.py", "--mode", mode, "--audit"])
+                run(["python", "scripts/analyze_audit.py", str(results)])
+                run(["python", "scripts/analyze_gpu.py", "--correctness-only"])
+                (results / "workload.jsonl").write_bytes(frozen)
+                (results / "workload.sha256").write_text(frozen_lock["sha256"] + "\n")
+                status["frozen_workload_sha256"] = frozen_lock["sha256"]
             elif phase == "workload":
                 run(["python", "scripts/analyze_gpu.py", "--correctness-only"])
                 run(["python", "scripts/materialize_workload.py"])
             elif phase == "benchmark":
+                source_lock = json.loads(Path("/project/configs/source-lock.json").read_text())
+                if source_lock["gpu_candidate"].get("unified_decode"):
+                    checks = json.loads((results / "public-gate-summary.json").read_text())["checks"]
+                    current = [c for c in checks if c["shared_decode"] == 1]
+                    if ({c["mode"] for c in current} != {"ngram", "suffix"}
+                            or any(not c["complete"] or c["mismatches"] for c in current)):
+                        raise ValueError("Full public equality gate must pass before timings")
+                    if hashlib.sha256((results / "workload.jsonl").read_bytes()).hexdigest() != source_lock["frozen_workload"]["sha256"]:
+                        raise ValueError("Timings must use the public-gated frozen inputs")
                 run(["python", "scripts/analyze_gpu.py", "--correctness-only"])
                 modes = ["ordinary", "ngram", "suffix", "suffix-fixed", "suffix-local"]
                 if not 0 <= trial < 5:
@@ -257,8 +295,39 @@ def execute(
                             str(trial),
                         ]
                     )
+                    if source_lock["gpu_candidate"].get("unified_decode"):
+                        reference = [json.loads(line) for line in
+                                     (results / "public-gate-ordinary-shared1.jsonl").read_text().splitlines()]
+                        measured = [json.loads(line) for line in
+                                    (results / "gpu" / f"{mode}-{trial}" / "requests.jsonl").read_text().splitlines()]
+                        if len(reference) != 240 or len(measured) != 240:
+                            raise ValueError("Incomplete timed mode or public reference")
+                        mismatches = []
+                        for a, b in zip(reference, measured):
+                            if any(a[k] != b[k] for k in ("block", "index", "question_id")):
+                                raise ValueError("Timed/public request identities differ")
+                            if a["response"]["output_ids"] != b["response"]["output_ids"]:
+                                mismatches.append(dict(block=b["block"], index=b["index"], question_id=b["question_id"]))
+                        (results / f"benchmark-{mode}-{trial}-equality.json").write_text(
+                            json.dumps(dict(reference="public-gate-ordinary-shared1.jsonl",
+                                            requests=240, mismatches=mismatches), indent=2) + "\n"
+                        )
+                        if mismatches:
+                            raise ValueError(f"Timed {mode} differs on {len(mismatches)} requests; stopping allocation")
+                        print(f"PROGRESS: timed {mode} trial{trial} matches all240 public reference outputs", flush=True)
             elif phase == "width-probe":
                 run(["python", "scripts/gpu_width_probe.py"])
+            elif phase in ("public-probe", "public-gate"):
+                variants = [(1, "ordinary"), (1, "ngram"), (1, "suffix")]
+                if phase == "public-probe":
+                    variants = [(0, "ordinary"), (0, "ngram")] + variants
+                for shared, mode in variants:
+                    run(["python", "scripts/gpu_public_gate.py", "--mode", mode,
+                         "--shared", str(shared), "--limit", str(public_gate_limit)])
+                command = ["python", "scripts/analyze_public_gate.py", str(results)]
+                if phase == "public-gate" and public_gate_limit == 0:
+                    command.append("--require-complete")
+                run(command)
             elif phase == "profile":
                 for mode in ("ordinary", "ngram", "suffix"):
                     run(
@@ -295,7 +364,7 @@ def execute(
 
 
 @app.local_entrypoint()
-def main(phase: str = "preflight", run_id: str = "", trial: int = 0):
+def main(phase: str = "preflight", run_id: str = "", trial: int = 0, limit: int = 0):
     import datetime
     import hashlib
 
@@ -310,6 +379,8 @@ def main(phase: str = "preflight", run_id: str = "", trial: int = 0):
         "patches/sglang-suffix.patch",
         "native/suffix_native/cache.py",
     ]
+    if (ROOT / "configs/frozen-workload.jsonl").exists():
+        source_names.append("configs/frozen-workload.jsonl")
     source_names += [
         "sglang/" + line.split(" b/", 1)[1]
         for line in (ROOT / "patches/sglang-suffix.patch").read_text().splitlines()
@@ -325,7 +396,7 @@ def main(phase: str = "preflight", run_id: str = "", trial: int = 0):
         for name in source_names
     }
     output = execute.remote(
-        phase, run_id, trial, image.object_id, expected, not CPU_ONLY, FUNCTION_TIMEOUT
+        phase, run_id, trial, image.object_id, expected, not CPU_ONLY, FUNCTION_TIMEOUT, limit
     )
     print(json.dumps(output, indent=2))
     destination = ROOT / "results/modal" / run_id

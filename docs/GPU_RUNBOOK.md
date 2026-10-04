@@ -1,6 +1,6 @@
 # Provisioning and execution
 
-Modal authentication/payment setup is complete; net spend limit is$0. The final Triton/FP32-logit configuration passes30 exact-ID cases across both speculators and direct GPU KV checks. A stride-preserving head matmul removes a measured1.09GB weight-copy operation. No serving benchmark result is established yet. All earlier numerical and diagnostic failures are retained.
+Modal authentication/payment setup is complete; net spend limit is$0. The v11 Triton/FP32-logit configuration passes30 exact-ID cases and direct GPU KV checks, but fails the broader public workload. The v12 shared decode/verification attention experiment passes eight diagnostic prompts; its full gate is pending. A stride-preserving head matmul removes a measured1.09GB weight-copy operation. No serving benchmark result is established yet. All earlier numerical and diagnostic failures are retained.
 
 ## Modal execution
 
@@ -12,6 +12,8 @@ Use Modal CLI 1.6.1 in the isolated Mac environment `/tmp/sglang-modal-cli`. Tok
 /tmp/sglang-modal-cli/bin/modal run scripts/modal_runner.py --phase workload --run-id RUN_ID
 /tmp/sglang-modal-cli/bin/modal run scripts/modal_runner.py --phase benchmark --run-id RUN_ID --trial 0
 ```
+
+For the current shared-attention candidate, run `public-gate` first (240 requests per mode). On success, use `audit-frozen` in the same run ID: it checks plain and instrumented 30-case equality, audits suffix KV, and copies the exact checked workload into the timing directory. It preserves the existing v11-generated refinement inputs; historical output IDs are not the new correctness reference or cache seeds. `benchmark` requires a passing full gate and the same workload hash. Use `public-probe --limit 8` only as a diagnostic subset.
 
 Use phase `audit` for target-logit/acceptance/KV diagnostics after a failure, and `width-probe` for controlled row-count profiling. After downloading width artifacts, run `python scripts/analyze_width_probe.py PATH/width-probe` locally. The streaming reader selects CPU annotations and correlates their launches with GPU kernels; matching GPU annotation labels are excluded. Phase `prepare` combines plain correctness and workload freezing in one GPU allocation. Repeat benchmark trials1–4, then run phases `profile` and `analyze`. Each trial runs every mode sequentially on the same GPU. Commands refuse to overwrite completed phases. Download artifacts from volume `sglang-suffix-artifacts`, under RUN_ID. Create the destination directory before a recursive download; the CLI otherwise treats it as a single filename:
 

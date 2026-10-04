@@ -1,4 +1,5 @@
 import json
+import os
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -6,6 +7,11 @@ LOCK = json.loads((ROOT / "configs/source-lock.json").read_text())
 
 
 def engine_config(mode):
+    # Experimental shared-attention switch is frozen in the source lock and
+    # applies equally to ordinary/NGRAM/SUFFIX target execution.
+    os.environ["SGLANG_SUFFIX_UNIFIED_DECODE"] = (
+        "1" if LOCK["gpu_candidate"].get("unified_decode", False) else "0"
+    )
     m = LOCK["model"]
     config = dict(
         model_path=m["id"],

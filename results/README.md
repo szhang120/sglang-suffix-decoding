@@ -11,7 +11,7 @@ python scripts/analyze_width_probe.py PATH/width-probe
 python analysis/width_report.py PATH/width-probe
 ```
 
-Both commands preserve existing outputs; use a fresh extraction directory when repeating analysis. The summary records individual trace SHA256 hashes. Large traces are excluded from Git; publication as release artifacts remains pending.
+Both commands preserve existing outputs; use a fresh extraction directory when repeating analysis. The summary records individual trace SHA256 hashes. Large traces are excluded from Git and published in the [audit prerelease](https://github.com/szhang120/sglang-suffix-decoding/releases/tag/v0.1.0-audit), together with exact source snapshots and per-file/archive SHA256 manifests.
 
 Generate scientific figures with Python 3.12 and the plotting-only pins in `configs/analysis-requirements.txt`:
 
@@ -25,3 +25,5 @@ MPLCONFIGDIR=/tmp/suffix-matplotlib python analysis/plot_results.py
 `modal/` and `setup/` retain earlier attempts, failures and diagnostic logs. A phase status can fail after successful GPU execution if its subsequent analysis failed. The initial width study had that outcome; its corrected local analysis is retained. The ambiguous single file `modal/modal-20261004-v2/raw` resulted from an incorrectly specified recursive download destination and is not a complete artifact collection. Explicit per-mode correctness files in that directory are authoritative.
 
 `local-verification.json` records the current verification status. CPU microbenchmarks use synthetic integer sequences and establish no model speedup. The first serving trial failed the broader equality gate: see `invalid-benchmark-v11/equality-failure.json`. Completed ordinary/NGRAM records and 28 partial suffix records are preserved; no comparative speedup is valid from that attempt.
+
+`modal/modal-20261004-v12/` contains the eight-prompt attention-path control. It reproduces six NGRAM mismatches with the original decode route and zero with the shared route for either speculator. These are diagnostic subset records; they do not constitute the full public-workload gate.

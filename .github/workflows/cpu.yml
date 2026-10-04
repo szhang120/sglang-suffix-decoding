@@ -21,4 +21,13 @@ jobs:
       - name: Verify already-applied patch and Python syntax
         run: |
           git -C sglang apply --reverse --check ../patches/sglang-suffix.patch
-          python -m compileall -q scripts tests native/suffix_native sglang/python/sglang/srt/speculative/suffix_worker.py
+          python -m compileall -q scripts tests native/suffix_native
+          python - <<'PY'
+          import py_compile
+          from pathlib import Path
+          for line in Path("patches/sglang-suffix.patch").read_text().splitlines():
+              if line.startswith("diff --git "):
+                  path = Path("sglang") / line.split(" b/", 1)[1]
+                  if path.suffix == ".py":
+                      py_compile.compile(str(path), doraise=True)
+          PY
