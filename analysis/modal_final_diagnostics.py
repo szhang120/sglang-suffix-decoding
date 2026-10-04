@@ -18,6 +18,10 @@ model_cache = modal.Volume.from_name("sglang-suffix-model-cache")
 image = modal.Image.from_id(BASE_IMAGE).add_local_file(
     ROOT / "analysis/decode_control_gpu.py", "/project/analysis/decode_control_gpu.py", copy=True
 )
+image = image.add_local_file(ROOT / "scripts/reproduce_gpu.py", "/project/scripts/reproduce_gpu.py", copy=True)
+image = image.add_local_file(
+    ROOT / "results/modal/modal-20261004-v12-suffix-isolated/suffix-gate-status.json",
+    "/project/portable-source-gate.json", copy=True)
 report_files = ("benchmark_report.py", "natural_trace_report.py", "decode_control_report.py", "width_report.py")
 cpu_image = modal.Image.debian_slim(python_version="3.12")
 for filename in report_files:
@@ -168,6 +172,22 @@ def execute(run_id, reference_run, expected, control_sha, runner_sha, image_id):
             point_results(results / "width-probe" / "results")
             run(["python", "scripts/gpu_width_probe.py"])
             checkpoint("width-probe")
+            # Exercise the public runner's isolated workspace on this same
+            # allocation. This smoke is not a second serving benchmark.
+            reset_env()
+            smoke = directory / "portable-runner-smoke"
+            run(["python", "scripts/reproduce_gpu.py", "--output-dir", str(smoke), "--smoke",
+                 "--source-manifest", "/project/portable-source-gate.json"])
+            smoke_status = json.loads((smoke / "campaign-status.json").read_text())
+            assert smoke_status["success"] and smoke_status["smoke_only"] and smoke_status["smoke_requests"] == 4
+            assert smoke_status["source_sha256"] == expected
+            # Export only records/status/log, excluding the linked workspace.
+            exported = results / "portable-runner-smoke"
+            __import__("shutil").copytree(smoke / "results", exported)
+            for name in ("campaign-status.json", "campaign.log"):
+                __import__("shutil").copyfile(smoke / name, exported / name)
+            status["portable_runner_smoke"] = smoke_status
+            checkpoint("portable-runner-smoke")
             status["success"] = True
     except Exception as exc:
         status["error"] = str(exc)

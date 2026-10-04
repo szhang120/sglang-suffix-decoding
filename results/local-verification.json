@@ -218,10 +218,32 @@
   },
   "reporting_policy_tests": 6,
   "latest_ci": {
-    "commit": "dbd1da453d3bad9e4ca22bc5e75b68d5c25c6701",
+    "commit": "fda2d4f7f8b525475114e4906b0fb72e1d5212e9",
     "linux_and_macos": "passed",
-    "url": "https://github.com/szhang120/sglang-suffix-decoding/actions/runs/37238090697"
+    "url": "https://github.com/szhang120/sglang-suffix-decoding/actions/runs/37243691790"
   },
   "suffix_public_workload_correctness_passed": true,
-  "reporting_proposer_configurations_checked": true
+  "reporting_proposer_configurations_checked": true,
+  "portable_reproduction_runner": {
+    "mac_source_hash_dry_run_passed": true,
+    "linux_source_hash_dry_run_passed": true,
+    "gpu_allocated_for_launcher_validation": false,
+    "linux_run": "modal-20261004-portable-cpu-v2",
+    "linux_app": "ap-y6XoCIEvJl06zq7kZMSyX2",
+    "log": "results/setup/modal-portable-cpu-v2.log",
+    "log_sha256": "2284a2257ca3a212698ea34a985eddc2be2aaacf613f4b39c37d0b7e8f41d1a4",
+    "earlier_attempts": [
+      {
+        "error": "Mistyped retained image ID; no container or GPU started",
+        "app": "ap-ufV3i7GLt0NIZSMQBQ8wNB"
+      },
+      {
+        "error": "Container hydration imported local build helper from /scripts/modal_runner.py; fixed by guarding local image construction and propagating CPU-only flag",
+        "app": "ap-8vmbhpewrH0fGO8h9EBIP4",
+        "state": "stopped"
+      }
+    ],
+    "gpu_smoke": "pending in final diagnostic allocation",
+    "full_portable_five_trial_rerun": "not separately executed"
+  }
 }

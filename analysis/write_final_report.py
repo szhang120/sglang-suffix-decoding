@@ -28,7 +28,8 @@ def main():
     assert campaign["completed_trials"] == list(range(5))
     assert len(campaign["completed_modes"]) == 25
     assert all(not r["mismatches"] for r in campaign["completed_modes"] if r["mode"] != "ngram")
-    assert len(diagnostics["completed_phases"]) == 15
+    assert len(diagnostics["completed_phases"]) == 16
+    assert diagnostics["portable_runner_smoke"]["success"]
     assert benchmark["exact_suffix_ids_passed"] and benchmark["measured_requests"] == 6000
     assert all(r["mode"] == "ngram" for r in benchmark["mismatches"])
     assert len(trace["summaries"]) == 9 and sum(r["requests"] for r in trace["summaries"]) == 720
@@ -55,7 +56,7 @@ def main():
         "",
         "All five rotated serving trials completed. Ordinary decoding, adaptive SUFFIX and both suffix ablations match output IDs on all 4,800 measured requests. The unchanged upstream NGRAM baseline is checked separately below. All target-model execution used SGLang; instrumented runs are excluded from serving estimates.",
         "",
-        f"The campaign also passed its plain stop/length/cache gates and {campaign['audited_rounds']} direct verification/KV assertions. Full-workload traces add 720 strictly matching suffix requests. Controlled-width profiles match 54 outputs; the ordinary-route control matches all 24 outputs.",
+        f"The campaign also passed its plain stop/length/cache gates and {campaign['audited_rounds']} direct verification/KV assertions. Full-workload traces add 720 strictly matching suffix requests. Controlled-width profiles match 54 outputs; the ordinary-route control matches all 24 outputs. The portable Linux runner additionally passes four cold/warm smoke requests in its isolated workspace; its complete standalone five-trial orchestration was not separately rerun.",
         "",
         "## Controlled serving timings",
         "",
@@ -68,7 +69,8 @@ def main():
         cells = [f"{aggregates[(mode, block)]['pooled_speedup']:.3f}× [{interval(aggregates[(mode, block)])}]"
                  for block, _ in blocks]
         text.append(f"| {label} | " + " | ".join(cells) + " |")
-    text += ["", "Repetition is a diagnostic upper bound, not an agent benchmark. The unbounded-match-cap ablation does not force 33 executed rows: probability, available continuation and output budget still shorten proposals.",
+    text += ["", "![Exact-output serving ratios and paired trial intervals](figures/benchmark-speedup.png)",
+             "", "Repetition is a diagnostic upper bound, not an agent benchmark. The unbounded-match-cap ablation does not force 33 executed rows: probability, available continuation and output budget still shorten proposals.",
              "", "### Actual second turns", "",
              "The combined refinement block includes first turns. These separate figures use only its 32 second-turn requests per trial (160 measurements per mode).",
              "", "| Mode | Second-turn latency ratio | 95% paired trial interval |",
@@ -113,7 +115,8 @@ def main():
         one = widths[(context, 1)]["median_kernel_ms"]
         full = widths[(context, 33)]["median_kernel_ms"]
         text.append(f"| {context} | {one:.3f}ms | {full:.3f}ms | {100 * (1 - one / full):.1f}% |")
-    text += ["", "Correlated launch grids at context 128:", "",
+    text += ["", "![Controlled verification widths and GPU kernel durations](figures/verify-width-v12.png)",
+             "", "Correlated launch grids at context 128:", "",
              "| Kernel family | One-row grids | 33-row grids |", "|---|---|---|"]
     for family in ("kv_store", "argmax", "attention", "lm_head"):
         small = widths[(128, 1)]["families"][family]["grids"]

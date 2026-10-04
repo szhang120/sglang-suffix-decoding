@@ -106,7 +106,8 @@ def execute(run_id, campaign_run, diagnostics_run, runner_sha):
             specs = [("serving", campaign_dir),
                      ("natural-traces", diagnostic_dir / "results/natural-trace"),
                      ("route-control", diagnostic_dir / "results/route-control"),
-                     ("width-profiles", diagnostic_dir / "results/width-probe")]
+                     ("width-profiles", diagnostic_dir / "results/width-probe"),
+                     ("portable-runner-smoke", diagnostic_dir / "results/portable-runner-smoke")]
             for mode in ("ordinary", "ngram", "suffix", "suffix-fixed", "suffix-local"):
                 specs.append((f"profile-{mode}", diagnostic_dir / f"results/profile/results/gpu/{mode}-0-profile"))
             for label, source in specs:

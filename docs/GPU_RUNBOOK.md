@@ -4,6 +4,48 @@ Modal authentication/payment setup is complete; net spend limit is $0. SUFFIX pa
 
 ## Modal execution
 
+### Fresh public reproduction
+
+The historical launchers below retain the original workspace's private image
+IDs and remote audit dependencies for provenance. For a fresh workspace use
+the portable runner, which builds the pinned public sources and recreates its
+own correctness gates and ordinary reference. No saved remote output is needed.
+
+```sh
+SUFFIX_PORTABLE_CPU_ONLY=1 SUFFIX_MODAL_CPU_ONLY=1 \
+  /tmp/sglang-modal-cli/bin/modal run scripts/modal_reproduce.py \
+  --run-id FRESH_CPU_ID --dry-run
+/tmp/sglang-modal-cli/bin/modal run --detach scripts/modal_reproduce.py \
+  --run-id FRESH_GPU_ID
+```
+
+The first command allocates CPU only for source-hash validation; image building
+also stays off GPU. The second owns one H100 and executes plain gates, a direct
+KV audit, fresh full-workload ordinary/SUFFIX gates, and five rotated trials on
+the already-frozen inputs. NGRAM differences remain descriptive. The source
+manifest shipped in this repository supplies hashes, never cache seeds or
+target outputs. Do not launch it alongside the current GPU campaign.
+
+`FRESH_GPU_ID/campaign-progress.json`, `campaign-status.json`, `campaign.log`
+and `benchmark-report.json` are saved in the artifact volume. Full serving data
+are under `FRESH_GPU_ID/results/gpu/`. A failed SUFFIX gate stops before timings.
+CPU/source validation and a small Linux cold/warm execution smoke are separate
+from validation of a complete rerun; do not claim a second completed experiment
+from either check. The `--smoke` option runs four requests without timing trials.
+
+On an already-provisioned Linux H100 after `scripts/gpu_setup.sh`, the equivalent
+provider-independent command is:
+
+```sh
+python scripts/reproduce_gpu.py --output-dir /path/to/fresh-artifacts
+```
+
+It creates an isolated execution workspace, preserves the checkout's existing
+results, and refuses any existing output directory. Use `--dry-run` on the Mac
+to verify source hashes without GPU work. The older `scripts/run_gpu.sh`
+regenerates inputs and retains the original all-mode-exact policy; it is not the
+entry point for this frozen-workload, descriptive-NGRAM experiment.
+
 Use Modal CLI 1.6.1 in the isolated Mac environment `/tmp/sglang-modal-cli`. Token setup stays outside this repository. The launcher requests one explicit `H100!`, 8 CPU cores, 64GiB RAM and 512GiB ephemeral disk (Modal’s minimum for an explicit request). Persistent named volumes hold model cache and raw artifacts. The current default timeout is four hours, with no automatic retries and scale-down after two seconds. `SUFFIX_MODAL_TIMEOUT` overrides that operational guard. The frozen v11 image source lock and original trial0 used a two-hour guard; later phase statuses record the actual timeout. Increasing headroom changes no inference settings. Decision score: **93/100**, based on the measured 22-minute ordinary baseline within a five-mode trial.
 
 ```sh
@@ -85,7 +127,7 @@ From the project directory in a fresh Python 3.12 virtual environment:
 
 ```sh
 bash scripts/gpu_setup.sh
-bash scripts/run_gpu.sh
+python scripts/reproduce_gpu.py --output-dir /path/to/fresh-artifacts
 ```
 
 Setup assumes CUDA/compiler/Rust are already available. Package installs use the hash lock; native suffix tests precede an editable SGLang build. SGLang's Rust workspace carries its own Cargo lock. Save any compilation logs if this gate fails.

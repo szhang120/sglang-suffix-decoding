@@ -5,6 +5,7 @@ A reproducible **linear, greedy, batch-one** implementation using the author CPU
 - [Project plan](PROJECT_PLAN.md): code-grounded design, invariants, milestones and 0–100 decision scores.
 - [Technical report](docs/TECHNICAL_REPORT.md): inference/KV reasoning, local evidence and limits.
 - [GPU runbook](docs/GPU_RUNBOOK.md): Modal and SSH execution workflows.
+- [Portable GPU runner](scripts/reproduce_gpu.py): fresh gates and frozen-input trials, preserving existing results; [Modal entry point](scripts/modal_reproduce.py) builds public pinned sources without private image IDs.
 - [Source lock](configs/source-lock.json) and [hashed Linux dependency lock](configs/gpu-requirements.lock).
 - [Public audit release](https://github.com/szhang120/sglang-suffix-decoding/releases/tag/v0.1.0-audit): raw width traces, invalid broader run and exact source snapshots, with SHA256 manifests.
 - [Passing correctness records and frozen workload](results/final/) and [controlled-width profile summaries](results/width-probe-final/).

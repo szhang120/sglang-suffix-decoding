@@ -60,7 +60,7 @@ def main():
     completed = found[0].parent
     reports = completed / "results/final"
     archives = sorted((completed / "archives").glob("*.tar.gz"))
-    assert len(archives) == 9
+    assert len(archives) == 10
     for archive in archives:
         manifest = json.loads((reports / f"{archive.name.removesuffix('.tar.gz')}-manifest.json").read_text())
         assert manifest["sha256"] == digest(archive) and manifest["bytes"] == archive.stat().st_size
@@ -83,6 +83,10 @@ def main():
         assert digest(path) == sha, f"Analysis source changed: {name}"
     benchmark = json.loads((reports / "benchmark-report.json").read_text())
     assert benchmark["exact_suffix_ids_passed"] and benchmark["measured_requests"] == 6000
+    provenance = json.loads((reports / "execution-provenance.json").read_text())
+    smoke = provenance["diagnostics"]["portable_runner_smoke"]
+    assert smoke["success"] and smoke["smoke_only"] and smoke["smoke_requests"] == 4
+    assert smoke["runner_sha256"] == digest(root / "scripts/reproduce_gpu.py"), "Portable runner source changed"
     assert len(list((completed / "docs/figures").glob("*.png"))) == 2
     import shutil
 
@@ -153,7 +157,7 @@ def main():
     notes = destination / "release-notes.md"
     notes.write_text("Five controlled H100 trials completed: all 4,800 ordinary/SUFFIX/ablation outputs match exactly. "
                      f"Upstream NGRAM differs on {ngram}/1,200 measured responses and is reported descriptively. "
-                     "Separate artifacts contain 720 full-workload suffix traces, five profiles, 24 route-control requests and 54 width probes. "
+                     "Separate artifacts contain 720 full-workload suffix traces, five profiles, 24 route-control requests, 54 width probes and four portable-runner smoke requests. "
                      "Every archive has a per-file SHA256 manifest. No model weights or credentials are included. "
                      "See docs/RESULTS.md and docs/TECHNICAL_REPORT.md at this release commit for all measured ratios, intervals, negative results, source pins and limitations.\n")
     manifests = sorted(reports.glob("*-manifest.json"))
