@@ -1,8 +1,8 @@
 diff --git a/python/sglang/srt/arg_groups/speculative_hook.py b/python/sglang/srt/arg_groups/speculative_hook.py
-index 539188b..79a4e83 100644
+index 539188b..ad04bcc 100644
 --- a/python/sglang/srt/arg_groups/speculative_hook.py
 +++ b/python/sglang/srt/arg_groups/speculative_hook.py
-@@ -1177,6 +1177,31 @@ def _handle_ngram(server_args: ServerArgs) -> None:
+@@ -1177,6 +1177,32 @@ def _handle_ngram(server_args: ServerArgs) -> None:
              "Ngram speculative decoding only supports CUDA, CPU, or XPU devices."
          )
  
@@ -15,7 +15,8 @@ index 539188b..79a4e83 100644
 +            "tp_size": 1,
 +            "pp_size": 1,
 +            "page_size": 1,
-+            "attention_backend": "flashinfer",
++            "attention_backend": "triton",
++            "enable_deterministic_inference": True,
 +            "speculative_ngram_max_bfs_breadth": 1,
 +        }
 +        for name, expected in required.items():
@@ -64,7 +65,7 @@ index e0f922f..83a5823 100644
                              self._maybe_collect_routed_experts(req)
                              self._maybe_collect_indexer_topk(req)
 diff --git a/python/sglang/srt/speculative/ngram_worker.py b/python/sglang/srt/speculative/ngram_worker.py
-index c31157a..e9e16c2 100644
+index c31157a..a4a6f40 100644
 --- a/python/sglang/srt/speculative/ngram_worker.py
 +++ b/python/sglang/srt/speculative/ngram_worker.py
 @@ -118,16 +118,19 @@ class NGRAMWorker(BaseSpecWorker):
@@ -97,6 +98,15 @@ index c31157a..e9e16c2 100644
          if get_spec().speculative_ngram_external_corpus_path is not None:
              from sglang.srt.speculative.cpp_ngram.external_corpus import (
                  iter_external_corpus_chunks,
+@@ -519,7 +522,7 @@ class NGRAMWorker(BaseSpecWorker):
+             # The last batch's entries persist while idle (bounded, small).
+             cur_rids = {req.rid for req in batch.reqs}
+             departed_rids = self._prev_decode_rids - cur_rids
+-            if departed_rids:
++            if departed_rids and self.ngram_corpus is not None:
+                 self.ngram_corpus.erase_match_state(list(departed_rids))
+             self._prev_decode_rids = cur_rids
+             batch.forward_mode = ForwardMode.DECODE
 diff --git a/python/sglang/srt/speculative/spec_info.py b/python/sglang/srt/speculative/spec_info.py
 index f72644a..4e37a88 100644
 --- a/python/sglang/srt/speculative/spec_info.py
@@ -131,10 +141,10 @@ index f72644a..4e37a88 100644
  
 diff --git a/python/sglang/srt/speculative/suffix_worker.py b/python/sglang/srt/speculative/suffix_worker.py
 new file mode 100644
-index 0000000..0ed85a0
+index 0000000..7b168db
 --- /dev/null
 +++ b/python/sglang/srt/speculative/suffix_worker.py
-@@ -0,0 +1,155 @@
+@@ -0,0 +1,259 @@
 +"""Linear batch-one SuffixDecoding, using SGLang's NGRAM target verifier."""
 +
 +import json
@@ -170,6 +180,8 @@ index 0000000..0ed85a0
 +        self.seen = {}
 +        self.prepared = None
 +        self.trace = os.environ.get("SUFFIX_TRACE")
++        self.trace_logits = os.environ.get("SUFFIX_TRACE_LOGITS") == "1"
++        self.allow_width_probe = os.environ.get("SUFFIX_ALLOW_WIDTH_PROBE") == "1"
 +
 +    def clear_cache_pool(self):
 +        self.suffix_cache = SuffixDecodingCache(
@@ -177,6 +189,7 @@ index 0000000..0ed85a0
 +        )
 +        self.requests.clear()
 +        self.seen.clear()
++        self._prev_decode_rids = set()
 +
 +    def _sync_request(self, req):
 +        rid = req.rid
@@ -238,8 +251,28 @@ index 0000000..0ed85a0
 +            raise ValueError("SUFFIX supports batch one only")
 +        if batch.has_grammar or batch.return_logprob:
 +            raise ValueError("SUFFIX initial scope excludes grammar/logprobs")
++        if not batch.sampling_info.is_all_greedy:
++            raise ValueError("SUFFIX requires greedy sampling")
 +        for req in batch.reqs:
++            params = req.sampling_params
++            for name, default in (
++                ("frequency_penalty", 0.0),
++                ("presence_penalty", 0.0),
++                ("repetition_penalty", 1.0),
++                ("min_new_tokens", 0),
++            ):
++                if getattr(params, name, default) != default:
++                    raise ValueError(f"SUFFIX requires default {name}")
++            custom = getattr(params, "custom_params", None) or {}
++            probe_width = custom.get("suffix_probe_width")
++            if probe_width is not None:
++                if not self.allow_width_probe:
++                    raise ValueError("suffix_probe_width requires SUFFIX_ALLOW_WIDTH_PROBE=1")
++                if type(probe_width) is not int or not 1 <= probe_width <= self.max_width:
++                    raise ValueError("suffix_probe_width must be an integer within capacity")
 +            self._sync_request(req)
++        decoding = batch.forward_mode.is_decode()
++        output_len_before = len(batch.reqs[0].output_ids) if decoding else 0
 +        width = self.max_width
 +        match_len = 0
 +        if batch.forward_mode.is_decode():
@@ -263,6 +296,10 @@ index 0000000..0ed85a0
 +                use_tree_spec=False,
 +            )
 +            tokens = [context[-1]] + draft.token_ids
++            if probe_width is not None:
++                # Profiling/warmup only. Arbitrary candidates are still verified;
++                # they cannot become cache contents or outputs before acceptance.
++                tokens = [context[-1]] + [0] * min(probe_width - 1, cap)
 +            width = len(tokens)
 +            match_len = draft.match_len
 +            self.prepared = (
@@ -272,16 +309,93 @@ index 0000000..0ed85a0
 +        self._select_width(width)
 +        # Backend metadata and sampler must see the same active width. CUDA
 +        # graphs are disabled by validation, so no capture can pad this shape.
-+        with get_spec().override(speculative_num_draft_tokens=width):
++        from contextlib import nullcontext
++
++        annotation = nullcontext()
++        if self.trace and decoding:
++            from torch.profiler import record_function
++
++            annotation = record_function(
++                f"suffix_verify[rows={width} out={output_len_before} rid={batch.reqs[0].rid}]"
++            )
++        prefix_snapshot = None
++        if self.trace and self.trace_logits and decoding:
++            # Full prefix preservation check for dense Qwen, outside timings.
++            pool = self.token_to_kv_pool_allocator.get_kvcache()
++            start = len(batch.reqs[0].origin_input_ids) + output_len_before - 1
++            prefix_locs = self.req_to_token_pool.req_to_token[
++                batch.req_pool_indices[0], :start
++            ].long().clone()
++            prefix_snapshot = [
++                (
++                    layer,
++                    pool.get_key_buffer(layer)[prefix_locs].clone(),
++                    pool.get_value_buffer(layer)[prefix_locs].clone(),
++                )
++                for layer in range(pool.start_layer, pool.end_layer + 1)
++            ]
++        with annotation, get_spec().override(speculative_num_draft_tokens=width):
 +            result = super().forward_batch_generation(
 +                batch, on_publish, pp_proxy_tensors
 +            )
-+        if self.trace and batch.forward_mode.is_decode():
++        if self.trace and decoding:
++            # Diagnostic synchronization only; disabled in timing runs. Row i
++            # predicts the token after input i, so a linear accepted prefix can
++            # be aligned directly with emitted output positions.
++            extra = {}
++            if self.trace_logits:
++                values, indices = result.logits_output.next_token_logits.topk(2, dim=-1)
++                # Check the actual GPU tree reconstruction and accepted chain,
++                # independently of the scheduler's final output processing.
++                start = len(batch.reqs[0].origin_input_ids) + output_len_before - 1
++                positions = self.positions_batch[1].cpu().tolist()
++                retrieve = self.retrieve_indexes_batch[1].cpu().tolist()[0]
++                links = self.retrieve_next_token_batch[1].cpu().tolist()[0]
++                siblings = self.retrieve_next_sibling_batch[1].cpu().tolist()[0]
++                accepted = int(result.accept_lens.cpu().tolist()[0])
++                predictions = result.logits_output.next_token_logits.argmax(-1).cpu().tolist()
++                emitted = result.next_token_ids.cpu().tolist()[:accepted]
++                import torch
++
++                for layer, keys_before, values_before in prefix_snapshot:
++                    assert torch.equal(keys_before, pool.get_key_buffer(layer)[prefix_locs]), (
++                        "Existing key prefix changed", layer
++                    )
++                    assert torch.equal(values_before, pool.get_value_buffer(layer)[prefix_locs]), (
++                        "Existing value prefix changed", layer
++                    )
++                settled = self.req_to_token_pool.req_to_token[
++                    batch.req_pool_indices[0], start:start + accepted
++                ].long()
++                assert torch.equal(settled, batch.out_cache_loc[:accepted].long()), (
++                    "Linear accepted KV slots differ from processed input slots"
++                )
++                assert positions == list(range(start, start + width)), positions
++                assert retrieve == list(range(width)), retrieve
++                assert links == list(range(1, width)) + [-1], links
++                assert siblings == [-1] * width, siblings
++                assert 1 <= accepted <= width, accepted
++                assert emitted == predictions[:accepted], (emitted, predictions)
++                assert tokens[1:accepted] == predictions[:accepted - 1]
++                assert accepted == width or tokens[accepted] != predictions[accepted - 1]
++                assert result.new_seq_lens.cpu().tolist() == [start + accepted]
++                extra = {
++                    "gpu_layout_and_acceptance_checked": True,
++                    "existing_kv_prefix_unchanged": True,
++                    "accepted_kv_slots_checked": True,
++                    "positions": positions,
++                    "emitted_ids": emitted,
++                    "top2_ids": indices.cpu().tolist(),
++                    "top2_logits": values.float().cpu().tolist(),
++                }
 +            with open(self.trace, "a") as f:
 +                f.write(
 +                    json.dumps(
 +                        {
 +                            "rid": batch.reqs[0].rid,
++                            "output_len_before": output_len_before,
++                            "input_ids": tokens,
++                            **extra,
 +                            "verify_rows": width,
 +                            "match_len": match_len,
 +                            "accepted_with_bonus": result.accept_lens.cpu().tolist(),

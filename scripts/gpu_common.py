@@ -11,7 +11,9 @@ def engine_config(mode):
         model_path=m["id"],
         revision=m["revision"],
         dtype="bfloat16",
-        attention_backend="flashinfer",
+        attention_backend="triton",
+        enable_deterministic_inference=True,
+        enable_fp32_lm_head=True,
         tp_size=1,
         pp_size=1,
         page_size=1,
@@ -30,7 +32,7 @@ def engine_config(mode):
             speculative_num_draft_tokens=33,
             speculative_ngram_match_type="PROB",
             speculative_ngram_max_trie_depth=64,
-            speculative_ngram_max_bfs_breadth=1 if mode.startswith("suffix") else 10,
+            speculative_ngram_max_bfs_breadth=1,
         )
     return config
 

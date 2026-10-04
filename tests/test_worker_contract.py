@@ -66,6 +66,7 @@ def worker():
     w.requests, w.seen = {}, {}
     w.factor, w.offset, w.min_prob, w.fixed = 1.0, 0.0, 0.1, False
     w.trace = None
+    w.trace_logits = w.allow_width_probe = False
     for field in ["draft_tokens", "positions"]:
         setattr(w, field, np.empty(33, dtype=np.int64))
     w.tree_mask = np.empty(33**2, dtype=bool)
@@ -94,6 +95,48 @@ def request(rid="a"):
 
 
 class WorkerContractTests(unittest.TestCase):
+    def test_reject_history_penalties_and_nongreedy_prefill(self):
+        for name, value in [
+            ("frequency_penalty", 0.2),
+            ("presence_penalty", 0.2),
+            ("repetition_penalty", 1.2),
+            ("min_new_tokens", 3),
+        ]:
+            w, req = worker(), request()
+            setattr(req.sampling_params, name, value)
+            batch = NS(
+                reqs=[req],
+                forward_mode=NS(is_decode=lambda: False),
+                has_grammar=False,
+                return_logprob=False,
+                sampling_info=NS(is_all_greedy=True),
+            )
+            with self.assertRaises(ValueError):
+                w.forward_batch_generation(batch)
+            self.assertFalse(w.requests)
+        batch.sampling_info.is_all_greedy = False
+        with self.assertRaises(ValueError):
+            worker().forward_batch_generation(batch)
+
+    def test_width_probe_is_explicit_and_bounded(self):
+        w, req = worker(), request()
+        req.sampling_params.custom_params = {"suffix_probe_width": 8}
+        batch = NS(
+            reqs=[req], forward_mode=NS(is_decode=lambda: True),
+            has_grammar=False, return_logprob=False,
+            sampling_info=NS(is_all_greedy=True),
+        )
+        with self.assertRaises(ValueError):
+            w.forward_batch_generation(batch)
+        self.assertFalse(w.requests)
+        w.allow_width_probe = True
+        result = w.forward_batch_generation(batch)
+        self.assertEqual(list(result.tokens), [2] + [0] * 7)
+        self.assertEqual(w.seen[req.rid], 2)
+        req.sampling_params.custom_params["suffix_probe_width"] = 34
+        with self.assertRaises(ValueError):
+            w.forward_batch_generation(batch)
+
     def test_true_width_and_committed_cache(self):
         w, req = worker(), request()
         batch = NS(

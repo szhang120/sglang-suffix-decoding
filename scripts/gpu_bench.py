@@ -32,6 +32,8 @@ def main():
         os.environ["SUFFIX_CACHE_REQUESTS"] = "0"
     if args.profile:
         os.environ["SUFFIX_TRACE"] = str(dest / "suffix-rounds.jsonl")
+    if args.mode.startswith("suffix"):
+        os.environ["SUFFIX_ALLOW_WIDTH_PROBE"] = "1"
     import torch
 
     import sglang as sgl
@@ -42,6 +44,9 @@ def main():
     environment = dict(
         config=cfg,
         source_lock=LOCK,
+        integration_patch_sha256=hashlib.sha256(
+            (ROOT / "patches/sglang-suffix.patch").read_bytes()
+        ).hexdigest(),
         workload_sha256=hashlib.sha256(
             (ROOT / "results/workload.jsonl").read_bytes()
         ).hexdigest(),
@@ -63,7 +68,17 @@ def main():
         (dest / "server-info.json").write_text(
             json.dumps(engine.get_server_info(), indent=2, default=str)
         )
-        engine.generate(input_ids=rows[0]["input_ids"], sampling_params=sampling(32))
+        if args.mode.startswith("suffix"):
+            for width in range(1, 34):
+                engine.generate(
+                    input_ids=rows[0]["input_ids"],
+                    sampling_params=dict(
+                        temperature=0, ignore_eos=True, max_new_tokens=width + 1,
+                        custom_params=dict(suffix_probe_width=width),
+                    ),
+                )
+        else:
+            engine.generate(input_ids=rows[0]["input_ids"], sampling_params=sampling(128))
         engine.flush_cache()
         if args.profile:
             engine.start_profile(
@@ -82,7 +97,10 @@ def main():
             ]
             for block, requests in blocks:
                 engine.flush_cache()
-                for index, row in enumerate(requests[:4] if args.profile else requests):
+                if args.profile:
+                    # Preserve repeated responses in the diagnostic profile.
+                    requests = requests[:2] * 2 if block == "repeat" else requests[:4]
+                for index, row in enumerate(requests):
                     start = time.perf_counter_ns()
                     chunks = []
                     final = None

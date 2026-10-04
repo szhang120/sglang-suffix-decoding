@@ -1,15 +1,63 @@
 {
-  "cpu_tests": 8,
+  "cpu_tests": 10,
   "cpu_tests_passed": true,
   "native_compiler": "AppleClang 17.0.0",
   "patch_clean_apply": true,
   "patch_reproduces_files": 6,
   "syntax_checks": true,
   "ruff_checks": "F401,F821,F823,UP037 pass; ruff 0.15.1",
-  "gpu_executed": false,
-  "gpu_blocker": "No rented host or SSH details available",
+  "gpu_executed": true,
+  "gpu_blocker": "Triton SUFFIX30/30 exact; branching NGRAM29/30 exact. Linear NGRAM PROB and direct KV prefix/slot checks pending.",
   "public_github_remote_configured": false,
   "binary_dependency_resolution": true,
   "dependency_packages": 212,
-  "dependency_lock_sha256": "35f06a5eb466b07a94f23d0fa057914bf9632eca8a7a47eed1c2c1032aaa7941"
+  "dependency_lock_sha256": "c0a19671efe44499b964370a3932dcb1d6abca143c0fbf7f1fd65f0e44f85510",
+  "gpu_math_executed": true,
+  "gpu_model_executed": true,
+  "linux_native_build": true,
+  "linux_cpu_tests_passed": 10,
+  "linux_sglang_rust_build": true,
+  "linux_sglang_engine_import": true,
+  "pip_check": true,
+  "gpu_preflight": {
+    "gpu": "NVIDIA H100 80GB HBM3",
+    "driver": "580.95.05",
+    "torch": "2.13.0+cu130",
+    "cuda": "13.0",
+    "image_id": "im-U2wujU31CItE7NuxlSZLK4"
+  },
+  "gpu_model_loaded": true,
+  "gpu_correctness_passed": false,
+  "gpu_correctness_attempts": [
+    {
+      "run_id": "modal-20261004-v2",
+      "ngram_exact_cases": 27,
+      "suffix_exact_cases": 27,
+      "total_cases": 30
+    },
+    {
+      "run_id": "modal-20261004-v3",
+      "ngram_exact_cases": 30,
+      "suffix_exact_cases": 29,
+      "total_cases": 30
+    },
+    {
+      "run_id": "modal-20261004-audit-v5",
+      "ngram_exact_cases": 30,
+      "suffix_exact_cases": 27,
+      "total_cases": 30,
+      "gpu_layout_and_acceptance_checked": true,
+      "fp32_lm_head": true
+    },
+    {
+      "run_id": "modal-20261004-audit-v6",
+      "ngram_exact_cases": 29,
+      "suffix_exact_cases": 30,
+      "total_cases": 30,
+      "gpu_layout_and_acceptance_checked": true,
+      "backend": "triton",
+      "fp32_lm_head": true,
+      "ngram_breadth": 10
+    }
+  ]
 }

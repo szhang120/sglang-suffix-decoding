@@ -1,0 +1,3 @@
+# Explicit NVIDIA CPython 3.12 wheel avoids the PyPI downloader stub.
+# Published SHA256 verified against independently downloaded wheel, 2026-10-04.
+cuda-tile @ https://pypi.nvidia.com/cuda-tile/cuda_tile-1.6.0rc5-cp312-cp312-manylinux2014_x86_64.whl

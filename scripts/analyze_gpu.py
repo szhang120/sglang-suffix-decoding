@@ -21,6 +21,17 @@ def main():
             "GPU results unavailable: run correctness and benchmarks on the rented GPU"
         )
     base = read(reference)
+    if not base:
+        raise SystemExit("Empty correctness reference")
+    expected_names = [f"length-{n}" for n in (1, 2, 3, 17, 33, 65, 128)] + [
+        "eos",
+        "stop-string",
+        "mismatch",
+    ]
+    expected_cases = [(name, repeat) for repeat in range(3) for name in expected_names]
+    assert [(x["name"], x["repeat"]) for x in base] == expected_cases, (
+        "Incomplete correctness reference"
+    )
     for mode in ["ngram", "suffix"]:
         other = read(ROOT / f"results/correctness-{mode}.jsonl")
         assert len(base) == len(other)
@@ -40,6 +51,11 @@ def main():
             continue
         trial = path.parent.name.split("-")[-1]
         baseline = read(path)
+        expected_counts = {"independent": 52, "refinement": 84, "repeat": 104}
+        assert {block: sum(x["block"] == block for x in baseline)
+                for block in expected_counts} == expected_counts, (
+            "Incomplete benchmark reference", trial
+        )
         for mode in ["ordinary", "ngram", "suffix", "suffix-fixed", "suffix-local"]:
             other = read(ROOT / f"results/gpu/{mode}-{trial}/requests.jsonl")
             assert len(other) == len(baseline)
@@ -78,6 +94,7 @@ def main():
         raise SystemExit(
             "Correctness records exist; GPU benchmark results still unavailable"
         )
+    assert len(summary) == 75, "Five complete trials required for the planned comparison"
     (ROOT / "results/gpu-summary.json").write_text(json.dumps(summary, indent=2) + "\n")
     print(json.dumps(summary, indent=2))
 

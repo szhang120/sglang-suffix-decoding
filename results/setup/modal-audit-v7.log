@@ -1,0 +1,162 @@
+✓ Initialized. View run at 
+https://modal.com/apps/szhanggg/main/ap-7W5QnAZHEVRvwluHwE95Qr
+Building image im-Gz5BADmg15C5P49dnjLdBE
+
+=> Step 0: FROM base
+
+=> Step 1: RUN test $(git -C /project/sglang rev-parse HEAD) = e00930c5489053f26d86b179cee0d087f846acbb
+
+=> Step 2: RUN git -C /project/sglang apply --reverse --check /project/patches/sglang-suffix.patch
+
+=> Step 3: RUN git -C /project/sglang apply --reverse /project/patches/sglang-suffix.patch
+Saving image...
+Image saved, took 2.13s
+
+Built image im-Gz5BADmg15C5P49dnjLdBE in 5.58s
+
+
+Building image im-NLYfZ3s4TJy5FTK0hFSTh7
+
+=> Step 0: FROM base
+
+=> Step 1: ENV SGLANG_TRITON_DECODE_SPLIT_TILE_SIZE=4096
+
+=> Step 2: ENV SGLANG_CACHE_DIR=/model-cache/kernels/sglang
+
+=> Step 3: ENV TRITON_CACHE_DIR=/model-cache/kernels/triton
+
+=> Step 4: ENV TORCH_EXTENSIONS_DIR=/model-cache/kernels/torch
+
+=> Step 5: ENV CUDA_CACHE_PATH=/model-cache/kernels/cuda
+
+=> Step 6: ENV SGLANG_FLASHINFER_PREFILL_SPLIT_TILE_SIZE=4096
+
+=> Step 7: ENV SGLANG_FLASHINFER_DECODE_SPLIT_TILE_SIZE=4096
+Saving image...
+Image saved, took 1.81s
+
+Built image im-NLYfZ3s4TJy5FTK0hFSTh7 in 4.23s
+
+
+Building image im-AzySLFnXkhW7gqkEKaKlLE
+
+=> Step 0: FROM base
+
+=> Step 1: COPY . /
+Saving image...
+Image saved, took 2.17s
+
+Built image im-AzySLFnXkhW7gqkEKaKlLE in 6.66s
+
+
+Building image im-ftxwW3rCpZNZVgdBBX3apV
+
+=> Step 0: FROM base
+
+=> Step 1: COPY . /
+Saving image...
+Image saved, took 2.13s
+
+Built image im-ftxwW3rCpZNZVgdBBX3apV in 5.31s
+
+
+Building image im-mmBZPJ9kPHsWjZpLbDuOI6
+
+=> Step 0: FROM base
+
+=> Step 1: COPY . /
+Saving image...
+Image saved, took 2.00s
+
+Built image im-mmBZPJ9kPHsWjZpLbDuOI6 in 6.54s
+
+
+Building image im-ZnV4j7ZMGVyKTfEV2yrFr5
+
+=> Step 0: FROM base
+
+=> Step 1: COPY . /
+Saving image...
+Image saved, took 1.94s
+
+Built image im-ZnV4j7ZMGVyKTfEV2yrFr5 in 5.42s
+
+
+Building image im-rEfRnbeU3dX83fn0ClA84x
+
+=> Step 0: FROM base
+
+=> Step 1: COPY . /
+Saving image...
+Image saved, took 2.59s
+
+Built image im-rEfRnbeU3dX83fn0ClA84x in 6.14s
+
+
+Building image im-gJH9VLdKOUOTnQGArAbUXd
+
+=> Step 0: FROM base
+
+=> Step 1: RUN bash scripts/bootstrap.sh
+
+=> Step 2: RUN python -m cmake -S native -B native/build -DPython_EXECUTABLE=$(command -v python) -DCMAKE_LIBRARY_OUTPUT_DIRECTORY=/project/native/suffix_native
+-- Configuring done (0.1s)
+-- Generating done (0.0s)
+-- Build files have been written to: /project/native/build
+
+=> Step 3: RUN python -m cmake --build native/build -j 4
+[ 80%] Built target nanobind-static
+[ 93%] Building CXX object CMakeFiles/_C.dir/bindings.cc.o
+[ 93%] Building CXX object CMakeFiles/_C.dir/suffix_tree.cc.o
+[100%] Linking CXX shared module /project/native/suffix_native/_C.cpython-312-x86_64-linux-gnu.so
+[100%] Built target _C
+
+=> Step 4: RUN PYTHONPATH=/project/native python -m unittest discover -s tests -v
+test_adaptive_length_and_integrity (test_cache.CacheTests.test_adaptive_length_and_integrity) ... ok
+test_eviction_and_id_reuse (test_cache.CacheTests.test_eviction_and_id_reuse) ... ok
+test_oracle_greedy_simulation (test_cache.CacheTests.test_oracle_greedy_simulation) ... ok
+test_prompt_and_global_are_separate (test_cache.CacheTests.test_prompt_and_global_are_separate) ... ok
+test_abort_and_flush_remove_state (test_worker_contract.WorkerContractTests.test_abort_and_flush_remove_state) ... ok
+test_empty_match_one_row_and_output_cap (test_worker_contract.WorkerContractTests.test_empty_match_one_row_and_output_cap) ... ok
+test_prefill_only_completion (test_worker_contract.WorkerContractTests.test_prefill_only_completion) ... ok
+test_reject_history_penalties_and_nongreedy_prefill (test_worker_contract.WorkerContractTests.test_reject_history_penalties_and_nongreedy_prefill) ... ok
+test_true_width_and_committed_cache (test_worker_contract.WorkerContractTests.test_true_width_and_committed_cache) ... ok
+test_width_probe_is_explicit_and_bounded (test_worker_contract.WorkerContractTests.test_width_probe_is_explicit_and_bounded) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.122s
+
+OK
+
+=> Step 5: RUN python -m pip check
+No broken requirements found.
+Saving image...
+Image saved, took 2.06s
+
+Built image im-gJH9VLdKOUOTnQGArAbUXd in 16.66s
+
+
+Building image im-avV6fLgjrZMouMKsEmPvnQ
+
+=> Step 0: FROM base
+
+=> Step 1: ENV PYTHONPATH=/project/native:/project/sglang/python
+Saving image...
+Image saved, took 2.24s
+
+Built image im-avV6fLgjrZMouMKsEmPvnQ in 6.58s
+
+
+✓ Created objects.
+├── ✓ Uploaded 
+│   /Users/seanzhang/Documents/ChatGPT/sglang-suffix-decoding/scripts/modal_runn
+│   er.py
+├── ✓ Uploaded /Users/seanzhang/Documents/ChatGPT/sglang-suffix-decoding/configs
+├── ✓ Uploaded /Users/seanzhang/Documents/ChatGPT/sglang-suffix-decoding/native
+├── ✓ Uploaded /Users/seanzhang/Documents/ChatGPT/sglang-suffix-decoding/patches
+├── ✓ Uploaded /Users/seanzhang/Documents/ChatGPT/sglang-suffix-decoding/scripts
+├── ✓ Uploaded /Users/seanzhang/Documents/ChatGPT/sglang-suffix-decoding/tests
+└── ✓ Created Function execute.
+Running ['nvidia-smi', '-q']
+Running ['python', '-c', "import torch; from suffix_native.cache import SuffixDecodingCache; assert torch.cuda.device_count()==1; assert 'H100' in torch.cuda.get_device_name(0); print(torch.__version__,torch.version.cuda,torch.cuda.get_device_name(0)); x=torch.randn(32,4096,device='cuda',dtype=torch.bfloat16); print((x@x.T).shape); torch.cuda.synchronize(); from sglang.srt.server_args import ServerArgs; print('SGLang import OK')"]
+Running ['python', 'scripts/gpu_correctness.py', '--mode', 'ordinary', '--audit']

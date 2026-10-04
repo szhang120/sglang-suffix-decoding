@@ -1,0 +1,198 @@
+✓ Initialized. View run at 
+https://modal.com/apps/szhanggg/main/ap-ARfQN6J3HrvGbec3BEuaMs
+Building image im-FsdQxhRhcrfhWAvwz7S8Cz
+
+=> Step 0: FROM base
+
+=> Step 1: RUN test $(git -C /project/sglang rev-parse HEAD) = e00930c5489053f26d86b179cee0d087f846acbb
+
+=> Step 2: RUN git -C /project/sglang apply --reverse --check /project/patches/sglang-suffix.patch
+
+=> Step 3: RUN git -C /project/sglang apply --reverse /project/patches/sglang-suffix.patch
+Saving image...
+Image saved, took 3.16s
+
+Built image im-FsdQxhRhcrfhWAvwz7S8Cz in 9.53s
+
+
+Building image im-RnqIWPQ9rTR3B97qvnN3aX
+
+=> Step 0: FROM base
+
+=> Step 1: ENV SGLANG_TRITON_DECODE_SPLIT_TILE_SIZE=4096
+
+=> Step 2: ENV SGLANG_CACHE_DIR=/model-cache/kernels/sglang
+
+=> Step 3: ENV TRITON_CACHE_DIR=/model-cache/kernels/triton
+
+=> Step 4: ENV TORCH_EXTENSIONS_DIR=/model-cache/kernels/torch
+
+=> Step 5: ENV CUDA_CACHE_PATH=/model-cache/kernels/cuda
+
+=> Step 6: ENV SGLANG_FLASHINFER_PREFILL_SPLIT_TILE_SIZE=4096
+
+=> Step 7: ENV SGLANG_FLASHINFER_DECODE_SPLIT_TILE_SIZE=4096
+Saving image...
+Image saved, took 3.41s
+
+Built image im-RnqIWPQ9rTR3B97qvnN3aX in 7.25s
+
+
+Building image im-kW8qTr1u0eRXgt7pZBCfxK
+
+=> Step 0: FROM base
+
+=> Step 1: COPY . /
+Saving image...
+Image saved, took 2.09s
+
+Built image im-kW8qTr1u0eRXgt7pZBCfxK in 5.53s
+
+
+Building image im-zEvrw0OeW7WDZojJPa0pRM
+
+=> Step 0: FROM base
+
+=> Step 1: COPY . /
+Saving image...
+Image saved, took 2.51s
+
+Built image im-zEvrw0OeW7WDZojJPa0pRM in 5.73s
+
+
+Building image im-vza9w13HED6vUGw79y6cgi
+
+=> Step 0: FROM base
+
+=> Step 1: COPY . /
+Saving image...
+Image saved, took 2.35s
+
+Built image im-vza9w13HED6vUGw79y6cgi in 5.59s
+
+
+Building image im-mkHX9maW0voHZiR5yQOb58
+
+=> Step 0: FROM base
+
+=> Step 1: COPY . /
+Saving image...
+Image saved, took 2.20s
+
+Built image im-mkHX9maW0voHZiR5yQOb58 in 5.54s
+
+
+Building image im-HyR8AY0dy6Kww6xgy9DAbS
+
+=> Step 0: FROM base
+
+=> Step 1: COPY . /
+Saving image...
+Image saved, took 3.30s
+
+Built image im-HyR8AY0dy6Kww6xgy9DAbS in 9.61s
+
+
+Building image im-FIN5T0s4BYU3GOVvdDR7pp
+
+=> Step 0: FROM base
+
+=> Step 1: RUN bash scripts/bootstrap.sh
+
+=> Step 2: RUN python -m cmake -S native -B native/build -DPython_EXECUTABLE=$(command -v python) -DCMAKE_LIBRARY_OUTPUT_DIRECTORY=/project/native/suffix_native
+-- Configuring done (0.1s)
+-- Generating done (0.0s)
+-- Build files have been written to: /project/native/build
+
+=> Step 3: RUN python -m cmake --build native/build -j 4
+[ 80%] Built target nanobind-static
+[ 86%] Building CXX object CMakeFiles/_C.dir/bindings.cc.o
+[ 93%] Building CXX object CMakeFiles/_C.dir/suffix_tree.cc.o
+[100%] Linking CXX shared module /project/native/suffix_native/_C.cpython-312-x86_64-linux-gnu.so
+[100%] Built target _C
+
+=> Step 4: RUN PYTHONPATH=/project/native python -m unittest discover -s tests -v
+test_adaptive_length_and_integrity (test_cache.CacheTests.test_adaptive_length_and_integrity) ... ok
+test_eviction_and_id_reuse (test_cache.CacheTests.test_eviction_and_id_reuse) ... ok
+test_oracle_greedy_simulation (test_cache.CacheTests.test_oracle_greedy_simulation) ... ok
+test_prompt_and_global_are_separate (test_cache.CacheTests.test_prompt_and_global_are_separate) ... ok
+test_abort_and_flush_remove_state (test_worker_contract.WorkerContractTests.test_abort_and_flush_remove_state) ... ok
+test_empty_match_one_row_and_output_cap (test_worker_contract.WorkerContractTests.test_empty_match_one_row_and_output_cap) ... ok
+test_prefill_only_completion (test_worker_contract.WorkerContractTests.test_prefill_only_completion) ... ok
+test_reject_history_penalties_and_nongreedy_prefill (test_worker_contract.WorkerContractTests.test_reject_history_penalties_and_nongreedy_prefill) ... ok
+test_true_width_and_committed_cache (test_worker_contract.WorkerContractTests.test_true_width_and_committed_cache) ... ok
+test_width_probe_is_explicit_and_bounded (test_worker_contract.WorkerContractTests.test_width_probe_is_explicit_and_bounded) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.121s
+
+OK
+
+=> Step 5: RUN python -m pip check
+No broken requirements found.
+Saving image...
+Image saved, took 2.17s
+
+Built image im-FIN5T0s4BYU3GOVvdDR7pp in 15.63s
+
+
+Building image im-AcoKKW9oEN68sDNVMkIUP2
+
+=> Step 0: FROM base
+
+=> Step 1: ENV PYTHONPATH=/project/native:/project/sglang/python
+Saving image...
+Image saved, took 4.24s
+
+Built image im-AcoKKW9oEN68sDNVMkIUP2 in 9.44s
+
+
+✓ Created objects.
+├── ✓ Uploaded 
+│   /Users/seanzhang/Documents/ChatGPT/sglang-suffix-decoding/scripts/modal_runn
+│   er.py
+├── ✓ Uploaded /Users/seanzhang/Documents/ChatGPT/sglang-suffix-decoding/configs
+├── ✓ Uploaded /Users/seanzhang/Documents/ChatGPT/sglang-suffix-decoding/native
+├── ✓ Uploaded /Users/seanzhang/Documents/ChatGPT/sglang-suffix-decoding/patches
+├── ✓ Uploaded /Users/seanzhang/Documents/ChatGPT/sglang-suffix-decoding/scripts
+├── ✓ Uploaded /Users/seanzhang/Documents/ChatGPT/sglang-suffix-decoding/tests
+└── ✓ Created Function execute.
+Running ['nvidia-smi', '-q']
+Running ['python', '-c', "import torch; from suffix_native.cache import SuffixDecodingCache; assert torch.cuda.device_count()==1; assert 'H100' in torch.cuda.get_device_name(0); print(torch.__version__,torch.version.cuda,torch.cuda.get_device_name(0)); x=torch.randn(32,4096,device='cuda',dtype=torch.bfloat16); print((x@x.T).shape); torch.cuda.synchronize(); from sglang.srt.server_args import ServerArgs; print('SGLang import OK')"]
+Running ['python', 'scripts/gpu_correctness.py', '--mode', 'ordinary', '--audit']
+Running ['python', 'scripts/gpu_correctness.py', '--mode', 'ngram', '--audit']
+Running ['python', 'scripts/gpu_correctness.py', '--mode', 'suffix', '--audit']
+Running ['python', 'scripts/analyze_audit.py', '/artifacts/modal-20261004-audit-v6/results']
+Running ['python', 'scripts/analyze_gpu.py', '--correctness-only']
+{
+  "phase": "audit",
+  "trial": 0,
+  "run_id": "modal-20261004-audit-v6",
+  "start_unix": 1791101904.4542868,
+  "source_sha256": {
+    "configs/source-lock.json": "99959675f3682a78d0b3da2ebf96cc60c9bebac51de5eb2a7b97c3954ab8529e",
+    "configs/gpu-requirements.lock": "c0a19671efe44499b964370a3932dcb1d6abca143c0fbf7f1fd65f0e44f85510",
+    "patches/sglang-suffix.patch": "3473151ee36bb2d0bf57b4101efd6268c1b88e7ac1e2faae4e60722d9e70d08d",
+    "native/suffix_native/cache.py": "58d70f12f82e71f0f3459c0987001121d472c4bddae9dd13430ed1d51ad7020c",
+    "sglang/python/sglang/srt/speculative/suffix_worker.py": "0fc2255406e25d7a6866e19a804295059b27a709fce979447baec9cd11ca42db",
+    "sglang/python/sglang/srt/speculative/ngram_worker.py": "0848138533e6fab9396ef3f78cf1009c9aa66290c636aed9dddbc5eb6d594497",
+    "scripts/analyze_audit.py": "9f793ec5e5fc7ea24b5e7cd65ab54ad856523231481b06a2a7b912a513f6f960",
+    "scripts/analyze_gpu.py": "fee4e51a85932dcdaf7a1e074909aabac6c1fbb6e4703161b5ab5b20c5de38c5",
+    "scripts/cpu_profile.py": "e3b4494653c30482eafe02feb1d50f2a4e283ba649583091e32c8219b30c462b",
+    "scripts/export_patch.py": "55bd30b3a48c89fc74dfc5995fa9134a2b23574f5420551af2b5f20a8d967796",
+    "scripts/gpu_bench.py": "41d76632726f6bd5881b437f5bebd2577ee85498b56b0242a22e3cb9436b47b5",
+    "scripts/gpu_common.py": "38170fc90a1c915c2437997245e2a12c316c04d9e3345be1d805aac7436d6349",
+    "scripts/gpu_correctness.py": "8d1896621493fbd7f646d28eb5d9b764999659d7484ec1343030e672879776a9",
+    "scripts/gpu_width_probe.py": "8f36706b50dee49be9b3d1a519e05cfecc38bd88441b82a986362c653fee42fd",
+    "scripts/materialize_workload.py": "077bd7deaca3ddd642007ee38930c892a6efa43b1c4d73e02607dc302a94ca52"
+  },
+  "gpu_requested": true,
+  "success": false,
+  "error": "Command '['python', 'scripts/analyze_gpu.py', '--correctness-only']' returned non-zero exit status 1.",
+  "elapsed_seconds": 277.9065935611725,
+  "compute_estimate_usd": 0.3734731129549885,
+  "pricing_checked": "2026-10-04",
+  "image_id": "im-AcoKKW9oEN68sDNVMkIUP2",
+  "log_tail": "p_httpcore_exceptions\n    yield\n  File \"/usr/local/lib/python3.12/site-packages/httpx/_transports/default.py\", line 250, in handle_request\n    resp = self._pool.handle_request(req)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/site-packages/httpcore/_sync/connection_pool.py\", line 256, in handle_request\n    raise exc from None\n  File \"/usr/local/lib/python3.12/site-packages/httpcore/_sync/connection_pool.py\", line 236, in handle_request\n    response = connection.handle_request(\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/site-packages/httpcore/_sync/connection.py\", line 101, in handle_request\n    raise exc\n  File \"/usr/local/lib/python3.12/site-packages/httpcore/_sync/connection.py\", line 78, in handle_request\n    stream = self._connect(request)\n             ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/site-packages/httpcore/_sync/connection.py\", line 156, in _connect\n    stream = stream.start_tls(**kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/site-packages/httpcore/_backends/sync.py\", line 154, in start_tls\n    with map_exceptions(exc_map):\n  File \"/usr/local/lib/python3.12/contextlib.py\", line 158, in __exit__\n    self.gen.throw(value)\n  File \"/usr/local/lib/python3.12/site-packages/httpcore/_exceptions.py\", line 14, in map_exceptions\n    raise to_exc(exc) from exc\nhttpcore.ConnectError: [Errno 104] Connection reset by peer\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/project/sglang/python/sglang/srt/utils/common.py\", line 3681, in retry\n    return fn()\n           ^^^^\n  File \"/project/sglang/python/sglang/srt/configs/model_config.py\", line 1582, in <lambda>\n    lambda: hf_api.file_exists(\n            ^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/site-packages/huggingface_hub/utils/_validators.py\", line 89, in _inner_fn\n    return fn(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/site-packages/huggingface_hub/hf_api.py\", line 3930, in file_exists\n    get_hf_file_metadata(url, token=token)\n  File \"/usr/local/lib/python3.12/site-packages/huggingface_hub/utils/_validators.py\", line 89, in _inner_fn\n    return fn(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/site-packages/huggingface_hub/file_download.py\", line 1669, in get_hf_file_metadata\n    response = _httpx_follow_hub_redirects_with_backoff(\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/site-packages/huggingface_hub/utils/_http.py\", line 754, in _httpx_follow_hub_redirects_with_backoff\n    response = http_backoff(\n               ^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/site-packages/huggingface_hub/utils/_http.py\", line 627, in http_backoff\n    return next(\n           ^^^^^\n  File \"/usr/local/lib/python3.12/site-packages/huggingface_hub/utils/_http.py\", line 535, in _http_backoff_base\n    response = client.request(method=method, url=url, **kwargs)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/site-packages/httpx/_client.py\", line 825, in request\n    return self.send(request, auth=auth, follow_redirects=follow_redirects)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/site-packages/httpx/_client.py\", line 914, in send\n    response = self._send_handling_auth(\n               ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/site-packages/httpx/_client.py\", line 942, in _send_handling_auth\n    response = self._send_handling_redirects(\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/site-packages/httpx/_client.py\", line 979, in _send_handling_redirects\n    response = self._send_single_request(request)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/site-packages/httpx/_client.py\", line 1014, in _send_single_request\n    response = transport.handle_request(request)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/site-packages/httpx/_transports/default.py\", line 249, in handle_request\n    with map_httpcore_exceptions():\n  File \"/usr/local/lib/python3.12/contextlib.py\", line 158, in __exit__\n    self.gen.throw(value)\n  File \"/usr/local/lib/python3.12/site-packages/httpx/_transports/default.py\", line 118, in map_httpcore_exceptions\n    raise mapped_exc(message) from exc\nhttpx.ConnectError: [Errno 104] Connection reset by peer\nTraceback (most recent call last):\n  File \"/usr/local/lib/python3.12/site-packages/httpx/_transports/default.py\", line 101, in map_httpcore_exceptions\n    yield\n  File \"/usr/local/lib/python3.12/site-packages/httpx/_transports/default.py\", line 250, in handle_request\n    resp = self._pool.handle_request(req)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/site-packages/httpcore/_sync/connection_pool.py\", line 256, in handle_request\n    raise exc from None\n  File \"/usr/local/lib/python3.12/site-packages/httpcore/_sync/connection_pool.py\", line 236, in handle_request\n    response = connection.handle_request(\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/site-packages/httpcore/_sync/connection.py\", line 101, in handle_request\n    raise exc\n  File \"/usr/local/lib/python3.12/site-packages/httpcore/_sync/connection.py\", line 78, in handle_request\n    stream = self._connect(request)\n             ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/site-packages/httpcore/_sync/connection.py\", line 156, in _connect\n    stream = stream.start_tls(**kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/site-packages/httpcore/_backends/sync.py\", line 154, in start_tls\n    with map_exceptions(exc_map):\n  File \"/usr/local/lib/python3.12/contextlib.py\", line 158, in __exit__\n    self.gen.throw(value)\n  File \"/usr/local/lib/python3.12/site-packages/httpcore/_exceptions.py\", line 14, in map_exceptions\n    raise to_exc(exc) from exc\nhttpcore.ConnectError: [Errno 104] Connection reset by peer\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/project/sglang/python/sglang/srt/utils/common.py\", line 3681, in retry\n    return fn()\n           ^^^^\n  File \"/project/sglang/python/sglang/srt/configs/model_config.py\", line 1582, in <lambda>\n    lambda: hf_api.file_exists(\n            ^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/site-packages/huggingface_hub/utils/_validators.py\", line 89, in _inner_fn\n    return fn(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/site-packages/huggingface_hub/hf_api.py\", line 3930, in file_exists\n    get_hf_file_metadata(url, token=token)\n  File \"/usr/local/lib/python3.12/site-packages/huggingface_hub/utils/_validators.py\", line 89, in _inner_fn\n    return fn(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/site-packages/huggingface_hub/file_download.py\", line 1669, in get_hf_file_metadata\n    response = _httpx_follow_hub_redirects_with_backoff(\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/site-packages/huggingface_hub/utils/_http.py\", line 754, in _httpx_follow_hub_redirects_with_backoff\n    response = http_backoff(\n               ^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/site-packages/huggingface_hub/utils/_http.py\", line 627, in http_backoff\n    return next(\n           ^^^^^\n  File \"/usr/local/lib/python3.12/site-packages/huggingface_hub/utils/_http.py\", line 535, in _http_backoff_base\n    response = client.request(method=method, url=url, **kwargs)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/site-packages/httpx/_client.py\", line 825, in request\n    return self.send(request, auth=auth, follow_redirects=follow_redirects)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/site-packages/httpx/_client.py\", line 914, in send\n    response = self._send_handling_auth(\n               ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/site-packages/httpx/_client.py\", line 942, in _send_handling_auth\n    response = self._send_handling_redirects(\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/site-packages/httpx/_client.py\", line 979, in _send_handling_redirects\n    response = self._send_single_request(request)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/site-packages/httpx/_client.py\", line 1014, in _send_single_request\n    response = transport.handle_request(request)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/site-packages/httpx/_transports/default.py\", line 249, in handle_request\n    with map_httpcore_exceptions():\n  File \"/usr/local/lib/python3.12/contextlib.py\", line 158, in __exit__\n    self.gen.throw(value)\n  File \"/usr/local/lib/python3.12/site-packages/httpx/_transports/default.py\", line 118, in map_httpcore_exceptions\n    raise mapped_exc(message) from exc\nhttpx.ConnectError: [Errno 104] Connection reset by peer\n\nMulti-thread loading shards:   0% Completed | 0/4 [00:00<?, ?it/s]\nMulti-thread loading shards:  25% Completed | 1/4 [00:02<00:07,  2.53s/it]\nMulti-thread loading shards:  50% Completed | 2/4 [00:04<00:03,  1.97s/it]\nMulti-thread loading shards:  75% Completed | 3/4 [00:05<00:01,  1.77s/it]\nMulti-thread loading shards: 100% Completed | 4/4 [00:07<00:00,  1.63s/it]\nMulti-thread loading shards: 100% Completed | 4/4 [00:07<00:00,  1.77s/it]\nCOMMAND: [\"python\", \"scripts/gpu_correctness.py\", \"--mode\", \"ngram\", \"--audit\"]\n[2026-10-04 08:20:57] Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.\n\nMulti-thread loading shards:   0% Completed | 0/4 [00:00<?, ?it/s]\nMulti-thread loading shards:  25% Completed | 1/4 [00:00<00:02,  1.21it/s]\nMulti-thread loading shards:  50% Completed | 2/4 [00:01<00:01,  1.08it/s]\nMulti-thread loading shards:  75% Completed | 3/4 [00:02<00:01,  1.02s/it]\nMulti-thread loading shards: 100% Completed | 4/4 [00:03<00:00,  1.01it/s]\nMulti-thread loading shards: 100% Completed | 4/4 [00:03<00:00,  1.03it/s]\nCOMMAND: [\"python\", \"scripts/gpu_correctness.py\", \"--mode\", \"suffix\", \"--audit\"]\n[2026-10-04 08:22:13] Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.\n\nMulti-thread loading shards:   0% Completed | 0/4 [00:00<?, ?it/s]\nMulti-thread loading shards:  25% Completed | 1/4 [00:00<00:02,  1.41it/s]\nMulti-thread loading shards:  50% Completed | 2/4 [00:01<00:01,  1.22it/s]\nMulti-thread loading shards:  75% Completed | 3/4 [00:02<00:00,  1.22it/s]\nMulti-thread loading shards: 100% Completed | 4/4 [00:03<00:00,  1.30it/s]\nMulti-thread loading shards: 100% Completed | 4/4 [00:03<00:00,  1.28it/s]\nCOMMAND: [\"python\", \"scripts/analyze_audit.py\", \"/artifacts/modal-20261004-audit-v6/results\"]\n[\n  {\n    \"mode\": \"ngram\",\n    \"name\": \"length-128\",\n    \"repeat\": 1,\n    \"first_difference\": 96,\n    \"ordinary_length\": 128,\n    \"other_length\": 128,\n    \"ordinary_token\": 74807,\n    \"other_token\": 91514,\n    \"ordinary_top2_logprobs\": [\n      [\n        -2.025161027908325,\n        74807,\n        null\n      ],\n      [\n        -2.0408718585968018,\n        91514,\n        null\n      ]\n    ],\n    \"ordinary_logprob_margin\": 0.015710830688476562\n  }\n]\nCOMMAND: [\"python\", \"scripts/analyze_gpu.py\", \"--correctness-only\"]\nTraceback (most recent call last):\n  File \"/project/scripts/analyze_gpu.py\", line 95, in <module>\n    main()\n  File \"/project/scripts/analyze_gpu.py\", line 38, in main\n    assert x[\"response\"][\"output_ids\"] == y[\"response\"][\"output_ids\"], (\nAssertionError: ('ngram', 'length-128', 1)\n"
+}
+Stopping app - uncaught exception raised locally: SystemExit(1).

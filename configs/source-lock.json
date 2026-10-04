@@ -27,14 +27,19 @@
     "sglang-kernel": "0.4.7",
     "transformers": "5.12.1",
     "dtype": "bfloat16",
-    "backend": "flashinfer",
+    "backend": "triton",
     "tp": 1,
     "page_size": 1,
-    "status": "212-package Linux CPython 3.12 binary-wheel resolution succeeded using PyPI and NVIDIA indexes; GPU installation/runtime unverified"
+    "status": "Triton+FP32 logits: SUFFIX30/30 exact, branching NGRAM29/30. Testing linear NGRAM PROB breadth1 and direct existing-prefix KV preservation/slot checks.",
+    "deterministic_inference": true,
+    "flashinfer_split_tile_size": 4096,
+    "fp32_lm_head": true,
+    "triton_split_tile_size": 4096,
+    "ngram_breadth": 1
   },
   "dependency_lock": {
     "path": "configs/gpu-requirements.lock",
-    "sha256": "35f06a5eb466b07a94f23d0fa057914bf9632eca8a7a47eed1c2c1032aaa7941",
+    "sha256": "c0a19671efe44499b964370a3932dcb1d6abca143c0fbf7f1fd65f0e44f85510",
     "resolver": "uv 0.11.18",
     "platform": "x86_64-manylinux_2_39 (Ubuntu 24.04 glibc 2.39)",
     "python": "3.12",
@@ -45,6 +50,25 @@
     "indexes": [
       "https://pypi.org/simple",
       "https://pypi.nvidia.com"
-    ]
+    ],
+    "overrides": "configs/gpu-overrides.in",
+    "linux_installed": true,
+    "rust_build": true,
+    "engine_import": true
+  },
+  "integration_patch": {
+    "path": "patches/sglang-suffix.patch",
+    "sha256": "ae993ea1476ea83e355eb8f7539f1429c7597417bf2ada5d9dc391ee6616e93a"
+  },
+  "modal": {
+    "sdk": "1.6.1",
+    "gpu": "H100!",
+    "cpu": 8,
+    "memory_mib": 65536,
+    "ephemeral_disk_mib": 524288,
+    "timeout_seconds": 7200,
+    "retries": 0,
+    "scale_down_seconds": 2,
+    "spend_limit_user_set_usd": 0
   }
 }

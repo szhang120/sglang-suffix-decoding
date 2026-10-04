@@ -1,10 +1,10 @@
 # SuffixDecoding in SGLang
 
-A reproducible **linear, greedy, batch-one** implementation candidate using the author CPU suffix tree and SGLang target verification. **GPU correctness and performance are not yet validated.** No GPU rental has been provisioned, and no speedup is claimed.
+A reproducible **linear, greedy, batch-one** implementation candidate using the author CPU suffix tree and SGLang target verification. **GPU correctness and performance are not yet validated.** Modal executes Qwen on one H100; a remaining warm-cache divergence is being audited before benchmarks. No speedup is claimed.
 
 - [Project plan](PROJECT_PLAN.md): code-grounded design, invariants, milestones and 0–100 decision scores.
 - [Technical report](docs/TECHNICAL_REPORT.md): inference/KV reasoning, local evidence and limits.
-- [GPU runbook](docs/GPU_RUNBOOK.md): rental/SSH steps and exact execution workflow.
+- [GPU runbook](docs/GPU_RUNBOOK.md): Modal and SSH execution workflows.
 - [Source lock](configs/source-lock.json) and [hashed Linux dependency lock](configs/gpu-requirements.lock).
 
 ## Local CPU verification
@@ -21,7 +21,7 @@ PYTHONPATH=native python scripts/cpu_profile.py
 
 The bootstrap preserves modified checkouts. SGLang lives in `sglang/` on `codex/suffix-decoding`, based on v0.5.21 commit `e00930c5489053f26d86b179cee0d087f846acbb`. Author code lives separately in `reference/ArcticInference/`. Checkouts and native binaries are excluded from this root repository; the committed patch reconstructs the integration.
 
-Current verification: eight CPU/host contract tests pass. The GPU runners compare ordinary decoding, NGRAM PROB and suffix decoding, record raw outputs/configurations and refuse mismatched token IDs. See the runbook before renting a GPU.
+Current verification: ten CPU/host contract tests pass. The GPU runners compare ordinary decoding, NGRAM PROB and suffix decoding, record raw outputs/configurations and refuse mismatched token IDs. See the runbook before renting a GPU.
 
 ## Sources and licensing
 

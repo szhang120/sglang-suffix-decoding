@@ -9,7 +9,13 @@ from gpu_common import LOCK, ROOT, engine_config
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("--mode", choices=["ordinary", "ngram", "suffix"], required=True)
+    p.add_argument("--audit", action="store_true")
     a = p.parse_args()
+    if a.audit and a.mode == "suffix":
+        import os
+
+        os.environ["SUFFIX_TRACE_LOGITS"] = "1"
+        os.environ["SUFFIX_TRACE"] = str(ROOT / "results" / "audit-suffix-trace.jsonl")
     from transformers import AutoTokenizer
 
     import sglang as sgl
@@ -56,12 +62,26 @@ def main():
                     ids = tok.apply_chat_template(
                         [dict(role="user", content=case["content"])],
                         add_generation_prompt=True,
+                        tokenize=True,
+                        return_dict=False,
                     )
                     out = engine.generate(
                         input_ids=ids,
                         sampling_params=case["params"],
                         rid=f"case-{repeat}-{case['name']}",
+                        **(
+                            dict(return_logprob=True, top_logprobs_num=2)
+                            if a.audit and a.mode != "suffix"
+                            else {}
+                        ),
                     )
+                    if (
+                        case["params"].get("ignore_eos")
+                        and len(out["output_ids"]) != case["params"]["max_new_tokens"]
+                    ):
+                        raise AssertionError(
+                            "ignore_eos generation did not reach its output cap"
+                        )
                     if len(out["output_ids"]) > case["params"]["max_new_tokens"]:
                         raise AssertionError("Generation exceeded output cap")
                     f.write(

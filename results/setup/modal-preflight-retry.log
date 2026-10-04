@@ -1,0 +1,72 @@
+✓ Initialized. View run at 
+https://modal.com/apps/szhanggg/main/ap-Pzm7dd9vkWqOZWTlkpPCiB
+Building image im-fPGGnZxzSScrd9zBFIDn5i
+
+=> Step 0: FROM base
+
+=> Step 1: COPY --from=ghcr.io/astral-sh/uv:0.11.18 /uv /.uv/uv
+Getting image source signatures
+Copying blob sha256:38a8c2c3a3c6beb1f0c9a5e3e3559c1e51e523d61008e3992dff21c56c09dccd
+Copying blob sha256:dc53ac184c62e4824e2d805ad848658e103512daecb538db5d756f3fdd6a4e36
+Copying config sha256:09c8c291bc3676a2556d9d66531d2e3337ecd02534d872bcd3801cd2f97aee83
+Writing manifest to image destination
+Unpacking OCI image
+   • unpacking rootfs ...     
+   • ... done                 
+   • unpacked image rootfs: /tmp/task-data/ta-01M42SRYCAT3QW7P698F8VBW4B/registry-unpack1OXZir
+
+=> Step 2: COPY /.0_gpu-requirements.lock /.uv/0/gpu-requirements.lock
+
+=> Step 3: RUN /.uv/uv pip install --python $(command -v python) --compile-bytecode --require-hashes --only-binary=:all: --index-strategy unsafe-best-match --requirements /.uv/0/gpu-requirements.lock
+Using Python 3.12.1 environment at: /usr/local
+Resolved 212 packages in 1.68s
+Downloading pyarrow (47.8MiB)
+Downloading llvmlite (53.7MiB)
+Downloading triton (188.6MiB)
+Downloading torch (502.2MiB)
+Downloading tilelang (48.2MiB)
+Downloading scipy (33.7MiB)
+Downloading grpcio (6.8MiB)
+Downloading numpy (15.8MiB)
+Downloading pandas (10.3MiB)
+Downloading pycountry (7.7MiB)
+Downloading transformers (10.6MiB)
+Downloading tokenspeed-triton (95.3MiB)
+Downloading z3-solver (27.9MiB)
+Downloading cuda-bindings (6.8MiB)
+Downloading torchvision (7.3MiB)
+Downloading cmake (26.5MiB)
+Downloading sglang-kernel (355.8MiB)
+Downloading sgl-deep-ep (14.6MiB)
+Downloading flashinfer-python (17.5MiB)
+Downloading nvidia-cusparselt-cu13 (162.3MiB)
+Downloading nvidia-cufile (1.2MiB)
+Downloading nccl4py (3.5MiB)
+Downloading nvidia-nvjitlink (40.5MiB)
+Downloading nvidia-cublas (403.5MiB)
+Downloading nvidia-nvvm (69.2MiB)
+Downloading nvidia-cufft (204.2MiB)
+Downloading nvidia-cuda-runtime (2.1MiB)
+Downloading nvidia-cusolver (191.6MiB)
+Downloading nvidia-cuda-cupti (10.2MiB)
+Downloading nvidia-cudnn-cu13 (349.2MiB)
+Downloading nvidia-cutlass-dsl-libs-cu12 (84.4MiB)
+Downloading nvidia-cutlass-dsl-libs-base (2.7MiB)
+Downloading nvidia-cuda-nvdisasm (5.0MiB)
+Downloading nvidia-cudnn-frontend (8.4MiB)
+Downloading nvidia-nccl-cu13 (196.4MiB)
+Downloading nvidia-cuda-nvcc (45.5MiB)
+Downloading nvidia-curand (56.8MiB)
+Downloading nvidia-cuda-cccl (3.7MiB)
+Downloading nvshmem4py-cu13 (4.8MiB)
+Downloading nvidia-cutlass-dsl-libs-cu13 (84.0MiB)
+Downloading nvidia-cusparse (139.2MiB)
+Downloading nvidia-nvshmem-cu13 (57.6MiB)
+Downloading nvidia-cuda-nvrtc (86.0MiB)
+Downloading nvidia-mathdx (21.9MiB)
+Downloading pillow (6.6MiB)
+Aborting app initialization...
+
+Stopping app - keyboard interrupt received. Use `modal run --detach` to prevent KeyboardInterrupts from killing apps.
+
+Aborted!

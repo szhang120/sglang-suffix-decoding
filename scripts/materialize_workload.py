@@ -29,7 +29,10 @@ def main():
             for r in rows:
                 messages = [dict(role="user", content=r["turns"][0])]
                 ids = tokenizer.apply_chat_template(
-                    messages, add_generation_prompt=True
+                    messages,
+                    add_generation_prompt=True,
+                    tokenize=True,
+                    return_dict=False,
                 )
                 truncated = len(ids) > 15360
                 ids = ids[-15360:]
@@ -48,7 +51,10 @@ def main():
                         dict(role="user", content=r["turns"][1]),
                     ]
                     refined_ids = tokenizer.apply_chat_template(
-                        messages, add_generation_prompt=True
+                        messages,
+                        add_generation_prompt=True,
+                        tokenize=True,
+                        return_dict=False,
                     )
                     f.write(
                         json.dumps(

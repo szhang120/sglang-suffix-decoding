@@ -1,0 +1,16 @@
+{
+  "date": "2026-10-04",
+  "package": "cuda-tile==1.6.0rc5",
+  "failure": "Resolver cache supplied PyPI downloader-stub hash while Modal installed NVIDIA wheel.",
+  "pypi_artifacts": [
+    {
+      "filename": "cuda_tile-1.6.0rc5.tar.gz",
+      "sha256": "611bbd7d3efb81763a3790374d23c8a6f0ecc16735e69e4d3f9ef7762d9335e8"
+    }
+  ],
+  "wheel_url": "https://pypi.nvidia.com/cuda-tile/cuda_tile-1.6.0rc5-cp312-cp312-manylinux2014_x86_64.whl",
+  "nvidia_index_sha256": "b74c20348210d2182cd998a0ecb60c518989a79b28592d72eb8294b38ddb93d7",
+  "downloaded_wheel_sha256": "b74c20348210d2182cd998a0ecb60c518989a79b28592d72eb8294b38ddb93d7",
+  "resolution": "Direct wheel input and fresh uv cache; hash validation retained.",
+  "gpu_launched_at_failure": false
+}

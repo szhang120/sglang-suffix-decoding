@@ -1,6 +1,28 @@
 # Provisioning and execution
 
-No rental has been created. No GPU benchmark has run. The only information needed from the user is a reachable SSH command and the local SSH key path once a host exists.
+Modal authentication and payment-method setup are complete; the user set the net spend limit to $0. H100 BF16 math and Linux build/import gates passed. All decoding modes execute Qwen. Batch-invariant settings fix the shared NGRAM/SUFFIX divergence, but a remaining warm SUFFIX case shows a BF16 tie sensitivity; FP32-output logits and GPU layout/acceptance assertions are being tested. No GPU benchmark has run. SSH provisioning is an optional alternative.
+
+## Modal execution
+
+Use Modal CLI 1.6.1 in the isolated Mac environment `/tmp/sglang-modal-cli`. Token setup stays outside this repository. The launcher requests one explicit `H100!`, 8 CPU cores, 64GiB RAM and 512GiB ephemeral disk (Modal’s minimum for an explicit request). Persistent named volumes hold model cache and raw artifacts. Functions time out after two hours, have no automatic retries and scale down after two seconds. Decision score: **90/100**.
+
+```sh
+/tmp/sglang-modal-cli/bin/modal run scripts/modal_runner.py --phase preflight --run-id RUN_ID
+/tmp/sglang-modal-cli/bin/modal run scripts/modal_runner.py --phase correctness --run-id RUN_ID
+/tmp/sglang-modal-cli/bin/modal run scripts/modal_runner.py --phase workload --run-id RUN_ID
+/tmp/sglang-modal-cli/bin/modal run scripts/modal_runner.py --phase benchmark --run-id RUN_ID --trial 0
+```
+
+Use phase `audit` for target-logit/acceptance diagnostics after a failure, and `width-probe` for controlled row-count profiling. Repeat benchmark trials 1–4, then run phases `profile` and `analyze`. Each trial runs every mode sequentially on the same GPU. Commands refuse to overwrite completed phases. Download artifacts from volume `sglang-suffix-artifacts`, under RUN_ID. Create the destination directory before a recursive download; the CLI otherwise treats it as a single filename:
+
+```sh
+mkdir -p results/modal/RUN_ID/raw
+/tmp/sglang-modal-cli/bin/modal volume get sglang-suffix-artifacts RUN_ID/results results/modal/RUN_ID/raw
+```
+
+The downloaded tree includes a `results/` subdirectory. Immutable project image IDs can accelerate development with `SUFFIX_MODAL_RUST_BASE_IMAGE`; portable builds do not depend on those IDs. Runtime compares exact source fingerprints before execution. Image builds happen before GPU execution; installation failures are retained in `results/setup/`. The first build caught a CUDA-tile downloader-stub hash in the resolver output. The direct NVIDIA CPython 3.12 wheel is now pinned through `configs/gpu-overrides.in`; its downloaded bytes match the NVIDIA index hash. Hash checking remains mandatory.
+
+List-price compute estimate for the requested resources is approximately $4.84/hour, excluding image builds, storage and other billable usage; this is not an account invoice. See [Modal pricing](https://modal.com/pricing). No always-on deployment is created.
 
 ## Steps on the Mac / rental dashboard
 
@@ -27,7 +49,7 @@ No rental has been created. No GPU benchmark has run. The only information neede
 
 Before downloading model weights, capture `nvidia-smi -q`, `uname -a`, Python version, `nvcc --version`, compiler version and Rust version. Require exactly one visible GPU, Python 3.12, CUDA 13 development tools, C++20 support, Rust **1.92** (the pinned SGLang source toolchain), and sufficient disk/RAM. Build dependencies need outbound GitHub/PyPI/Hugging Face access. The selected model is public and ungated; no training occurs.
 
-`configs/gpu-requirements.lock` pins **212 packages with hashes**, resolved for Ubuntu 24.04 glibc 2.39 / x86_64 / Python 3.12 with uv 0.11.18. Resolution disallows source builds and uses PyPI plus NVIDIA’s public wheel index, bypassing the PyPI CUDA-tile downloader stub. Installation requires binary wheels and checks hashes. Resolver success is not a binary runtime guarantee. Core upstream versions: PyTorch 2.13.0, FlashInfer 0.6.18, SGLang kernel 0.4.7, Transformers 5.12.1. Preserve upstream pins first, run `pip check`, then test import/model startup. Report any failure and revise the lock explicitly; do not silently substitute versions.
+`configs/gpu-requirements.lock` pins **212 packages with hashes**, resolved for Ubuntu 24.04 glibc 2.39 / x86_64 / Python 3.12 with uv 0.11.18. Resolution disallows source builds and uses PyPI plus NVIDIA’s public wheel index, with an explicit NVIDIA CUDA-tile wheel to avoid the PyPI downloader stub. Installation requires binary wheels and checks hashes. Resolver success is not a binary runtime guarantee. Core upstream versions: PyTorch 2.13.0, FlashInfer 0.6.18, SGLang kernel 0.4.7, Transformers 5.12.1. Preserve upstream pins first, run `pip check`, then test import/model startup. Report any failure and revise the lock explicitly; do not silently substitute versions.
 
 Transfer the root project and bootstrap source checkouts remotely. Exclude `.venv`, `native/build`, compiled Mac `.so` files and `.git` directories from a file transfer. `scripts/bootstrap.sh` recreates exact source commits and applies the integration patch while preserving pre-existing checkouts. An alternative is cloning this repository once it has been published. Author reference checkout remains separate; vLLM is not installed.
 
@@ -46,7 +68,7 @@ Setup assumes CUDA/compiler/Rust are already available. Package installs use the
 
 Materialize one frozen workload: tokenizer IDs and second-turn inputs include assistant responses generated once by ordinary decoding. Every timed mode receives the same IDs. Truncations are recorded. Workload hash, source lock, resolved settings, installed package freeze and complete NVIDIA information are saved alongside results.
 
-Five trials rotate ordinary, NGRAM PROB, suffix, unbounded-match-length suffix and local-only suffix modes. All use graphs/overlap/radix cache disabled; each workload block starts with a cache reset. Independent, refinement and repeated-identical-prompt blocks are reported separately. Repetition is a diagnostic upper bound and must never be presented as an agent benchmark.
+Five trials rotate ordinary, linear NGRAM PROB (breadth1), suffix, unbounded-match-length suffix and local-only suffix modes. All use graphs/overlap/radix cache disabled; each workload block starts with a cache reset. Independent, refinement and repeated-identical-prompt blocks are reported separately. Repetition is a diagnostic upper bound and must never be presented as an agent benchmark.
 
 Separate profile runs add per-round suffix traces and SGLang's real scheduler CPU/GPU profiler with tensor shapes. Inspect projection/MLP GEMM row counts and attention query lengths against `verify_rows`. Compare GPU event time across naturally observed lengths with matched context lengths. Inspect CPU draft, host transfers, allocation and launch overhead too. Shorter tensors establish a different execution shape; only traces/timings establish how much GPU work/time it saves. If natural widths are too narrow, add a documented controlled-width profiling experiment before drawing that conclusion.
 
