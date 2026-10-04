@@ -24,6 +24,28 @@ The bootstrap preserves modified checkouts. SGLang lives in `sglang/` on `codex/
 
 Current verification: ten CPU/host contract tests pass. The GPU runners compare ordinary decoding, NGRAM PROB and suffix decoding, record raw outputs/configurations and refuse mismatched token IDs. See the runbook before renting a GPU.
 
+## Generate on the configured Linux GPU
+
+After the Linux dependency/native/SGLang setup in the runbook:
+
+```sh
+export PYTHONPATH="$PWD/native:$PWD/sglang/python:$PWD/scripts"
+export SGLANG_TRITON_DECODE_SPLIT_TILE_SIZE=4096
+python - <<'PY'
+import sglang as sgl
+from gpu_common import engine_config, sampling
+
+engine = sgl.Engine(**engine_config("suffix"))
+try:
+    print(engine.generate(prompt="Explain causal attention briefly.",
+                          sampling_params=sampling(128)))
+finally:
+    engine.shutdown()
+PY
+```
+
+The validated scope is one greedy request, one CUDA GPU, dense Qwen, eager execution and the common deterministic Triton/FP32-head configuration. Unsupported batching, graphs, overlap, sampling/history penalties and grammar/logprob requests are rejected. This is a research adaptation with bounded caches, not a general production speculator.
+
 ## Sources and licensing
 
-[Paper v3](https://arxiv.org/abs/2411.04975v3), [ArcticInference](https://github.com/snowflakedb/ArcticInference), [SGLang](https://github.com/sgl-project/sglang), and [Spec-Bench](https://github.com/hemingkx/Spec-Bench). Apache-2.0 source notices are retained; see [third-party provenance](THIRD_PARTY.md). This is an adapted SGLang reproduction project, with no dependency on upstream PR acceptance. Publication and final results remain pending GPU validation.
+[Paper v3](https://arxiv.org/abs/2411.04975v3), [ArcticInference](https://github.com/snowflakedb/ArcticInference), [SGLang](https://github.com/sgl-project/sglang), and [Spec-Bench](https://github.com/hemingkx/Spec-Bench). Apache-2.0 source notices are retained; see [third-party provenance](THIRD_PARTY.md). This is an adapted SGLang reproduction project, with no dependency on upstream PR acceptance. Final serving results remain pending.
