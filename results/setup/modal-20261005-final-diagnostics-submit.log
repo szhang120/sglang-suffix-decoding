@@ -1,0 +1,120 @@
+Note that running a local entrypoint in detached mode only keeps the last triggered Modal function alive after the parent process has been killed or disconnected.
+✓ Initialized. View run at 
+https://modal.com/apps/szhanggg/main/ap-LH7AwrtpEfMxOZyroo0MGW
+Building image im-7jVIyQgglUd9nQ9bdRDCgt
+Building image im-VvcBzJ2JlRFVI7j6inXi6o
+
+=> Step 0: FROM base
+
+=> Step 1: COPY . /
+Saving image...
+
+=> Step 0: FROM base
+
+=> Step 1: COPY . /
+Image saved, took 549.43ms
+
+Built image im-VvcBzJ2JlRFVI7j6inXi6o in 1.18s
+
+
+Building image im-dD22XY0nbNf4eNW0cWdp6y
+
+=> Step 0: FROM base
+
+=> Step 1: COPY . /
+Saving image...
+Image saved, took 242.72ms
+
+Built image im-dD22XY0nbNf4eNW0cWdp6y in 783.19ms
+
+
+Saving image...
+Building image im-UmGb6yghF6t88io3i7EtYD
+
+=> Step 0: FROM base
+
+=> Step 1: COPY . /
+Saving image...
+Image saved, took 364.09ms
+
+Built image im-UmGb6yghF6t88io3i7EtYD in 977.83ms
+
+
+Image saved, took 2.56s
+
+Built image im-7jVIyQgglUd9nQ9bdRDCgt in 6.13s
+
+
+Building image im-K482KbR4HNE6GdkpseSJu4
+
+=> Step 0: FROM base
+
+=> Step 1: COPY . /
+Building image im-O2sPJ9VYlJJB9v5w0e6JRK
+Saving image...
+
+=> Step 0: FROM base
+
+=> Step 1: COPY . /
+Image saved, took 2.24s
+
+Built image im-K482KbR4HNE6GdkpseSJu4 in 3.23s
+
+
+Saving image...
+Building image im-uh7y8ov2AXpR1lMa7NK1ic
+
+=> Step 0: FROM base
+
+=> Step 1: COPY . /
+Saving image...
+Image saved, took 399.47ms
+
+Built image im-uh7y8ov2AXpR1lMa7NK1ic in 942.31ms
+
+
+Image saved, took 2.38s
+
+Built image im-O2sPJ9VYlJJB9v5w0e6JRK in 5.51s
+
+
+✓ Created objects.
+├── ✓ Uploaded 
+│   /Users/seanzhang/Documents/ChatGPT/sglang-suffix-decoding/analysis/modal_fin
+│   al_diagnostics.py
+├── ✓ Uploaded 
+│   /Users/seanzhang/Documents/ChatGPT/sglang-suffix-decoding/analysis/decode_co
+│   ntrol_gpu.py
+├── ✓ Uploaded 
+│   /Users/seanzhang/Documents/ChatGPT/sglang-suffix-decoding/analysis/benchmark
+│   _report.py
+├── ✓ Uploaded 
+│   /Users/seanzhang/Documents/ChatGPT/sglang-suffix-decoding/scripts/reproduce_
+│   gpu.py
+├── ✓ Uploaded 
+│   /Users/seanzhang/Documents/ChatGPT/sglang-suffix-decoding/analysis/natural_t
+│   race_report.py
+├── ✓ Uploaded 
+│   /Users/seanzhang/Documents/ChatGPT/sglang-suffix-decoding/analysis/decode_co
+│   ntrol_report.py
+├── ✓ Uploaded 
+│   /Users/seanzhang/Documents/ChatGPT/sglang-suffix-decoding/analysis/width_rep
+│   ort.py
+├── ✓ Uploaded 
+│   /Users/seanzhang/Documents/ChatGPT/sglang-suffix-decoding/results/modal/moda
+│   l-20261004-v12-suffix-isolated/suffix-gate-status.json
+├── ✓ Uploaded 
+│   /Users/seanzhang/Documents/ChatGPT/sglang-suffix-decoding/scripts/analyze_wi
+│   dth_probe.py
+├── ✓ Created Function wait_and_execute.
+└── ✓ Created Function execute.
+{
+  "submitted": true,
+  "run_id": "modal-20261005-final-diagnostics",
+  "reference_run": "modal-20261004-final-campaign-resumed",
+  "app_id": "ap-LH7AwrtpEfMxOZyroo0MGW",
+  "function_call_id": "fc-01M45FKXQG34QARXYRM93P5ZDR"
+}
+[modal-client] 2026-10-05T03:32:06-0400 Timed out waiting for final app logs.
+✓ App completed. View run at 
+https://modal.com/apps/szhanggg/main/ap-LH7AwrtpEfMxOZyroo0MGW

@@ -1,6 +1,6 @@
 # A linear SuffixDecoding adaptation for SGLang
 
-**Status: SUFFIX passes the full 240-request public-workload exact-ID gate in the retained v12 configuration. Five serving trials are running. Upstream NGRAM still has output differences.** No serving speedup or reproduction of the paper’s headline performance is established yet. SGLang executes Qwen2.5-7B-Instruct on one H100 80GB. All failed configurations remain available alongside the passing configuration.
+**Status: SUFFIX passes the full 240-request public-workload exact-ID gate in the retained v12 configuration. Five serving trials completed: all 4800 ordinary/SUFFIX/ablation outputs match; final diagnostics are running. Upstream NGRAM still has output differences.** The validated serving report measures adaptive ratios of 0.999× independent, 1.280× on actual follow-ups and 1.902× on repetition; final diagnostic interpretation and the measured write-up remain pending. Reproduction of the paper’s headline performance is not established. SGLang executes Qwen2.5-7B-Instruct on one H100 80GB. All failed configurations remain available alongside the passing configuration.
 
 ## Algorithm and integration
 

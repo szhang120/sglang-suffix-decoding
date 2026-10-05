@@ -332,5 +332,26 @@
     "linux_and_macos": "passed",
     "cpu_tests": 21,
     "url": "https://github.com/szhang120/sglang-suffix-decoding/actions/runs/37249570467"
+  },
+  "final_serving_campaign": {
+    "run_id": "modal-20261004-final-campaign-resumed",
+    "success": true,
+    "paired_trials": 5,
+    "modes": 25,
+    "records": 6000,
+    "strict_matching_outputs": 4800,
+    "ngram_differences": 50,
+    "ngram_requests": 1200,
+    "gpu_stopped_edt": "2026-10-05 02:32:53",
+    "frozen_source_hashes_checked": 25,
+    "report": "results/modal/modal-20261005-final-diagnostics-controller/reports/benchmark-report.json",
+    "report_sha256": "20e8b77dd8de7cc518dcbdb4f08ba120097a9b010fca93b160ef34afc6a42ced"
+  },
+  "final_diagnostics_submission": {
+    "submitted": true,
+    "run_id": "modal-20261005-final-diagnostics",
+    "reference_run": "modal-20261004-final-campaign-resumed",
+    "app_id": "ap-LH7AwrtpEfMxOZyroo0MGW",
+    "function_call_id": "fc-01M45FKXQG34QARXYRM93P5ZDR"
   }
 }

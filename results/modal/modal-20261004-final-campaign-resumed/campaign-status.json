@@ -1,5 +1,5 @@
 {
-  "success": false,
+  "success": true,
   "run_id": "modal-20261004-final-campaign-resumed",
   "image_id": "im-96vGJgQDElG1UZq72yqyhI",
   "source_sha256": {
@@ -179,5 +179,6 @@
   "suffix_gate_reference": "modal-20261004-v12-suffix-isolated",
   "branch_replay_reference": "modal-20261004-branch-attention",
   "audited_rounds": 416,
-  "gates_passed": true
+  "gates_passed": true,
+  "elapsed_seconds": 24212.986186591
 }

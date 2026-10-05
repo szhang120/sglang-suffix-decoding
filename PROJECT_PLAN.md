@@ -1,6 +1,6 @@
 # SuffixDecoding in SGLang
 
-Checkpoint: 2026-10-05 02:01 EDT. A single detached H100 campaign now runs five rotated trials. The complete first trial is preserved; trials 1–4 are running after an explicit cancellation whose source is unknown. SUFFIX passes the separate 240-request exact-ID gate. Final performance conclusions remain pending. See [current status](docs/STATUS.md) and [preserved design/diagnosis history](docs/PROJECT_HISTORY.md).
+Checkpoint: 2026-10-05 03:35 EDT. Five paired serving trials completed: 6000 records, all 4800 strict outputs matching, NGRAM 50/1200 differences retained descriptively. The serving GPU stopped. One separately submitted H100 diagnostic stage is running. Final write-up and publication remain pending. See [current status](docs/STATUS.md) and [preserved history](docs/PROJECT_HISTORY.md).
 
 ## Scope and integration
 
@@ -32,11 +32,11 @@ Each five-mode trial stays on one physical GPU. Recovery copies only complete pa
 
 1. **Complete:** pinned workspace, public repository/CI, native reuse, cache lifecycle, proposer, verifier, acceptance and KV path. Ten host contracts and seven benchmark-policy checks pass locally; Linux/Mac CI passes at source checkpoint `f98928aa13cd905835cf18687bd6c1f05bfb8274`; four publication-report checks also pass on Mac/Linux and in the public Linux image. Synthetic fixtures check refusal of incomplete/failed evidence and explicit negative findings; they supply no model or performance measurements. Host stubs do not establish GPU correctness.
 2. **Complete:** plain 30-case GPU checks, 416 direct verification/KV assertions, separate 240/240 exact SUFFIX gate, independent upstream attribution, and public raw audit releases. One captured NGRAM layout effect is explained; arbitrary-input equivalence and all NGRAM errors remain unproven.
-3. **Running:** five paired serving trials. Trial 0 has 1200 records: all 960 ordinary/SUFFIX/ablation outputs match; NGRAM differs 10/240. Trials 0–3 are complete: twenty-three modes and 5520 timed requests validated, all 4320 strict outputs matching and NGRAM differing on 50/1200. Final-trial adaptive SUFFIX and the unbounded-match-cap ablation remain. Preliminary four-paired-trial adaptive ratios are 1.000× independent, 1.116× combined initial/follow-up, 1.282× actual follow-ups and 1.906× repetition; removing the match-length bound remains faster. These exploratory results are not final conclusions. Require five complete trials and 4800 strict comparisons before aggregation.
-4. **Next:** one separately tracked diagnostic allocation after campaign completion:720 strict suffix traces, five 12-request profiles, 24 paired ordinary-route controls, 54 controlled-width probes and four portable-runner smoke requests. Existing v11 profiles show smaller KV-store/reduction launches while attention/head tiles remain padded; repeat on the final configuration. Instrumented times never enter serving estimates.
+3. **Complete:** five paired serving trials, 25 modes, 6000 records, all 4800 strict IDs matching. NGRAM differs on 50/1200. The validated five-trial report gives adaptive ratios 0.999× independent, 1.113× combined initial/follow-up, 1.280× actual follow-ups and 1.902× repetition. Independent bootstrap interval spans parity; follow-up and repetition intervals exceed parity. Removing the match-length bound is faster under paired comparisons in all three blocks. Final diagnostic interpretation and publication remain pending.
+4. **Running:** fresh `modal-20261005-final-diagnostics` (`ap-LH7AwrtpEfMxOZyroo0MGW`), launched only after successful campaign completion and confirmed GPU scale-down:720 strict suffix traces, five 12-request profiles, 24 paired ordinary-route controls, 54 controlled-width probes and four portable-runner smoke requests. Existing v11 profiles show smaller KV-store/reduction launches while attention/head tiles remain padded; repeat on the final configuration. Instrumented times never enter serving estimates.
 5. **Next:** CPU analysis, paired trial intervals including direct adaptive/ablation policy comparisons, actual proposal/acceptance denominators, scientific figures, raw-file/archive hashes, technical write-up and measured GitHub release. Include negative results and differences from the paper's original Llama/vLLM, proprietary AgenticSQL and live-agent experiments. Portable source-hash dry runs pass on Mac/Linux; a smoke will not establish a separate complete standalone rerun.
 
-**Still required:** five serving trials, final-candidate width and baseline-cost controls, full-workload acceptance analysis and final report including negative results and the distinction from the paper's Llama/vLLM experimental setup.
+**Still required:** final-candidate width and baseline-cost controls, full-workload acceptance analysis and final report including negative results and the distinction from the paper's Llama/vLLM experimental setup.
 
 ## Decision scores
 
@@ -51,4 +51,4 @@ Scores are engineering judgments, not probabilities.
 | Keep upstream NGRAM with descriptive mismatches | 93 | Independent reproduction supports retaining the requested baseline while restricting exact-output claims. |
 | Finish public portable runner before publication | 97 | Fresh gates remove private output dependencies; full standalone orchestration still needs an explicit validation limitation. |
 
-The unsolicited Codex scheduled follow-up was removed after the user's clarification. Continue here with the existing Modal campaign; no scheduled task or idle cloud waiter is active.
+The unsolicited Codex scheduled follow-up was removed after the user's clarification. Continue here with the separately submitted Modal diagnostics; no scheduled task or idle cloud waiter is active.
