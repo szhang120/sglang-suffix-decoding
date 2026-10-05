@@ -35,7 +35,8 @@
   "completed_trials": [
     0,
     1,
-    2
+    2,
+    3
   ],
   "completed_modes": [
     {
@@ -111,6 +112,46 @@
     {
       "mode": "ngram",
       "trial": 2,
+      "mismatches": 10
+    },
+    {
+      "mode": "suffix-fixed",
+      "trial": 3,
+      "mismatches": 0
+    },
+    {
+      "mode": "suffix-local",
+      "trial": 3,
+      "mismatches": 0
+    },
+    {
+      "mode": "ordinary",
+      "trial": 3,
+      "mismatches": 0
+    },
+    {
+      "mode": "ngram",
+      "trial": 3,
+      "mismatches": 10
+    },
+    {
+      "mode": "suffix",
+      "trial": 3,
+      "mismatches": 0
+    },
+    {
+      "mode": "suffix-local",
+      "trial": 4,
+      "mismatches": 0
+    },
+    {
+      "mode": "ordinary",
+      "trial": 4,
+      "mismatches": 0
+    },
+    {
+      "mode": "ngram",
+      "trial": 4,
       "mismatches": 10
     }
   ],

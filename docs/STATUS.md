@@ -1,4 +1,4 @@
-# Status at 2026-10-04 23:14 EDT
+# Status at 2026-10-05 02:01 EDT
 
 The 20:29 EDT check confirms: the public Modal image build completed without private image overrides, passed all 16 host/report checks and all 25 frozen source fingerprints, and returned `success: true` on CPU. It allocated no GPU and its app has stopped. The serving campaign remains unchanged; adaptive SUFFIX trial1 completed with zero differences.
 
@@ -20,7 +20,7 @@ This is a saved checkpoint, not a live dashboard. The current job was submitted 
 
 Only `ap-TawwrpzDJ2lkv2krq66I9s` (`sglang-suffix-validated-campaign`) remains active: one H100 running `modal-20261004-final-campaign-resumed`. It preserves the complete first trial and reruns trials 1–4 under unchanged GPU source/workload hashes. GPU allocation continues until completion, failure, explicit stop or its 12-hour timeout. The local submit command has exited; monitoring is read-only.
 
-Latest checked progress: fifteen of 25 mode/trial combinations, 3600/6000 timed requests validated. Three complete paired trials are available. All 2880 completed ordinary/SUFFIX/ablation outputs match. NGRAM differs on 30/720 completed requests. The first trial is complete:
+Latest checked progress: twenty-three of 25 mode/trial combinations, 5520/6000 timed requests validated. Four complete paired trials are available. All 4320 completed ordinary/SUFFIX/ablation outputs match. All five NGRAM runs have completed with 50/1200 differences. The first trial is complete:
 
 | Mode | Completed requests | Token-ID differences |
 |---|---:|---:|
@@ -30,7 +30,7 @@ Latest checked progress: fifteen of 25 mode/trial combinations, 3600/6000 timed 
 | SUFFIX without the adaptive match-length bound | 240 | 0 |
 | Local-cache-only SUFFIX | 240 | 0 |
 
-The resumed allocation has passed fresh plain gates and the direct KV audit. Second-trial NGRAM completed with 10/240 differences; adaptive SUFFIX completed with 0/240 differences. The unbounded-match-cap and local-only ablations each completed with 0/240 differences. Trials 0–2 are complete; the fourth trial has started with unbounded-match-cap SUFFIX. The progress file's `success: false` is an initial completion flag; the final `campaign-status.json` determines success or failure. Earlier incomplete trial records do not count toward the 6000 measured requests.
+The resumed allocation has passed fresh plain gates and the direct KV audit. Second-trial NGRAM completed with 10/240 differences; adaptive SUFFIX completed with 0/240 differences. The unbounded-match-cap and local-only ablations each completed with 0/240 differences. Trials 0–3 are complete; final-trial ordinary, local-only SUFFIX and NGRAM have completed. Adaptive SUFFIX is running, followed by the unbounded-match-cap ablation. The progress file's `success: false` is an initial completion flag; the final `campaign-status.json` determines success or failure. Earlier incomplete trial records do not count toward the 6000 measured requests.
 
 ## Stopped deliberately
 
@@ -69,6 +69,6 @@ All long stage launchers now support `--submit-only`, using async `spawn()` and 
 
 The reporting code now compares adaptive SUFFIX directly with both ablations using the same five paired trial wall times and bootstrap intervals. It reports negative/inconclusive policy effects explicitly. Changing the adaptive cap can also change the winning continuation in the author's cumulative-score search; the ablation is not merely truncating one fixed proposal. All 21 local checks pass. No runtime, model, workload or GPU source fingerprint changed. First-trial ratios are exploratory and are not published as final performance conclusions.
 
-## Preliminary three-trial performance checkpoint
+## Preliminary four-trial performance checkpoint
 
-Three complete paired trials yield adaptive SUFFIX wall-latency ratios of 1.008× for independent inputs, 1.130× for the combined initial/follow-up block, 1.299× for actual follow-ups alone (a subset of that block), and 1.929× for repeated inputs. Independent per-trial ratios span 0.986–1.051×; all three follow-up and repetition ratios exceed 1. Removing the match-length bound yields 1.064×, 1.204×, 1.411× and 2.003× respectively. Local-only repetition remains 0.983×. These are exploratory pooled ratios, not a final five-trial analysis or a reproduction claim. Final uncertainty intervals and diagnostics remain required. The frozen runtime and inputs are unchanged.
+Four complete paired trials yield adaptive SUFFIX wall-latency ratios of 1.000× for independent inputs, 1.116× for the combined initial/follow-up block, 1.282× for actual follow-ups alone (a subset of that block), and 1.906× for repeated inputs. Independent per-trial ratios span 0.978–1.051×; all four follow-up and repetition ratios exceed 1. Removing the match-length bound yields 1.054×, 1.190×, 1.393× and 1.991× respectively. Local-only repetition remains 0.977×. These are exploratory pooled ratios, not a final five-trial analysis or a reproduction claim. Final uncertainty intervals and diagnostics remain required. The frozen runtime and inputs are unchanged.
