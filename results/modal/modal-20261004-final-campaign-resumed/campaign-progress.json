@@ -70,6 +70,16 @@
       "mode": "suffix",
       "trial": 1,
       "mismatches": 0
+    },
+    {
+      "mode": "suffix-fixed",
+      "trial": 1,
+      "mismatches": 0
+    },
+    {
+      "mode": "suffix-local",
+      "trial": 1,
+      "mismatches": 0
     }
   ],
   "resume_lineage": {

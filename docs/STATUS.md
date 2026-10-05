@@ -1,4 +1,4 @@
-# Status at 2026-10-04 20:56 EDT
+# Status at 2026-10-04 21:23 EDT
 
 The 20:29 EDT check confirms: the public Modal image build completed without private image overrides, passed all 16 host/report checks and all 25 frozen source fingerprints, and returned `success: true` on CPU. It allocated no GPU and its app has stopped. The serving campaign remains unchanged; adaptive SUFFIX trial1 completed with zero differences.
 
@@ -12,7 +12,7 @@ This is a saved checkpoint, not a live dashboard. The current job was submitted 
 
 - Public repository, pinned dependencies/source revisions, separate author checkout, dedicated SGLang development branch, CI, implementation and technical draft.
 - Linear greedy batch-one SUFFIX with native author CPU lookup, dual caches, adaptive proposal lengths, verification, acceptance and KV settlement.
-- Twenty-one local host/report checks (latest Linux/Mac CI pending), the complete 240-request exact-token-ID SUFFIX gate, and 416 direct verification/KV assertions.
+- Twenty-one local host/report checks and passing Linux/Mac CI at source checkpoint `f98928aa13cd905835cf18687bd6c1f05bfb8274`, the complete 240-request exact-token-ID SUFFIX gate, and 416 direct verification/KV assertions.
 - Independent upstream/adapter attribution and public raw audit release `v0.2.0-attribution-audit`. One captured NGRAM branch-layout numerical difference was isolated; this does not explain every NGRAM divergence.
 - Earlier controlled-width GPU profiles: shorter execution reduces some kernel work, while attention/head tiles remain padded. Final-candidate repetition remains required.
 
@@ -20,7 +20,7 @@ This is a saved checkpoint, not a live dashboard. The current job was submitted 
 
 Only `ap-TawwrpzDJ2lkv2krq66I9s` (`sglang-suffix-validated-campaign`) remains active: one H100 running `modal-20261004-final-campaign-resumed`. It preserves the complete first trial and reruns trials 1–4 under unchanged GPU source/workload hashes. GPU allocation continues until completion, failure, explicit stop or its 12-hour timeout. The local submit command has exited; monitoring is read-only.
 
-Latest checked progress: eight of 25 mode/trial combinations, 1920/6000 timed requests validated. All 1440 completed ordinary/SUFFIX/ablation outputs match. NGRAM differs on 20/480 completed requests. The first trial is complete:
+Latest checked progress: nine of 25 mode/trial combinations, 2160/6000 timed requests validated. All 1680 completed ordinary/SUFFIX/ablation outputs match. NGRAM differs on 20/480 completed requests. The first trial is complete:
 
 | Mode | Completed requests | Token-ID differences |
 |---|---:|---:|
@@ -30,7 +30,7 @@ Latest checked progress: eight of 25 mode/trial combinations, 1920/6000 timed re
 | SUFFIX without the adaptive match-length bound | 240 | 0 |
 | Local-cache-only SUFFIX | 240 | 0 |
 
-The resumed allocation has passed fresh plain gates and the direct KV audit. Second-trial NGRAM completed with 10/240 differences; adaptive SUFFIX completed with 0/240 differences. The unbounded-match-cap ablation completed with 0/240 differences; local-only SUFFIX is running. The progress file's `success: false` is an initial completion flag; the final `campaign-status.json` determines success or failure. Earlier incomplete trial records do not count toward the 6000 measured requests.
+The resumed allocation has passed fresh plain gates and the direct KV audit. Second-trial NGRAM completed with 10/240 differences; adaptive SUFFIX completed with 0/240 differences. The unbounded-match-cap and local-only ablations each completed with 0/240 differences. Ordinary decoding is finishing the second paired trial. The progress file's `success: false` is an initial completion flag; the final `campaign-status.json` determines success or failure. Earlier incomplete trial records do not count toward the 6000 measured requests.
 
 ## Stopped deliberately
 
@@ -53,7 +53,7 @@ Future execution should announce each stage, report completed/total counts and a
 
 ## Resumed execution
 
-The user authorized continuation after the status reset. Continue the active campaign, then launch diagnostics, final analysis and publication sequentially. No persistent cloud waiter or automatic publisher was restarted. The runbook now states the required completion checks. The analysis verifies recorded proposer settings and rejects silent SUFFIX ablation misconfiguration; all twenty host/report checks pass. GPU code and workload remain frozen.
+The user authorized continuation after the status reset. Continue the active campaign, then launch diagnostics, final analysis and publication sequentially. No persistent cloud waiter or automatic publisher was restarted. The runbook now states the required completion checks. The analysis verifies recorded proposer settings and rejects silent SUFFIX ablation misconfiguration; all twenty-one host/report checks pass. GPU code and workload remain frozen.
 
 The public portable runner passes source-hash dry runs on Mac and Linux. Its brief CPU app stopped after completion; a fixed container-import error and an earlier image-ID typo are recorded. A four-request Linux/GPU smoke will run in the final diagnostic allocation (16 phases total); it does not establish a separate complete five-trial rerun. Both published source checkpoints have passed Linux/Mac CI. A transient automatic approval-service usage error interrupted a CI read; the normal reviewed retry succeeded after the user resumed.
 

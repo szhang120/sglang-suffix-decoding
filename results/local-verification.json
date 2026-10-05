@@ -326,5 +326,11 @@
     "status": "deleted",
     "reason": "Agent-created without explicit scheduling request; removed after user clarification.",
     "modal_campaign_stopped": false
+  },
+  "latest_source_ci": {
+    "commit": "f98928aa13cd905835cf18687bd6c1f05bfb8274",
+    "linux_and_macos": "passed",
+    "cpu_tests": 21,
+    "url": "https://github.com/szhang120/sglang-suffix-decoding/actions/runs/37249570467"
   }
 }
