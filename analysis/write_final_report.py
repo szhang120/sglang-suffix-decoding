@@ -55,10 +55,15 @@ def main():
 
     text = [
         "## Results", "",
-        "The model is Qwen2.5-7B-Instruct on one H100 80GB. Decoding is greedy, with a batch size of 1. Weights and activations use BF16. The output head produces FP32 values.", "",
-        "All modes use deterministic Triton attention, eager execution and seed 42. The output limit is 256 tokens. CUDA graphs, overlap and radix caching are disabled.", "",
-        "Five trials × five modes × 240 requests = 6,000 measurements. The mode order rotates between trials. Inputs include 52 initial prompts and 32 follow-ups. Each block has 52 independent, 84 first and follow-up, or 104 repeated requests. Each block starts with empty algorithm caches.", "",
-        "Speedup is total ordinary request latency divided by total mode latency. It includes host and streaming overhead. Values above 1 mean faster execution. Brackets show 95% paired bootstrap intervals from 10,000 trial resamples with seed 42. The intervals describe timing variation on this workload.", "",
+        "The benchmarks compare ordinary decoding, three SUFFIX configurations and SGLang NGRAM PROB. The target model is Qwen2.5-7B-Instruct on one H100 80GB. All modes use greedy decoding with a batch size of 1. Weights and activations use BF16. The output head produces FP32 values.", "",
+        "All modes use deterministic Triton attention, eager execution and seed 42. Each request can generate up to 256 tokens. CUDA graphs, overlap and radix caching are disabled.", "",
+        "Each trial runs five modes on the same 240 requests. Five trials produce 6,000 measurements, with the mode order rotated between trials. The workload uses 52 initial prompts and 32 follow-ups. Each mode runs three blocks, with empty suffix or NGRAM caches at the start of each block:", "",
+        "- Independent: 52 initial prompts, each run once.",
+        "- First + follow-up: 52 initial prompts and 32 follow-ups that change an earlier prompt.",
+        "- Repeated: 52 initial prompts, each run twice, for 104 requests.", "",
+        "### Decoding latency", "",
+        "Ordinary decoding is the baseline. Adaptive dual cache is SUFFIX with both caches and the match-length bound. The other SUFFIX configurations remove either the bound or the global cache.", "",
+        "Speedup is total ordinary request latency divided by total request latency for the compared mode. Request latency includes host and streaming overhead. Values above 1 mean faster execution. Brackets show 95% paired bootstrap intervals from 10,000 trial resamples with seed 42. These intervals describe timing variation on this fixed workload.", "",
         "| Mode | Independent | First + follow-up | Follow-up only | Repeated |",
         "|---|---:|---:|---:|---:|",
     ]
@@ -68,7 +73,7 @@ def main():
         cells = [ratio(aggregates[(mode, "independent")]), ratio(aggregates[(mode, "refinement")]),
                  ratio(follow), ratio(aggregates[(mode, "repeat")])]
         text.append(f"| {label} | " + " | ".join(cells) + " |")
-    text += ["", "The repeated block includes the first and second passes of each identical prompt. This test gives favorable conditions for cache reuse. Without the match-length bound, probability, available continuations and the output limit still constrain proposals.", "",
+    text += ["", "The follow-up column includes only the 32 follow-up requests from each trial. The repeated column includes both passes of each identical prompt. Repeated prompts give favorable conditions for cache reuse. The adaptive SUFFIX results against ordinary decoding are:", "",
              "| Adaptive SUFFIX vs ordinary | Result |", "|---|---|"]
     for label, row in (("Independent", aggregates[("suffix", "independent")]),
                        ("Follow-up only", turns[("suffix", "refinement", "refinement")]),
@@ -77,8 +82,9 @@ def main():
 
     ablations = {(r["comparator"], r["block"]): r for r in benchmark["ablation_comparisons"]}
     assert len(ablations) == 6 and all(r["paired_trials"] == 5 for r in ablations.values())
-    text += ["", "Each ablation removes one component. Ratios above 1 favor the adaptive method with both caches.", "",
-             "| Block | Adaptive / without match-length bound | Dual cache / local only |", "|---|---:|---:|"]
+    text += ["", "The next comparison tests the value of the bound and the global cache separately. Each ablation removes one component. Removing the bound keeps the 32-token limit, probability threshold and output limit. Available continuations can also limit proposal length.", "",
+             "Each ratio divides the ablated mode's latency by the adaptive dual-cache latency. Values above 1 favor the adaptive configuration.", "",
+             "| Block | Bound vs no bound, speedup | Dual vs local cache, speedup |", "|---|---:|---:|"]
     for block, label in blocks:
         cells = [ratio(ablations[(comparator, block)], "pooled_speedup_ratio")
                  for comparator in ("suffix-fixed", "suffix-local")]
@@ -88,7 +94,9 @@ def main():
         bound_statement = f"Decoding with the adaptive bound is {bound_findings[0]} than decoding without it in all three blocks." if bound_findings[0] != "inconclusive" else "The adaptive bound comparison is inconclusive in all three blocks."
     else:
         bound_statement = "Adaptive bound results: " + "; ".join(f"{label.lower()}: {result}" for (_, label), result in zip(blocks, bound_findings)) + "."
-    text += ["", bound_statement + " Removing the bound can change the chosen candidate and its length. These tests do not identify which change caused the latency difference.", "",
+    text += ["", bound_statement + " Removing the bound can change both the selected continuation and its length. These tests do not separate their effects on latency.", "",
+             "### Output checks", "",
+             "All timed SUFFIX configurations produce the same output token IDs as ordinary decoding. Separate checks cover suffix traces, verification, KV updates and the portable runner. The table lists passing comparisons and assertions:", "",
              "| Correctness check | Passing comparisons |", "|---|---:|",
              "| Ordinary, SUFFIX and suffix ablations in timed runs | 4,800 / 4,800 |",
              "| Separate suffix traces | 720 / 720 |",
@@ -104,16 +112,24 @@ def main():
         row = aggregates[("ngram", block)]
         value = row.get("descriptive_latency_ratio", row.get("pooled_speedup"))
         text.append(f"| {label} | {value:.3f}× | {mismatches[block]} |")
-    text += ["", "NGRAM and SUFFIX use different cache policies. NGRAM can merge branches even when each suffix anchor has a fanout of 1. SUFFIX outputs must match ordinary outputs.", "",
+    text += ["", "NGRAM and SUFFIX use different cache policies. NGRAM can merge branches even when each suffix anchor has only one continuation. The output differences prevent an exact-output speed comparison with NGRAM.", "",
              "### GPU verification width", "",
+             "This test holds the context fixed and changes the number of input rows in a verification pass. One row contains the last emitted token. A 33-row pass adds 32 draft tokens. The table shows median sums of GPU kernel times from three profiling trials:", "",
              "| Context tokens | Kernel time, 1 row | Kernel time, 33 rows | Reduction |", "|---:|---:|---:|---:|"]
     widths = {(r["context_tokens"], r["verify_rows"]): r for r in width["rows"]}
     for context in (126, 128, 512):
         one = widths[(context, 1)]["median_kernel_ms"]
         full = widths[(context, 33)]["median_kernel_ms"]
         text.append(f"| {context} | {one:.3f} ms | {full:.3f} ms | {100 * (1 - one / full):.1f}% |")
-    text += ["", "The table shows median sums of GPU kernel times from three profiling trials. The launch grids for KV storage and argmax become smaller. The attention and output-head grids stay the same. Kernel time includes profiler overhead. It does not measure request latency or operation counts.", "",
-             f"The attention route comparison uses two prompts and six paired trials. Shared-route latency / original-route latency is {ratio(route, 'pooled_shared_over_original_cost_ratio')}. Values above 1 mean the shared route is slower. This test does not establish the baseline cost for other inputs.", ""]
+    route_low, route_high = route["trial_bootstrap_95"]
+    route_finding = (
+        "The shared route is slower in this comparison." if route_low > 1 else
+        "The shared route is faster in this comparison." if route_high < 1 else
+        "The interval includes 1, so the result is inconclusive."
+    )
+    text += ["", "Shorter verification passes reduce measured kernel time. The launch grids for KV storage and argmax become smaller. The attention and output-head grids stay the same. Kernel time includes profiler overhead. It does not measure request latency or operation counts.", "",
+             "### Attention route", "",
+             f"All benchmark modes share the same attention route. A separate check compares this route with the original decode route on two prompts and six paired trials. Shared-route latency divided by original-route latency is {ratio(route, 'pooled_shared_over_original_cost_ratio')}. Values above 1 mean the shared route is slower. {route_finding} This check does not establish the baseline cost for other inputs.", ""]
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text("\n".join(text))
     print(f"Wrote verified measurement tables to {args.output}")

@@ -1,11 +1,39 @@
 Third-party attribution
 
-native/{bindings.cc,suffix_tree.cc,suffix_tree.h,int32_map.h,CMakeLists.txt} and native/suffix_native/cache.py derive from Snowflake ArcticInference commit aca5d9a8a62474035c15d114d40a01abc8c94b51, Apache-2.0. Original copyright notices and native/LICENSE retained. Wrapper changes: import namespace and max_depth default fix. __init__.py is empty.
+This repository's original integration code, scripts and documentation use the
+Apache-2.0 license. The following sources provide code, data and references.
 
-patches/sglang-suffix.patch modifies SGLang v0.5.21 commit e00930c5489053f26d86b179cee0d087f846acbb, Apache-2.0. Full upstream checkout is separate and ignored.
+ArcticInference
+The native suffix code derives from Snowflake ArcticInference, licensed under
+Apache-2.0, at commit aca5d9a8a62474035c15d114d40a01abc8c94b51.
+The derived files are:
+- native/bindings.cc
+- native/suffix_tree.cc
+- native/suffix_tree.h
+- native/int32_map.h
+- native/CMakeLists.txt
+- native/suffix_native/cache.py
 
-configs/specbench-subset.jsonl selects original question records from Spec-Bench commit fd2c1cd7d2201ef71db4c5f4e455008f017967bf, data/spec_bench/question.jsonl. Its Apache-2.0 repository license is retained in configs/SPECBENCH_LICENSE; original dataset categories/questions may have their own underlying provenance. The source file hash and deterministic selection are recorded in the source lock.
+The original copyright notices and native/LICENSE are retained.
+The Python wrapper changes the import namespace and fixes the default proposal
+limit attribute. native/suffix_native/__init__.py is empty.
 
-Model: Qwen/Qwen2.5-7B-Instruct revision a09a35458c702b33eeacc393d103063234e8bc28, downloaded separately from Hugging Face at GPU execution time; no weights are redistributed here.
+SGLang
+patches/sglang-suffix.patch modifies SGLang v0.5.21, licensed under Apache-2.0,
+at commit e00930c5489053f26d86b179cee0d087f846acbb.
+The full upstream checkout is separate and excluded from this repository.
 
-Paper: arXiv:2411.04975v3, referenced rather than redistributed. This repository's original integration/scripts/documentation are Apache-2.0.
+Spec-Bench
+configs/specbench-subset.jsonl contains selected question records from
+data/spec_bench/question.jsonl at Spec-Bench commit
+fd2c1cd7d2201ef71db4c5f4e455008f017967bf.
+The repository's Apache-2.0 license is retained in configs/SPECBENCH_LICENSE.
+The dataset categories and questions may have additional source provenance.
+configs/source-lock.json records the source file hash and the deterministic
+selection rule.
+
+Model and paper
+The GPU runner downloads Qwen/Qwen2.5-7B-Instruct separately from Hugging Face
+at revision a09a35458c702b33eeacc393d103063234e8bc28.
+This repository does not redistribute model weights.
+The paper, arXiv:2411.04975v3, is cited but is not redistributed.
