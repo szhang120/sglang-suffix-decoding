@@ -24,7 +24,7 @@ PYTHONPATH=native python scripts/cpu_profile.py
 
 The bootstrap preserves modified checkouts. SGLang lives in `sglang/` on `codex/suffix-decoding`, based on v0.5.21 commit `e00930c5489053f26d86b179cee0d087f846acbb`. Author code lives separately in `reference/ArcticInference/`. Checkouts and native binaries are excluded from this root repository; the committed patch reconstructs the integration.
 
-Current verification: ten CPU/host contract tests and six reporting-policy checks pass. The GPU runners compare ordinary decoding, NGRAM PROB and suffix decoding, record raw outputs/configurations and enforce the disclosed exact-output policy. The analysis also checks recorded proposer/ablation settings. See the runbook before renting a GPU.
+Current verification: ten CPU/host contract tests, six benchmark-policy checks and four publication-report checks pass. The GPU runners compare ordinary decoding, NGRAM PROB and suffix decoding, record raw outputs/configurations and enforce the disclosed exact-output policy. The analysis also checks recorded proposer/ablation settings. See the runbook before renting a GPU.
 
 ## Generate on the configured Linux GPU
 

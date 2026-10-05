@@ -38,7 +38,7 @@ The public recipe was built without private image overrides in
 frozen source fingerprints pass on Linux CPU. A missing test-import dependency
 was corrected by copying the report module before the image's test layer.
 See `results/setup/portable-public-build-validation.json` and its build log.
-This check used no GPU and does not validate the full portable GPU campaign.
+This check used no GPU and does not validate the full portable GPU campaign. The subsequent `modal-20261004-portable-report-gates` build also passes all 20 checks, including four synthetic publication-report fixtures; its metadata and log are saved in `results/setup/`.
 
 On an already-provisioned Linux H100 after `scripts/gpu_setup.sh`, the equivalent
 provider-independent command is:

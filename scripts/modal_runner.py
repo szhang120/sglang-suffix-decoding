@@ -93,11 +93,11 @@ for directory in ("configs", "native", "patches", "scripts", "tests"):
             "modal_runner.py",
         ],
     )
-# The reporting-policy host tests import this file. It must be available in
-# the build layer that runs tests, before a portable launcher adds its files.
-image = image.add_local_file(
-    ROOT / "analysis/benchmark_report.py", "/project/analysis/benchmark_report.py", copy=True
-)
+# Reporting tests require these files before the build layer that runs tests.
+for filename in ("benchmark_report.py", "write_final_report.py"):
+    image = image.add_local_file(
+        ROOT / "analysis" / filename, f"/project/analysis/{filename}", copy=True
+    )
 image = image.run_commands(
     "bash scripts/bootstrap.sh",
     "python -m cmake -S native -B native/build -DPython_EXECUTABLE=$(command -v python) -DCMAKE_LIBRARY_OUTPUT_DIRECTORY=/project/native/suffix_native",

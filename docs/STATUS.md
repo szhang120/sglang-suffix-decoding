@@ -1,8 +1,10 @@
-# Status at 2026-10-04 20:31 EDT
+# Status at 2026-10-04 20:42 EDT
 
 The 20:29 EDT check confirms: the public Modal image build completed without private image overrides, passed all 16 host/report checks and all 25 frozen source fingerprints, and returned `success: true` on CPU. It allocated no GPU and its app has stopped. The serving campaign remains unchanged; adaptive SUFFIX trial1 completed with zero differences.
 
 The same-chat follow-up `finish-suffixdecoding-experiments` checks every 15 minutes and continues completed stages sequentially. It stays quiet on unchanged checks and removes itself after project completion. Keep the Mac on and the desktop app running for these local follow-ups; the submitted Modal GPU work itself runs remotely. No idle cloud waiter was restarted.
+
+The 20:42 EDT CPU/public-build check passes all 20 tests, including four synthetic publication-report fixtures. They reject incomplete diagnostics, SUFFIX differences and failed portable smoke, and require explicit negative/repetition-only conclusions. They are not measured model or performance evidence. The previously latest source checkpoint passed Linux/Mac CI.
 
 This is a saved checkpoint, not a live dashboard. The current job was submitted asynchronously and its local caller has exited. Explicit Modal app cancellation still stops it; inspect remote status after any interruption.
 
@@ -10,7 +12,7 @@ This is a saved checkpoint, not a live dashboard. The current job was submitted 
 
 - Public repository, pinned dependencies/source revisions, separate author checkout, dedicated SGLang development branch, CI, implementation and technical draft.
 - Linear greedy batch-one SUFFIX with native author CPU lookup, dual caches, adaptive proposal lengths, verification, acceptance and KV settlement.
-- Sixteen host/report checks, the complete 240-request exact-token-ID SUFFIX gate, and 416 direct verification/KV assertions.
+- Twenty host/report checks, the complete 240-request exact-token-ID SUFFIX gate, and 416 direct verification/KV assertions.
 - Independent upstream/adapter attribution and public raw audit release `v0.2.0-attribution-audit`. One captured NGRAM branch-layout numerical difference was isolated; this does not explain every NGRAM divergence.
 - Earlier controlled-width GPU profiles: shorter execution reduces some kernel work, while attention/head tiles remain padded. Final-candidate repetition remains required.
 
@@ -51,7 +53,7 @@ Future execution should announce each stage, report completed/total counts and a
 
 ## Resumed execution
 
-The user authorized continuation after the status reset. Continue the active campaign, then launch diagnostics, final analysis and publication sequentially. No persistent cloud waiter or automatic publisher was restarted. The runbook now states the required completion checks. The analysis verifies recorded proposer settings and rejects silent SUFFIX ablation misconfiguration; all sixteen host/report checks pass. GPU code and workload remain frozen.
+The user authorized continuation after the status reset. Continue the active campaign, then launch diagnostics, final analysis and publication sequentially. No persistent cloud waiter or automatic publisher was restarted. The runbook now states the required completion checks. The analysis verifies recorded proposer settings and rejects silent SUFFIX ablation misconfiguration; all twenty host/report checks pass. GPU code and workload remain frozen.
 
 The public portable runner passes source-hash dry runs on Mac and Linux. Its brief CPU app stopped after completion; a fixed container-import error and an earlier image-ID typo are recorded. A four-request Linux/GPU smoke will run in the final diagnostic allocation (16 phases total); it does not establish a separate complete five-trial rerun. Both published source checkpoints have passed Linux/Mac CI. A transient automatic approval-service usage error interrupted a CI read; the normal reviewed retry succeeded after the user resumed.
 
