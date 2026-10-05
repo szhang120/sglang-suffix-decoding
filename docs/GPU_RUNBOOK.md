@@ -33,6 +33,13 @@ CPU/source validation and a small Linux cold/warm execution smoke are separate
 from validation of a complete rerun; do not claim a second completed experiment
 from either check. The `--smoke` option runs four requests without timing trials.
 
+The public recipe was built without private image overrides in
+`modal-20261004-portable-public-build`: all 16 host/report checks and all 25
+frozen source fingerprints pass on Linux CPU. A missing test-import dependency
+was corrected by copying the report module before the image's test layer.
+See `results/setup/portable-public-build-validation.json` and its build log.
+This check used no GPU and does not validate the full portable GPU campaign.
+
 On an already-provisioned Linux H100 after `scripts/gpu_setup.sh`, the equivalent
 provider-independent command is:
 

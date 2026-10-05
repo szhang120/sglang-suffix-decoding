@@ -1,5 +1,9 @@
 # Status at 2026-10-04 20:13 EDT
 
+Later check at 20:29 EDT: the public Modal image build completed without private image overrides, passed all 16 host/report checks and all 25 frozen source fingerprints, and returned `success: true` on CPU. It allocated no GPU. The serving campaign remains unchanged; adaptive SUFFIX trial1 is processing repetition.
+
+The same-chat follow-up `finish-suffixdecoding-experiments` checks every 15 minutes and continues completed stages sequentially. It stays quiet on unchanged checks and removes itself after project completion. Keep the Mac on and the desktop app running for these local follow-ups; the submitted Modal GPU work itself runs remotely. No idle cloud waiter was restarted.
+
 This is a saved checkpoint, not a live dashboard. The current job was submitted asynchronously and its local caller has exited. Explicit Modal app cancellation still stops it; inspect remote status after any interruption.
 
 ## Complete
