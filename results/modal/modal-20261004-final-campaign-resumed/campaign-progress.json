@@ -33,7 +33,9 @@
   "timeout_seconds": 43200,
   "policy": "exact ordinary/SUFFIX/ablations; unchanged upstream NGRAM with every divergence recorded descriptively",
   "completed_trials": [
-    0
+    0,
+    1,
+    2
   ],
   "completed_modes": [
     {
@@ -80,6 +82,36 @@
       "mode": "suffix-local",
       "trial": 1,
       "mismatches": 0
+    },
+    {
+      "mode": "ordinary",
+      "trial": 1,
+      "mismatches": 0
+    },
+    {
+      "mode": "suffix",
+      "trial": 2,
+      "mismatches": 0
+    },
+    {
+      "mode": "suffix-fixed",
+      "trial": 2,
+      "mismatches": 0
+    },
+    {
+      "mode": "suffix-local",
+      "trial": 2,
+      "mismatches": 0
+    },
+    {
+      "mode": "ordinary",
+      "trial": 2,
+      "mismatches": 0
+    },
+    {
+      "mode": "ngram",
+      "trial": 2,
+      "mismatches": 10
     }
   ],
   "resume_lineage": {
