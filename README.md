@@ -1,5 +1,7 @@
 # SuffixDecoding in SGLang
 
+[Reference paper](https://arxiv.org/abs/2411.04975v3)
+
 SuffixDecoding reuses cached token sequences to propose several next tokens at once. This implementation uses ArcticInference's CPU suffix trees for proposals. SGLang runs the target model to verify them. The implementation follows the paper's linear, greedy variant with a batch size of 1. The benchmarks use Qwen2.5-7B-Instruct on one H100 80GB.
 
 ## Setup
