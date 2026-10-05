@@ -1,6 +1,6 @@
-# Status at 2026-10-04 20:13 EDT
+# Status at 2026-10-04 20:31 EDT
 
-Later check at 20:29 EDT: the public Modal image build completed without private image overrides, passed all 16 host/report checks and all 25 frozen source fingerprints, and returned `success: true` on CPU. It allocated no GPU. The serving campaign remains unchanged; adaptive SUFFIX trial1 is processing repetition.
+The 20:29 EDT check confirms: the public Modal image build completed without private image overrides, passed all 16 host/report checks and all 25 frozen source fingerprints, and returned `success: true` on CPU. It allocated no GPU and its app has stopped. The serving campaign remains unchanged; adaptive SUFFIX trial1 completed with zero differences.
 
 The same-chat follow-up `finish-suffixdecoding-experiments` checks every 15 minutes and continues completed stages sequentially. It stays quiet on unchanged checks and removes itself after project completion. Keep the Mac on and the desktop app running for these local follow-ups; the submitted Modal GPU work itself runs remotely. No idle cloud waiter was restarted.
 
@@ -18,7 +18,7 @@ This is a saved checkpoint, not a live dashboard. The current job was submitted 
 
 Only `ap-TawwrpzDJ2lkv2krq66I9s` (`sglang-suffix-validated-campaign`) remains active: one H100 running `modal-20261004-final-campaign-resumed`. It preserves the complete first trial and reruns trials 1–4 under unchanged GPU source/workload hashes. GPU allocation continues until completion, failure, explicit stop or its 12-hour timeout. The local submit command has exited; monitoring is read-only.
 
-Latest checked progress: six of 25 mode/trial combinations, 1440/6000 timed requests validated. The first trial is complete:
+Latest checked progress: seven of 25 mode/trial combinations, 1680/6000 timed requests validated. All 1200 completed ordinary/SUFFIX/ablation outputs match. NGRAM differs on 20/480 completed requests. The first trial is complete:
 
 | Mode | Completed requests | Token-ID differences |
 |---|---:|---:|
@@ -28,7 +28,7 @@ Latest checked progress: six of 25 mode/trial combinations, 1440/6000 timed requ
 | SUFFIX without the adaptive match-length bound | 240 | 0 |
 | Local-cache-only SUFFIX | 240 | 0 |
 
-The resumed allocation has passed fresh plain gates and the direct KV audit. Second-trial NGRAM completed with 10/240 differences; adaptive SUFFIX is next. The progress file's `success: false` is an initial completion flag; the final `campaign-status.json` determines success or failure. Earlier incomplete trial records do not count toward the 6000 measured requests.
+The resumed allocation has passed fresh plain gates and the direct KV audit. Second-trial NGRAM completed with 10/240 differences; adaptive SUFFIX completed with 0/240 differences. The unbounded-match-cap suffix ablation is next. The progress file's `success: false` is an initial completion flag; the final `campaign-status.json` determines success or failure. Earlier incomplete trial records do not count toward the 6000 measured requests.
 
 ## Stopped deliberately
 

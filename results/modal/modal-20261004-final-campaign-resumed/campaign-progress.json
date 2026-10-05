@@ -1,0 +1,89 @@
+{
+  "success": false,
+  "run_id": "modal-20261004-final-campaign-resumed",
+  "image_id": "im-96vGJgQDElG1UZq72yqyhI",
+  "source_sha256": {
+    "configs/source-lock.json": "8027be54c2c1123b5b9dfbeabf27a8c86ae6ae204042c41d24548d81b884bc77",
+    "configs/gpu-requirements.lock": "c0a19671efe44499b964370a3932dcb1d6abca143c0fbf7f1fd65f0e44f85510",
+    "patches/sglang-suffix.patch": "19fc2ced20cde74fef8bfb0e7baeaada3430fc2a4d8096597e1778da1d2327bf",
+    "native/suffix_native/cache.py": "a328505f80512b9b4f72af40237285a4ba74e72bae47f8a6179d12bc2664bab2",
+    "configs/frozen-workload.jsonl": "8b94953aa6e1c8ec18e4f9c405f82cf87d4c330ad172be118e0547e4c657132c",
+    "sglang/python/sglang/srt/arg_groups/speculative_hook.py": "90703640af00d21267b971508d1850b092da06fe7436446454323a37e389a2c2",
+    "sglang/python/sglang/srt/batch_invariant_ops/batch_invariant_ops.py": "a1ea29333689cbe6082c697a6bb07d9b8f28bbb3f5b4f2b9062a41115498f980",
+    "sglang/python/sglang/srt/layers/attention/triton_backend.py": "e03ca7e8b3163d4f8bc5bf61c9e1cba3dfeb8d9bfd5cd206a4115fa0bba0c2f2",
+    "sglang/python/sglang/srt/managers/scheduler.py": "993a5bbcbe009a5a7d4f2d7081fe5f20dc4bbf5ffaa581697bfacb9d6445925e",
+    "sglang/python/sglang/srt/managers/scheduler_components/batch_result_processor.py": "a1d37b80fd6ee44f82dfcbaaf79a6438ba258cbc1d39bc676186e63058e47f77",
+    "sglang/python/sglang/srt/speculative/ngram_worker.py": "78d5af5bc4848cb5a2cccaafb83879e220327f41277dfc47fcb06170251cdb23",
+    "sglang/python/sglang/srt/speculative/spec_info.py": "7e6dfe542318a892a77315b7add0cfab3cbb964d19b861766972aac9ab5af016",
+    "sglang/python/sglang/srt/speculative/suffix_worker.py": "aca5d822b984d5f6d243cf35795e29b627e492baa164e46ef9b3c7a265f0db89",
+    "scripts/analyze_audit.py": "9f793ec5e5fc7ea24b5e7cd65ab54ad856523231481b06a2a7b912a513f6f960",
+    "scripts/analyze_gpu.py": "c5809e0aed4eb2af028eb6aed5357d23548cff19a3a0ec63a2ceeb9a411ce37c",
+    "scripts/analyze_public_gate.py": "acae3fd2fa990424583ac31f457cc505c3b0d9fa9d49531fbf85daa919f9bc5a",
+    "scripts/analyze_width_probe.py": "3dd0fcf5785e766f89d7af1f31fa49f336540ef42b669e8fcc2188465b723b21",
+    "scripts/cpu_profile.py": "e3b4494653c30482eafe02feb1d50f2a4e283ba649583091e32c8219b30c462b",
+    "scripts/export_patch.py": "55bd30b3a48c89fc74dfc5995fa9134a2b23574f5420551af2b5f20a8d967796",
+    "scripts/gpu_bench.py": "fe6a93835179e140e2d59ba1143a27f7609df1566f735aa8cd7371a356d2bc41",
+    "scripts/gpu_common.py": "d780e7e1b3aa28b233e794dda48a64064c5df194a938c285c5804c14c492f548",
+    "scripts/gpu_correctness.py": "8d1896621493fbd7f646d28eb5d9b764999659d7484ec1343030e672879776a9",
+    "scripts/gpu_public_gate.py": "1a85a9872985fd01e52a16108b67e4b328f291bb017685dd9e3a53009fe97280",
+    "scripts/gpu_width_probe.py": "3e252e32ba8dd6239473eaf65aea4f21cbd8be904367fba392c4d366e08cec3a",
+    "scripts/materialize_workload.py": "c8e8ad18295b15464482cecde48e97449a0219667fbec0a11f717d3eb89887ff"
+  },
+  "runner_sha256": "b25e93e98fbba19d84aad38c26a6ac3e022361e5293bc744f549d4faaffbb07e",
+  "timeout_seconds": 43200,
+  "policy": "exact ordinary/SUFFIX/ablations; unchanged upstream NGRAM with every divergence recorded descriptively",
+  "completed_trials": [
+    0
+  ],
+  "completed_modes": [
+    {
+      "mode": "ordinary",
+      "trial": 0,
+      "mismatches": 0
+    },
+    {
+      "mode": "ngram",
+      "trial": 0,
+      "mismatches": 10
+    },
+    {
+      "mode": "suffix",
+      "trial": 0,
+      "mismatches": 0
+    },
+    {
+      "mode": "suffix-fixed",
+      "trial": 0,
+      "mismatches": 0
+    },
+    {
+      "mode": "suffix-local",
+      "trial": 0,
+      "mismatches": 0
+    },
+    {
+      "mode": "ngram",
+      "trial": 1,
+      "mismatches": 10
+    },
+    {
+      "mode": "suffix",
+      "trial": 1,
+      "mismatches": 0
+    }
+  ],
+  "resume_lineage": {
+    "run_id": "modal-20261004-final-campaign",
+    "completed_trials": [
+      0
+    ],
+    "original_runner_sha256": "376f1b2d04f3e9c9d8bbf7aa4231802b2be49767091507590319e65bf0b575b8",
+    "original_status_sha256": "ad5ddb7fe549c94102b2f142617477693ea400104ea37edb19f60112aabf23a4",
+    "incomplete_trials_discarded": true,
+    "allocation_policy": "Every five-mode paired trial stays on one GPU; allocations can differ between trials"
+  },
+  "suffix_gate_reference": "modal-20261004-v12-suffix-isolated",
+  "branch_replay_reference": "modal-20261004-branch-attention",
+  "audited_rounds": 416,
+  "gates_passed": true
+}
