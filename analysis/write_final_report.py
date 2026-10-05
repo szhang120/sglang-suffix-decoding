@@ -55,17 +55,15 @@ def main():
 
     text = [
         "## Results", "",
-        "The benchmarks measure request latency under different cache-reuse conditions. Separate comparisons test the adaptive bound, the global cache and GPU verification width.", "",
-        "The target model is Qwen2.5-7B-Instruct on one H100 80GB. All modes use greedy decoding with a batch size of 1. Weights and activations use BF16. The output head produces FP32 values.", "",
+        "The benchmarks compare ordinary decoding, three SUFFIX configurations and SGLang NGRAM PROB. The target model is Qwen2.5-7B-Instruct on one H100 80GB. All modes use greedy decoding with a batch size of 1. Weights and activations use BF16. The output head produces FP32 values.", "",
         "All modes share the deterministic Triton attention route and the fix to the output head's memory layout. Execution is eager, with seed 42. Each request can generate up to 256 tokens.", "",
         "See the [benchmark notes](docs/benchmark-notes.md) for execution requirements and comparison limits.", "",
-        "Each trial runs ordinary decoding, three SUFFIX configurations and SGLang NGRAM PROB on the same 240 requests. Five trials produce 6,000 measurements, with the mode order rotated between trials.", "",
-        "The workload uses 52 initial prompts and 32 follow-up turns from [Spec-Bench](https://github.com/hemingkx/Spec-Bench). Each follow-up includes the initial prompt, a fixed ordinary-decoding answer and the next user turn. Each mode runs three blocks, with empty suffix or NGRAM caches at the start of each block:", "",
+        "Each trial runs five modes on the same 240 requests. Five trials produce 6,000 measurements, with the mode order rotated between trials. The workload uses 52 initial prompts and 32 follow-ups. Each mode runs three blocks, with empty suffix or NGRAM caches at the start of each block:", "",
         "- Independent: 52 initial prompts, each run once.",
-        "- First + follow-up: 52 initial prompts and 32 follow-up conversation turns.",
+        "- First + follow-up: 52 initial prompts and 32 follow-ups that change an earlier prompt.",
         "- Repeated: 52 initial prompts, each run twice, for 104 requests.", "",
         "### Decoding latency", "",
-        "Ordinary decoding generates one token per decode pass and serves as the baseline. Adaptive dual cache is SUFFIX with both caches and the match-length bound. The other SUFFIX configurations remove either the bound or the global cache.", "",
+        "Ordinary decoding is the baseline. Adaptive dual cache is SUFFIX with both caches and the match-length bound. The other SUFFIX configurations remove either the bound or the global cache.", "",
         "Speedup is total ordinary request latency divided by total request latency for the compared mode. Request latency includes host and streaming overhead. Values above 1 mean faster execution. Brackets show 95% paired bootstrap intervals from 10,000 trial resamples with seed 42. These intervals describe timing variation on this fixed workload.", "",
         "| Mode | Independent | First + follow-up | Follow-up only | Repeated |",
         "|---|---:|---:|---:|---:|",
@@ -97,17 +95,9 @@ def main():
         bound_statement = f"Decoding with the adaptive bound is {bound_findings[0]} than decoding without it in all three blocks." if bound_findings[0] != "inconclusive" else "The adaptive bound comparison is inconclusive in all three blocks."
     else:
         bound_statement = "Adaptive bound results: " + "; ".join(f"{label.lower()}: {result}" for (_, label), result in zip(blocks, bound_findings)) + "."
-    global_statements = []
-    for block, label in blocks:
-        outcome = finding(ablations[("suffix-local", block)])
-        if outcome == "Inconclusive":
-            global_statements.append(f"The global-cache comparison is inconclusive in the {label.lower()} block.")
-        else:
-            global_statements.append(f"The dual cache is {outcome.lower()} than the local cache alone in the {label.lower()} block.")
     text += ["", bound_statement + " Removing the bound can change both the selected continuation and its length.", "",
-             " ".join(global_statements), "",
              "### Output checks", "",
-             "The output checks compare SUFFIX's token IDs with ordinary decoding and check its cache updates. All timed SUFFIX configurations produce the same output token IDs as ordinary decoding. Separate checks cover suffix traces, verification, KV updates and the portable runner. The table lists passing comparisons and assertions:", "",
+             "All timed SUFFIX configurations produce the same output token IDs as ordinary decoding. Separate checks cover suffix traces, verification, KV updates and the portable runner. The table lists passing comparisons and assertions:", "",
              "| Correctness check | Passing comparisons |", "|---|---:|",
              "| Ordinary, SUFFIX and suffix ablations in timed runs | 4,800 / 4,800 |",
              "| Separate suffix traces | 720 / 720 |",
@@ -116,7 +106,7 @@ def main():
              "| Attention route comparison outputs | 24 / 24 |",
              "| Portable smoke outputs with empty and populated caches | 4 / 4 |", "",
              "### NGRAM PROB", "",
-             f"SGLang NGRAM PROB also proposes draft tokens from cached sequences. Its output differs from ordinary output on {len(benchmark['mismatches'])} of 1,200 timed requests. The table gives descriptive latency ratios alongside the output differences.", "",
+             f"NGRAM output differs from ordinary output on {len(benchmark['mismatches'])} of 1,200 timed requests. The table gives descriptive latency ratios alongside the output differences.", "",
              "| Block | Ordinary / NGRAM latency | Differing outputs |", "|---|---:|---:|"]
     mismatches = Counter(r["block"] for r in benchmark["mismatches"])
     for block, label in blocks:
@@ -125,7 +115,7 @@ def main():
         text.append(f"| {label} | {value:.3f}× | {mismatches[block]} |")
     text += ["", "NGRAM and SUFFIX use different cache policies. NGRAM can merge branches even when each suffix anchor has only one continuation.", "",
              "### GPU verification width", "",
-             "This test checks whether shorter verification passes reduce actual GPU kernel time. It holds the context fixed and changes the number of input rows. One row contains the last emitted token. A 33-row pass adds 32 draft tokens. The table shows median sums of GPU kernel times from three profiling trials:", "",
+             "This test holds the context fixed and changes the number of input rows in a verification pass. One row contains the last emitted token. A 33-row pass adds 32 draft tokens. The table shows median sums of GPU kernel times from three profiling trials:", "",
              "| Context tokens | Kernel time, 1 row | Kernel time, 33 rows | Reduction |", "|---:|---:|---:|---:|"]
     widths = {(r["context_tokens"], r["verify_rows"]): r for r in width["rows"]}
     for context in (126, 128, 512):
