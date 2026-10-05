@@ -1,5 +1,5 @@
 {
-  "cpu_tests": 20,
+  "cpu_tests": 21,
   "cpu_tests_passed": true,
   "native_compiler": "AppleClang 17.0.0",
   "patch_clean_apply": true,
@@ -220,7 +220,7 @@
       "scope": "One accepted NGRAM branch; no blanket attribution"
     }
   },
-  "reporting_policy_tests": 6,
+  "reporting_policy_tests": 7,
   "latest_ci": {
     "commit": "7ce6a7530ba49518afea8e0f42e7d0b41fbe0e9c",
     "linux_and_macos": "passed",
@@ -312,5 +312,19 @@
     "log_sha256": "7074de04dfdd756c1c746725c0085bbf572945e91b93cdac77051eff32da13d3",
     "completed_at": "2026-10-04T20:42:49.744783-04:00",
     "limitation": "CPU/public-build validation. Synthetic report fixtures are not model outputs or performance measurements."
+  },
+  "paired_ablation_reporting": {
+    "local_tests_passed": true,
+    "policy_tests": 7,
+    "publication_report_tests": 4,
+    "compares": "same-trial comparator/adaptive wall latency",
+    "uncertainty": "paired trial-block bootstrap; fixed public subset; five trials",
+    "gpu_sources_changed": false
+  },
+  "scheduled_followup": {
+    "id": "finish-suffixdecoding-experiments",
+    "status": "deleted",
+    "reason": "Agent-created without explicit scheduling request; removed after user clarification.",
+    "modal_campaign_stopped": false
   }
 }

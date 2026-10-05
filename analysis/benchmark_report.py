@@ -157,6 +157,25 @@ def main():
                                   trial_bootstrap_95=intervals(pairs),
                                   median_trial_ttft_ms=statistics.median(r["median_ttft_ms"] for r in summaries
                                                                        if (r["mode"], r["block"]) == (mode, block))))
+    ablations = []
+    for comparator in ("suffix-fixed", "suffix-local"):
+        for block in BLOCKS:
+            adaptive = grouped_pairs[("suffix", block)]
+            compared = grouped_pairs[(comparator, block)]
+            assert len(adaptive) == len(compared) == 5
+            assert all(a[0] == b[0] for a, b in zip(adaptive, compared))
+            # Same-trial policy comparison; ordinary cancels in the ratio of
+            # the two ordinary/mode speedups. Resample the paired wall times.
+            pairs = [(b[1], a[1]) for a, b in zip(adaptive, compared)]
+            ratios = [a / b for a, b in pairs]
+            ablations.append(dict(
+                comparator=comparator, block=block, paired_trials=5,
+                requests_per_mode=5 * BLOCKS[block],
+                metric="Comparator/adaptive wall latency; above1 means adaptive is faster",
+                pooled_speedup_ratio=sum(a for a, _ in pairs) / sum(b for _, b in pairs),
+                observed_trial_range=[min(ratios), max(ratios)],
+                trial_bootstrap_95=intervals(pairs),
+            ))
     exact_modes_passed = not any(m["mode"] != "ngram" for m in mismatches)
     ngram_differs = any(m["mode"] == "ngram" for m in mismatches)
     kind_rows = []
@@ -198,7 +217,7 @@ def main():
                   common_config=controls,
                   gpu_uuid_by_trial={str(trial): environments[("ordinary", trial)] for trial in range(5)},
                   aggregate=aggregate, trials=summaries,
-                  categories=category_rows, request_kinds=kind_rows,
+                  categories=category_rows, request_kinds=kind_rows, ablation_comparisons=ablations,
                   raw_sha256=hashes)
     if args.output.exists():
         raise SystemExit(f"Preserving {args.output}")

@@ -100,12 +100,26 @@ def main():
     block_labels = dict(blocks)
     for row in trace["summaries"]:
         text.append(f"| {labels[row['variant']]} | {block_labels[row['block']]} | {row['mean_verify_rows']:.2f} | {pct(row['target_draft_acceptance'])} | {row['mean_committed_tokens_per_round']:.2f} | {pct(row['one_row_fraction'])} |")
-    text += ["", "Controlled ablations change one proposer policy at a time. The following point ratios compare adaptive dual-cache speedup with each ablation's speedup; they are additional descriptions of the same trials, not independent experiments.",
-             "", "| Block | Adaptive / unbounded-match-cap speedup | Adaptive / local-only speedup |",
+    ablations = {(r["comparator"], r["block"]): r for r in benchmark["ablation_comparisons"]}
+    assert len(ablations) == 6 and all(r["paired_trials"] == 5 for r in ablations.values())
+    text += ["", "Controlled ablations change one proposer policy at a time. Ratios compare adaptive dual-cache speedup with each ablation's speedup, using paired trial wall times and 95% trial-bootstrap intervals. Above 1 favors adaptive dual-cache SUFFIX. These describe the same fixed trials; they are not independent experiments or population-general estimates. Removing the match-length cap can change the winning continuation in the author's cumulative-score search, as well as its length.",
+             "", "| Block | Adaptive / unbounded-match-cap speedup [95% interval] | Adaptive / local-only speedup [95% interval] |",
              "|---|---:|---:|"]
     for block, label in blocks:
-        adaptive = aggregates[("suffix", block)]["pooled_speedup"]
-        text.append(f"| {label} | {adaptive / aggregates[('suffix-fixed', block)]['pooled_speedup']:.3f}× | {adaptive / aggregates[('suffix-local', block)]['pooled_speedup']:.3f}× |")
+        cells = []
+        for comparator in ("suffix-fixed", "suffix-local"):
+            row = ablations[(comparator, block)]
+            cells.append(f"{row['pooled_speedup_ratio']:.3f}× [{interval(row)}]")
+        text.append(f"| {label} | " + " | ".join(cells) + " |")
+    text.append("")
+    for comparator, policy in (("suffix-fixed", "Adaptive match-length cap"),
+                               ("suffix-local", "Global response cache")):
+        findings = []
+        for block, label in blocks:
+            low, high = ablations[(comparator, block)]["trial_bootstrap_95"]
+            finding = "faster" if low > 1 else "slower" if high < 1 else "inconclusive relative to 1"
+            findings.append(f"{label.lower()} **{finding}**")
+        text.append(f"- {policy}, compared with its ablation: " + "; ".join(findings) + ".")
 
     text += ["", "## GPU work and the baseline route", "",
              "| Context tokens | One-row kernel sum | 33-row kernel sum | Reduction at one row |",

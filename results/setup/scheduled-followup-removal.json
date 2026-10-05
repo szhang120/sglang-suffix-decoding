@@ -1,0 +1,7 @@
+{
+  "automation_id": "finish-suffixdecoding-experiments",
+  "delete_status": "deleted",
+  "removed_at": "2026-10-04T20:50:00-04:00",
+  "reason": "Created by the agent without explicit scheduling request; removed after user clarification.",
+  "modal_campaign_stopped": false
+}

@@ -24,6 +24,10 @@ def fixtures():
         exact_suffix_ids_passed=True, measured_requests=6000,
         mismatches=[dict(mode="ngram", block="independent")],
         aggregate=aggregate,
+        ablation_comparisons=[dict(comparator=mode, block=block, paired_trials=5,
+                                  pooled_speedup_ratio=0.9 if mode == "suffix-fixed" else 1.1,
+                                  trial_bootstrap_95=[0.88, 0.92] if mode == "suffix-fixed" else [1.08, 1.12])
+                              for mode in ("suffix-fixed", "suffix-local") for block in BLOCKS],
         request_kinds=[dict(mode=mode, block="refinement", kind="refinement", requests=160,
                             pooled_speedup=1.0, trial_bootstrap_95=[0.98, 1.02]) for mode in MODES],
         trials=[dict(mode="ngram", block=block, ordinary_output_tokens=100,
@@ -91,6 +95,8 @@ class FinalReportTests(unittest.TestCase):
         self.assertIn("descriptive latency ratios, not exact-output speedups", report)
         self.assertIn("reran incomplete trials on a fresh allocation", report)
         self.assertIn("complete standalone five-trial orchestration was not separately rerun", report)
+        self.assertIn("Adaptive match-length cap, compared with its ablation: independent **slower**", report)
+        self.assertIn("Global response cache, compared with its ablation: independent **faster**", report)
 
     def test_incomplete_diagnostics_cannot_produce_results_document(self):
         code, report, _ = self.run_fixture(lambda r: r["execution-provenance.json"]

@@ -15,7 +15,7 @@ spec.loader.exec_module(policy)
 
 
 class BenchmarkPolicyTests(unittest.TestCase):
-    def run_fixture(self, changed_mode, allow, draft_override=None):
+    def run_fixture(self, changed_mode, allow, draft_override=None, elapsed_by_mode=None):
         root = Path(__file__).resolve().parents[1]
         with tempfile.TemporaryDirectory() as temporary:
             directory = Path(temporary)
@@ -47,7 +47,7 @@ class BenchmarkPolicyTests(unittest.TestCase):
                             rows.append(dict(block=block, index=index, question_id=index,
                                              kind="refinement" if block == "refinement" and index >= 52 else "initial",
                                              category="synthetic", input_tokens=2,
-                                             truncated=False, elapsed_ns=1000,
+                                             truncated=False, elapsed_ns=(elapsed_by_mode or {}).get(mode, 1000),
                                              chunks=[{"elapsed_ns": 500}], response={"output_ids": [1, 2]}))
                     if mode == changed_mode:
                         rows[0]["response"]["output_ids"] = [1, 3]
@@ -92,6 +92,17 @@ class BenchmarkPolicyTests(unittest.TestCase):
     def test_clean_report_can_include_ngram(self):
         report = dict(exact_ids_passed=True, exact_suffix_ids_passed=True, mismatches=[])
         self.assertIn("ngram", policy.exact_speedup_modes(report))
+
+    def test_ablation_ratios_use_same_trial_policy_wall_times(self):
+        code, report = self.run_fixture(None, False, elapsed_by_mode={
+            "ordinary": 4000, "suffix": 1000, "suffix-fixed": 500, "suffix-local": 2000})
+        self.assertEqual(code, 0)
+        self.assertEqual(len(report["ablation_comparisons"]), 6)
+        for row in report["ablation_comparisons"]:
+            expected = 0.5 if row["comparator"] == "suffix-fixed" else 2.0
+            self.assertEqual(row["pooled_speedup_ratio"], expected)
+            self.assertEqual(row["trial_bootstrap_95"], [expected, expected])
+            self.assertEqual(row["paired_trials"], 5)
 
     def test_local_ablation_cannot_silently_keep_global_cache(self):
         code, report = self.run_fixture(None, True, ("suffix-local", "SUFFIX_CACHE_REQUESTS", "128"))
