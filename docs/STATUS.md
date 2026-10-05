@@ -1,6 +1,6 @@
-# Status at 2026-10-04 19:57 EDT
+# Status at 2026-10-04 20:13 EDT
 
-This is a saved checkpoint, not a live dashboard. Pausing Codex does not stop detached Modal apps.
+This is a saved checkpoint, not a live dashboard. The current job was submitted asynchronously and its local caller has exited. Explicit Modal app cancellation still stops it; inspect remote status after any interruption.
 
 ## Complete
 
@@ -14,7 +14,7 @@ This is a saved checkpoint, not a live dashboard. Pausing Codex does not stop de
 
 Only `ap-TawwrpzDJ2lkv2krq66I9s` (`sglang-suffix-validated-campaign`) remains active: one H100 running `modal-20261004-final-campaign-resumed`. It preserves the complete first trial and reruns trials 1–4 under unchanged GPU source/workload hashes. GPU allocation continues until completion, failure, explicit stop or its 12-hour timeout. The local submit command has exited; monitoring is read-only.
 
-Latest checked progress: five of 25 mode/trial combinations, 1200/6000 timed requests validated. The first trial is complete:
+Latest checked progress: six of 25 mode/trial combinations, 1440/6000 timed requests validated. The first trial is complete:
 
 | Mode | Completed requests | Token-ID differences |
 |---|---:|---:|
@@ -24,7 +24,7 @@ Latest checked progress: five of 25 mode/trial combinations, 1200/6000 timed req
 | SUFFIX without the adaptive match-length bound | 240 | 0 |
 | Local-cache-only SUFFIX | 240 | 0 |
 
-The resumed allocation has passed fresh plain gates and the direct KV audit and is starting the second trial's NGRAM run. The progress file's `success: false` is an initial completion flag; the final `campaign-status.json` determines success or failure. Earlier incomplete trial records do not count toward the 6000 measured requests.
+The resumed allocation has passed fresh plain gates and the direct KV audit. Second-trial NGRAM completed with 10/240 differences; adaptive SUFFIX is next. The progress file's `success: false` is an initial completion flag; the final `campaign-status.json` determines success or failure. Earlier incomplete trial records do not count toward the 6000 measured requests.
 
 ## Stopped deliberately
 

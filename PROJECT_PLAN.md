@@ -1,66 +1,52 @@
 # SuffixDecoding in SGLang
 
-Updated 2026-10-04 after independent attribution. **SUFFIX passes the complete 240-request exact-ID gate.** The unchanged v12 image is retained. Real NGRAM branch replay isolates a numerical layout effect with bitwise-equal Q and visible K/V; its upstream proposer remains unchanged. A single detached H100 campaign now runs five rotated trials. Earlier failures, flawed trace attribution and the rejected custom-mask prototype are preserved.
+Checkpoint: 2026-10-04 20:13 EDT. A single detached H100 campaign now runs five rotated trials. The complete first trial is preserved; trials 1–4 are running after an explicit cancellation whose source is unknown. SUFFIX passes the separate 240-request exact-ID gate. Final performance conclusions remain pending. See [current status](docs/STATUS.md) and [preserved design/diagnosis history](docs/PROJECT_HISTORY.md).
 
-**Operational reset, 2026-10-04 19:12 EDT:** the campaign remains active with four of 25 mode/trial combinations completed (960/6000 timed requests). Trial 0 ordinary, SUFFIX and suffix-fixed have zero exact-ID differences; NGRAM has 10/240 differences. Local-only suffix is starting. The idle CPU diagnostics and analysis apps, and the local automatic publication watcher, were stopped after the user's status request. No automatic follow-up GPU launch or publication remains. Resume later diagnostics and analysis explicitly after inspecting campaign completion; see `docs/STATUS.md`. Runtime and timed inputs were not changed.
+## Scope and integration
 
-**Execution resumed:** continue the existing campaign, then launch diagnostics, final analysis and publication one stage at a time. The GPU runbook documents completion checks before each launch. Reporting now verifies each mode's recorded speculative configuration and SUFFIX ablation flags, with two negative fixtures preventing silent cache/bound misconfiguration. All sixteen host/report checks pass. No frozen GPU source or workload changed.
+Implement the paper's linear greedy batch-one algorithm in SGLang, retaining the author's CPU suffix implementation, dual caches and adaptive proposal lengths. No draft model, training, tree/batch expansion or upstream PR dependency. Broader scope requires measured value.
 
-**Public reproducibility gap:** the historical final launcher requires private remote gate artifacts. A separate portable Linux/Modal entry point now creates its own gates/reference and runs the same frozen trials in an isolated output directory. Source hashes pass both Mac and Linux CPU dry runs. A launcher container-import error was fixed and the repaired CPU run completed; this does not validate GPU orchestration. The four-request execution smoke is included in the final diagnostic allocation, adding one phase (16 total) and its own raw artifact archive. A smoke does not validate a complete additional five-trial run. Score **97/100** for closing this dependency before public completion. The current serving campaign is unchanged.
+The dedicated SGLang branch is `codex/suffix-decoding`; the ArcticInference reference checkout stays separate. [Source lock](configs/source-lock.json) records exact engine, author, workload and model commits. Retain SGLang v0.5.21 (`e00930c…`) and the tested Linux dependency lock: PyTorch 2.13.0/CUDA13, FlashInfer0.6.18, SGLang kernel0.4.7, Python3.12 and Rust1.92. The [runbook](docs/GPU_RUNBOOK.md) records compatible provisioning and reproduction steps.
 
-**Cancellation recovery, 19:57 EDT:** the original campaign received an explicit input cancellation after its complete first trial. No correctness assertion/CUDA error was recorded. Preserve its failure, all 1200 complete records and the partial second trial. `modal-20261004-final-campaign-resumed` copies only complete paired trials and reruns the incomplete trial and remaining rotations; source/workload hashes remain fixed. Each five-mode trial stays on one physical GPU, with different allocations allowed between trials and UUIDs disclosed. Fresh plain/KV gates pass in the resumed allocation. Long launchers now submit asynchronously and return receipts; a CPU probe completed after its local CLI exited. Score **97/100** for this recovery instead of discarding completed work. Explicit app cancellation remains possible; its source is not attributed.
+`SuffixWorker` subclasses the existing NGRAM worker: replace proposal generation, construct an explicit causal chain and reuse target verification/acceptance/KV settlement. Lifecycle hooks handle completion, prefill-only completion, abort and flush. The unchanged author C++20/nanobind cache has no vLLM dependency. All target-model execution uses SGLang.
 
-## Objective and frozen scope
+## Correctness invariants
 
-Public, reproducible linear greedy batch-one SuffixDecoding in SGLang, on one H100 80GB with Qwen2.5-7B-Instruct. Retain dual CPU caches and adaptive lengths; no training, tree/batch/graph expansion or upstream PR dependency. `configs/source-lock.json` pins SGLang v0.5.21 (`e00930c...`), ArcticInference (`aca5d9a...`), Spec-Bench, model revision and 212 hashed Linux packages. Author checkout stays separate and clean; SGLang development branch is `codex/suffix-decoding`.
+- Local cache contains the full prompt plus committed output. Global cache contains response tokens only, bounded to 128 responses with FIFO eviction. Completion frees local state; abort removes its response; flush clears both caches. Insert only scheduler-committed `output_ids_through_stop`, never rejected drafts or a discarded terminal tail.
+- Propose at most `min(32, remaining_output-1, floor(alpha*p+offset))` drafts for match length `p`, with alpha1, offset0 and cumulative continuation-probability threshold0.1. Retain author scoring/tie behavior and its exclusive match-context bound.
+- Verify the pending emitted token followed by `k` drafts using exactly `k+1` rows. Runtime width, positions, chain mask, retrieval links and result stride must agree. Scheduler reservation is distinct from executed rows. Zero drafts still execute one row.
+- Accept a contiguous matching prefix and one target correction/bonus. For `A` emitted tokens, settle `A` processed input KV slots; the new correction stays pending. Preserve the existing KV prefix and free rejected slots before the next forward.
+- Reject unsupported batching, sampling/history penalties, grammar/logprobs, overlap and CUDA graphs. Every timed ordinary/SUFFIX/ablation output must match the gated ordinary reference and its paired trial baseline. Any SUFFIX mismatch blocks performance claims.
 
-Decision scores are engineering judgments, not probabilities:
+## Frozen experiment
 
-| Decision | Score | Reason |
+One H10080GB, Qwen2.5-7B-Instruct, BF16 with FP32 head, TP1/PP1, greedy batch1, cap256/EOS, eager deterministic Triton, overlap/graphs/radix off. The head-stride correction and shared ordinary-attention route apply to every mode and must be disclosed; the baseline is not optimized upstream ordinary decoding.
+
+The public Spec-Bench subset freezes 52 initial inputs and 32 second turns. Each mode/trial runs 52 independent, 84 initial/refinement and 104 repeated-prompt requests. Five rotated trials compare ordinary, unchanged upstream NGRAM PROB, adaptive dual-cache SUFFIX, unbounded-match-cap SUFFIX and local-only SUFFIX: 6000 timed requests. Report the 32 actual second turns separately. Repetition is a diagnostic upper bound. Blocks begin with empty caches and receive no future output seeds. Their maximum104 requests does not exercise eviction pressure at bound128.
+
+Upstream NGRAM fanout1 is per suffix anchor; merged paths can branch. Independent pristine controls reproduce selected divergences without the adapter. One exact accepted-branch replay isolates a BF16 attention-layout difference, not all divergences. Retain every NGRAM difference, label differing-output timings descriptive and exclude them from exact-output speedup figures. The default reporter remains strict; the explicit NGRAM exception never relaxes SUFFIX checks.
+
+Each five-mode trial stays on one physical GPU. Recovery copies only complete paired trials and reruns incomplete trials in full; GPU allocations may differ between trials, with UUIDs recorded. Preserve the original failed status/log and partial records under `resume-source/`. Model/runtime/workload hashes stay unchanged. Submit long jobs asynchronously; inspect completion before launching the next allocation.
+
+## Milestones and evidence
+
+1. **Complete:** pinned workspace, public repository/CI, native reuse, cache lifecycle, proposer, verifier, acceptance and KV path. Ten host contracts and six reporting-policy checks pass on Mac/Linux; host stubs do not establish GPU correctness.
+2. **Complete:** plain 30-case GPU checks, 416 direct verification/KV assertions, separate 240/240 exact SUFFIX gate, independent upstream attribution, and public raw audit releases. One captured NGRAM layout effect is explained; arbitrary-input equivalence and all NGRAM errors remain unproven.
+3. **Running:** five paired serving trials. Trial0 has 1200 records: all960 ordinary/SUFFIX/ablation outputs match; NGRAM differs10/240. Resumed trial1 NGRAM completes with10/240 differences. Require five complete trials and4800 strict comparisons before aggregation.
+4. **Next:** one separately tracked diagnostic allocation after campaign completion:720 strict suffix traces, five12-request profiles,24 paired ordinary-route controls,54 controlled-width probes and four portable-runner smoke requests. Existing v11 profiles show smaller KV-store/reduction launches while attention/head tiles remain padded; repeat on the final configuration. Instrumented times never enter serving estimates.
+5. **Next:** CPU analysis, paired trial intervals, actual proposal/acceptance denominators, scientific figures, raw-file/archive hashes, technical write-up and measured GitHub release. Include negative results and differences from the paper's original Llama/vLLM, proprietary AgenticSQL and live-agent experiments. Portable source-hash dry runs pass on Mac/Linux; a smoke will not establish a separate complete standalone rerun.
+
+**Still required:** five serving trials, final-candidate width and baseline-cost controls, full-workload acceptance analysis and final report including negative results and the distinction from the paper's Llama/vLLM experimental setup.
+
+## Decision scores
+
+Scores are engineering judgments, not probabilities.
+
+| Decision | Score /100 | Evidence |
 |---|---:|---|
-| Independently compare pristine SGLang before more patches | 98 | Both NGRAM and suffix failed; shared patches/configuration prevent attribution to upstream or the adapter. |
-| Reuse author CPU cache provisionally | 92 | Native files are unchanged, integrity and oracle checks pass; source review confirms dual-cache scoring and adaptive bounds. |
-| Retain NGRAM verifier and KV settlement | 96 | Explicit suffix chain, 416 audited rounds and the full 240-request exact-ID gate support the implementation; arbitrary inputs remain unproven. |
-| Retain v0.5.21 while diagnosing | 82 | Compatible build, speculative interfaces and locked text execution work. Changing engine versions now would confound the comparison. |
-| Keep common eager deterministic settings | 88 | Inspectable actual widths and fewer scheduling variables, at a cost to production performance. |
-| Continue speculative attention fixes before pristine comparison | 35 | Kernel names alone do not establish identical numerical execution; this already failed on three public prompts. |
-| Preserve head strides if independently validated | 90 | Removes a measured 1.09GB copy; separate it from the suffix algorithm and test output drift directly. |
-| Use detached, single-GPU runs | 96 | Prior client disconnect canceled the gate. Detached execution preserves remote completion; no concurrent GPU jobs or automatic retries. |
-| Rebuild the entire workspace | 35 | Existing pins, fixtures, raw failures and native cache are useful. Rewrite only components whose contracts fail review. |
-| Correct the trace parser's assumed NGRAM topology | 99 | Native multi-anchor merging and saved branch positions directly refute the assumed chain. Preserve the flawed analysis and require masks for general tree attribution. |
-| Complete the isolated suffix gate | 97 | Completed: 240/240 exact ordinary IDs in the unchanged v12 configuration. |
-| Permit descriptive NGRAM timings with explicit differences | 93 | Exact visible-input replay isolates a tree-layout numerical effect; retain the upstream baseline, disclose every mismatch and exclude it from exact-output speedup figures. |
-| Change the NGRAM proposer to force a single anchor | 45 | Would change the requested upstream PROB baseline and proposal quality before isolating its numerical behavior. |
-| Stop idle follow-up controllers; retain the progressing campaign | 95 | Reduces active apps and idle CPU allocation, prevents an automatic later GPU launch, and preserves completed timed work. Resume stages individually with visible progress. |
-
-## Integration design and invariants
-
-`SuffixWorker` is a 259-line NGRAM subclass. `spec_info.py` adds SUFFIX dispatch and NGRAM scheduler semantics; initialization omits the NGRAM corpus only for SUFFIX. Completion/abort hooks manage suffix lifecycle. The author C++20/nanobind module executes CPU lookup without a vLLM dependency.
-
-Local cache: full prompt plus committed output. Global cache: response tokens only, FIFO bounded to 128 requests. Completion frees local state, including prefill-only completion; abort removes its response; flush clears both caches. Synchronize only `output_ids_through_stop`, never a rejected tail. Preserve native tie behavior and exclusive context-match bound. Proposal cap is `min(32, remaining_output-1, floor(alpha*p+offset))`, with alpha1, offset0 and cumulative probability threshold0.1.
-
-Verify `[pending last emitted token] + drafts` with actual width k+1 and a causal chain mask. Scoped runtime width, metadata, retrieval links and result stride must agree. Scheduler capacity reservation is separate from executed rows. Empty proposal still executes one target row.
-
-Accept the contiguous matching prefix and one target correction/bonus. For A emitted tokens, settle A processed input KV slots; the new correction remains pending. Preserve the existing KV prefix and release rejected slots. Cache insertion occurs after scheduler commitment. Reject batching, sampling/history penalties, grammar/logprobs, overlap and graphs in this initial scope.
-
-## Immediate reassessment
-
-1. **Completed:** independent pristine/head-only/shared-v12 comparison, with no suffix adapter: pristine and head-only each match NGRAM on 5/8 selected cold/warm requests; shared-v12 matches on 7/8. The head fix changes neither mode's eight outputs. Shared attention changes only two ordinary outputs. This establishes that the adapter is unnecessary for these particular failures, not that all remaining failures are upstream. Full source diffs, IDs and environments are preserved in `results/modal/modal-20261004-independent-audit/`; aggregate in `results/reassessment-summary.json`.
-2. **Reviewed:** cache, pending-token, sampler and KV contracts rederived from paper/author/upstream code independently of earlier plan claims. No structural adapter defect identified yet. Host stubs omit real-engine initialization and GPU attention metadata, so retain direct GPU assertions and broader gates.
-3. **Completed:** all 3,840 fixed-Q/K/V query-row fixtures match bitwise between causal single-query, custom single-query and custom multi-query verification attention. Widths 1/2/4/8/16/33, packed/contiguous queries, linear/permuted KV addressing, five contexts and three seeds. Synthetic equality does not establish real-model equivalence. Removed the unsupported custom-mask prototype; preserved it in `analysis/hypotheses/`.
-4. **Corrected diagnosis:** q112 dumps reproduce output 125 divergence. The initial trace filter assumed NGRAM was linear and missed accepted siblings. Native PROB merges paths from multiple suffix anchors even with fanout 1. Shared cached RoPE modules also cause repeated misleading layer labels. Preserve the flawed analysis/source, mark its first-divergence attribution superseded and reject non-linear passes without actual masks.
-5. **Completed controls:** position 120 layer 3 Q matches but visible KV differs only at position 118: 39 key / 61 value elements. Exact replay reproduces each output; query/KV truncation does not remove the difference. The cached value equals NG pass25 row4's projected value, narrowing the cause before KV movement. Comparing that accepted branch with ordinary finds a single differing BF16 attention element in layer 2 (delta 0.0001220703125), with preceding projection equal. Actual branch replay then confirms bitwise-identical Q and visible K/V. The masked tree layout reproduces one BF16 difference; compacting the same visible keys restores equality for both one and 33 query rows. This attributes this captured effect to execution layout, not all NGRAM differences.
-6. **Completed:** SUFFIX matches all 240 requests using the unchanged v12 image and its completed ordinary reference. Cross-allocation IDs are correctness evidence only; compare no latencies across these allocations. SUFFIX constructs an explicit causal chain and does not inherit NGRAM's proposer tree.
-7. **Running:** `analysis/modal_final_campaign.py` executes plain and direct-KV gates plus five rotated trials in one detached function. Every ordinary/SUFFIX/ablation output must match the gated ordinary reference, and paired suffix IDs are rechecked within each trial. NGRAM differences are preserved descriptively; no altered proposer or numerical patch is applied.
-
-## Experiments and completion milestones
-
-The frozen 84-row workload contains 52 initial requests across 13 categories and 32 refinements. SHA256 `8b94953aa6e1c8ec18e4f9c405f82cf87d4c330ad172be118e0547e4c657132c`. Refinement text was generated once under v11 ordinary decode. Historical outputs are provenance, never cache seeds or the candidate reference. Each block starts empty and caches persist only causally within it.
-
-Report the 32 actual second turns separately from the mixed initial/refinement block; include paired trial intervals and actual trace denominators by request kind.
-
-Five rotated-order trials compare ordinary, upstream NGRAM PROB (per-anchor fanout 1,33slots; trees can still branch), dual-cache suffix, unbounded-match-length suffix, and local-only suffix. Blocks:52 independent,84 initial/refinement,104 repeated-prompt requests. Repetition is a diagnostic upper bound. Record streamed wall latency, first-chunk latency, token IDs, resolved configuration, hashes, package freeze, GPU UUID/driver. The initial 6000-equal-output policy has changed explicitly after branch attribution: all 4800 ordinary/SUFFIX/ablation outputs remain strict; 1200 upstream NGRAM outputs are checked and any differences retained. The report requires the opt-in `--allow-ngram-numerical-differences`; differing NGRAM latency ratios are descriptive, not exact-output speedups. The default report still rejects any mismatch. NGRAM and suffix cache policies and topologies differ.
-
-Separate profiling must show actual GPU launches/work, not only smaller masks. Existing v11 profiles match54 controlled-width outputs at contexts126/128/512: KV writes/reductions shrink, while 128-row attention/head tiles remain padded. They are valid diagnostic evidence for that configuration, not final serving results. Collect full-workload suffix traces for actual proposal/acceptance denominators; capacity-based SGLang metadata is misleading. Repeat final-candidate width profiles and quantify any changed ordinary route's cost.
-
-**Completed assets:** public repository, Linux/Mac CI, pinned native reuse, ten cache/worker checks plus six reporting-policy checks, initial 30-case GPU gates, 416 KV assertions, controlled profiles, public raw audit release with exact source snapshots. **Still required:** five serving trials, final-candidate width and baseline-cost controls, full-workload acceptance analysis and final report including negative results and the distinction from the paper's Llama/vLLM experimental setup.
+| Retain reviewed implementation |96| Explicit chain, lifecycle/host checks, direct KV assertions and full SUFFIX gate support continuing. |
+| Restart the complete workspace |35| Would discard useful pins and verified evidence without an identified adapter contract failure. |
+| Retain v0.5.21 |82| Tested build/interfaces and locked execution; changing versions would confound comparisons. |
+| Preserve complete paired trials and submit asynchronously |97| Saved trial revalidates; normal submitter exit was verified by a CPU probe. Explicit app cancellation remains possible. |
+| Keep upstream NGRAM with descriptive mismatches |93| Independent reproduction supports retaining the requested baseline while restricting exact-output claims. |
+| Finish public portable runner before publication |97| Fresh gates remove private output dependencies; full standalone orchestration still needs an explicit validation limitation. |
