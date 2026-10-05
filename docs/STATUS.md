@@ -1,4 +1,4 @@
-# Status at 2026-10-05 03:35 EDT
+# Status at 2026-10-05 05:45 EDT
 
 The 20:29 EDT check confirms: the public Modal image build completed without private image overrides, passed all 16 host/report checks and all 25 frozen source fingerprints, and returned `success: true` on CPU. It allocated no GPU and its app has stopped. The frozen serving campaign completed successfully on October 5; all five paired trials are validated.
 
@@ -20,9 +20,9 @@ This is a saved checkpoint, not a live dashboard. The current job was submitted 
 
 `modal-20261004-final-campaign-resumed` completed with `success: true`, five trials, 25 modes and 6000 timed records. All 4800 ordinary/SUFFIX/ablation outputs match. NGRAM differs on 50/1200 requests; its times remain descriptive. All 25 frozen fingerprints match. The campaign app `ap-TawwrpzDJ2lkv2krq66I9s` stopped at 02:32:53 EDT, and an independent 03:30 check found no containers.
 
-Only the new diagnostics app `ap-LH7AwrtpEfMxOZyroo0MGW` is active, submitted asynchronously at 03:31 EDT as `modal-20261005-final-diagnostics`, reference `modal-20261004-final-campaign-resumed`. Function receipt: `fc-01M45FKXQG34QARXYRM93P5ZDR`. It owns one H100 worker and one CPU controller, not two GPUs. The controller validated all serving records before starting GPU work. The first natural-trace phase is running. GPU UUID: `GPU-71c59c41-6be9-99fb-9588-ba6bdb6a21fc`. The serving runtime and inputs are unchanged.
+Diagnostics and controller both completed with `success: true`: all 16 phases, 720 exact-output traces, five profiles, 24 route-control requests, 54 width probes and the four-request portable smoke. The diagnostic app `ap-LH7AwrtpEfMxOZyroo0MGW` stopped at 05:21:01 EDT. No GPU containers remain.
 
-Require successful diagnostics and controller statuses, 16 phases, 720 exact suffix traces, five 12-request profiles, 24 route-control requests, 54 width probes and four portable-runner smoke requests. Instrumented times do not enter serving estimates. Final measured release remains pending. Decision score: **97/100** for proceeding to diagnostics after verified serving completion and GPU scale-down.
+CPU-only `modal-20261005-final-analysis` (`ap-Ff0ldElxatswz5b389bTad`) completed successfully in 80.5 seconds. Its report and two figures have been reviewed; raw archives and SHA256 manifests are generated. Source CI and archive/member hashes must pass before publication. Decision score: **97/100** for publishing the complete evidence with explicit negative findings and limitations.
 
 ## Stopped deliberately
 
@@ -36,16 +36,15 @@ Decision score: **95/100** for retaining the progressing benchmark and stopping 
 
 ## Remaining
 
-1. Finish and validate the active diagnostics, then confirm GPU scale-down.
-2. Launch CPU-only final analysis with a fresh run ID and the completed campaign/diagnostics IDs; do not create an idle waiter before diagnostic completion.
-3. Review measured conclusions and figures, verify raw archives and complete the technical write-up.
-4. Publish the measured release after complete evidence and passing source CI. No final paper-performance reproduction conclusion exists yet.
+1. Verify raw archive/member hashes and passing CI for the final publication source checkpoint.
+2. Collect the reviewed report/figures and publish the measured release.
+3. Confirm all project apps stopped and provide the public release and measured conclusions.
 
-Inspect existing Modal apps before any further allocation. No scheduled follow-up or automatic publisher is active.
+No GPU is running. No scheduled follow-up or automatic publisher is active.
 
 ## Resumed execution
 
-The user authorized continuation after the status reset. The serving campaign is complete; diagnostics, final analysis and publication proceed sequentially. No persistent cloud waiter or automatic publisher was restarted. The runbook now states the required completion checks. The analysis verifies recorded proposer settings and rejects silent SUFFIX ablation misconfiguration; all twenty-one host/report checks pass. GPU code and workload remain frozen.
+The user authorized continuation after the status reset. Serving, diagnostics and CPU analysis are complete; final publication checks remain. No persistent cloud waiter or automatic publisher was restarted. The runbook now states the required completion checks. The analysis verifies recorded proposer settings and rejects silent SUFFIX ablation misconfiguration; all twenty-one host/report checks pass. GPU code and workload remain frozen.
 
 The public portable runner passes source-hash dry runs on Mac and Linux. Its brief CPU app stopped after completion; a fixed container-import error and an earlier image-ID typo are recorded. A four-request Linux/GPU smoke will run in the final diagnostic allocation (16 phases total); it does not establish a separate complete five-trial rerun. Both published source checkpoints have passed Linux/Mac CI. A transient automatic approval-service usage error interrupted a CI read; the normal reviewed retry succeeded after the user resumed.
 

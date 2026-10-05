@@ -7,6 +7,7 @@ launch, preserving concurrent user work. All archive members are hash-checked.
 import argparse
 import hashlib
 import json
+import re
 import subprocess
 import tarfile
 import time
@@ -126,6 +127,30 @@ def main():
     p.write_text(text)
     p = root / "docs/TECHNICAL_REPORT.md"
     text = p.read_text()
+    text = re.sub(r"^\*\*Status:.*$",
+                  "**Status: five serving trials and all separate diagnostics are complete.** "
+                  "All 4800 ordinary/SUFFIX/ablation outputs match; upstream NGRAM differences remain descriptive. "
+                  "See [measured results](RESULTS.md) for ratios, intervals, GPU work and negative findings. "
+                  "SGLang executes Qwen2.5-7B-Instruct on one H100; this is an adapted reproduction. "
+                  "Earlier failures remain preserved.", text, flags=re.MULTILINE)
+    traces = json.loads((reports / "natural-trace-report.json").read_text())
+    trace_rows = {(row["variant"], row["block"]): row for row in traces["summaries"]}
+    adaptive = trace_rows[("suffix", "independent")]
+    unbounded = trace_rows[("suffix-fixed", "independent")]
+    interpretation = (
+        "**Measured interpretation.** The adaptive bound improves draft selectivity, "
+        f"but on independent inputs it commits {adaptive['mean_committed_tokens_per_round']:.2f} "
+        f"tokens per verification round versus {unbounded['mean_committed_tokens_per_round']:.2f} "
+        "without that bound. Longer proposals can therefore save later forward passes despite lower "
+        "draft acceptance. Controlled widths show only 12–14% lower profiled kernel-duration sums "
+        "at one row than at 33 rows, with unchanged attention/head launch tiles. The combination is "
+        "consistent with the measured bound-removal advantage; it does not isolate its cause. "
+        "Changing the bound also changes candidate scoring/selection, and CPU proposal/cache costs "
+        "were not separately isolated. These findings apply to the disclosed eager SGLang/Qwen "
+        "configuration, not the paper's original numerical setup.\n\n"
+    )
+    first_paragraph = text.index("\n\n", text.index("**Status:")) + 2
+    text = text[:first_paragraph] + interpretation + text[first_paragraph:]
     text = text.replace("Five serving trials are running.", "Five serving trials and separate diagnostics are complete; see [measured results](RESULTS.md).")
     text = text.replace("No serving speedup or reproduction of the paper’s headline performance is established yet.",
                         "The measured report states gains, negative results and limitations; this is an adapted reproduction rather than the paper's original experimental setup.")
@@ -143,20 +168,24 @@ def main():
                         "**Completed:** five serving trials, final-candidate width and baseline-cost controls, full-workload acceptance analysis and final measured report including negative results and the distinction from the paper's original experimental setup. See `docs/RESULTS.md` and `results/final/`.")
     # Replace live checkpoint/milestone prose in the concise plan. Preserve
     # the operational history in docs/PROJECT_HISTORY.md and the raw archive.
-    import re
-
     text = re.sub(r"^Checkpoint:.*$",
                   "Final measurements complete. Five serving trials and all separate diagnostic stages passed their gates. See [measured results](docs/RESULTS.md), [final status](docs/STATUS.md) and [preserved history](docs/PROJECT_HISTORY.md).",
                   text, flags=re.MULTILINE)
-    text = re.sub(r"^3\. \*\*Running:\*\*.*$",
+    text = re.sub(r"^3\. \*\*(?:Running|Complete):\*\*.*$",
                   f"3. **Complete:** five rotated serving trials, 6000 measured requests and all 4800 strict ordinary/SUFFIX/ablation comparisons. Upstream NGRAM differs on {ngram}/1200 responses; descriptive results retain every mismatch.",
                   text, flags=re.MULTILINE)
-    text = re.sub(r"^4\. \*\*Next:\*\*.*$",
+    text = re.sub(r"^4\. \*\*(?:Next|Running|Complete):\*\*.*$",
                   "4. **Complete:** 720 exact-output natural traces, five 12-request profiles, 24 paired ordinary-route controls, 54 controlled-width probes and four portable-runner smoke requests. Instrumented times remain separate from serving estimates. See the measured GPU-work and baseline-cost findings.",
                   text, flags=re.MULTILINE)
-    text = re.sub(r"^5\. \*\*Next:\*\*.*$",
+    text = re.sub(r"^5\. \*\*(?:Next|Running|Complete):\*\*.*$",
                   "5. **Complete:** paired trial analysis, actual second turns, proposal/acceptance denominators, scientific figures, per-file/archive hashes, technical write-up and public measured release. Negative results and differences from the paper remain explicit. CPU public-build and GPU smoke validation do not establish a separate complete standalone five-trial rerun.",
                   text, flags=re.MULTILINE)
+    text = re.sub(r"^\*\*Still required:\*\*.*$",
+                  "**Completed:** serving trials, final-candidate diagnostics, full-workload acceptance analysis, "
+                  "measured report, figures and raw artifacts. See `docs/RESULTS.md` and `results/final/`.",
+                  text, flags=re.MULTILINE)
+    text = text.replace("Continue here with the separately submitted Modal diagnostics;",
+                        "All authorized execution stages are complete;")
     p.write_text(text)
     p = root / "docs/STATUS.md"
     p.write_text(
@@ -182,6 +211,13 @@ def main():
         ngram_differing_responses=ngram, campaign_run=status["campaign_run"],
         diagnostics_run=status["diagnostics_run"], final_analysis_run=status["run_id"],
         performance_report="docs/RESULTS.md", raw_artifact_manifests="results/final")
+    verification["final_diagnostics"] = dict(
+        run_id=status["diagnostics_run"], success=True, completed_phases=16,
+        exact_suffix_traces=720, width_probes=54, route_control_requests=24,
+        portable_smoke_requests=4, report="docs/RESULTS.md")
+    verification["portable_reproduction_runner"]["gpu_smoke"] = dict(
+        success=True, requests=4, run_id=status["diagnostics_run"],
+        full_portable_five_trial_rerun="not separately executed")
     p.write_text(json.dumps(verification, indent=2) + "\n")
     paths = [*working_files, "docs/RESULTS.md", "results/final"]
     paths += [str(path.relative_to(root)) for path in (root / "docs/figures").iterdir()

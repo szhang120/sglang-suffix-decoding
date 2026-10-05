@@ -1,0 +1,16 @@
+{
+  "success": true,
+  "run_id": "modal-20261005-final-diagnostics",
+  "reference_run": "modal-20261004-final-campaign-resumed",
+  "runner_sha256": "d8e9d919ee495fa712b1b354ab44a5c67a5dbcf1ba7e8008e01345c2f2206db1",
+  "waiting_owns_no_gpu": true,
+  "analysis_source_sha256": {
+    "analyze_width_probe.py": "3dd0fcf5785e766f89d7af1f31fa49f336540ef42b669e8fcc2188465b723b21",
+    "benchmark_report.py": "992f1f96808829fc5fb7a603e703470a33d118cbbd706781782bdacdc1bed10e",
+    "decode_control_report.py": "7d96f0bc0652cc42059c7128e67bcff11787b768260e85a3fef815e0ab48b437",
+    "natural_trace_report.py": "a1368bad026390a3d7507d0d725efebfa633ba06e9b2c17ea15131a827c134dc",
+    "width_report.py": "90b659f30fbe5ff57c42242fb37a881ef68b3b6676eeecc97f2900903646f658"
+  },
+  "serving_report_passed": true,
+  "elapsed_seconds": 6529.758582643
+}
