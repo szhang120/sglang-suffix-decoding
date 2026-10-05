@@ -9,3 +9,7 @@ __pycache__/
 configs/model-api.json
 results/gpu/
 results/workload.jsonl
+results/modal/
+results/setup/
+results/environment/
+results/runs/

@@ -1,6 +1,0 @@
-✓ Initialized. View run at 
-https://modal.com/apps/szhanggg/main/ap-HQPbNKUFOLruY1ajlMkGve
-Stopping app - uncaught exception raised locally: InvalidError('Please add a payment method to use H100! GPU functions.').
-╭─ Error ──────────────────────────────────────────────────────────────────────╮
-│ Please add a payment method to use H100! GPU functions.                      │
-╰──────────────────────────────────────────────────────────────────────────────╯

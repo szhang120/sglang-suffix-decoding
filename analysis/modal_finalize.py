@@ -1,4 +1,4 @@
-"""CPU-only completion: measured write-up, figures and distributable raw data.
+"""CPU-only completion: measurement tables, figures and distributable raw data.
 
 Waits for the diagnostic controller; never allocates a GPU or changes inputs.
 GitHub publication uses the local authenticated CLI after downloading assets.
@@ -97,7 +97,7 @@ def execute(run_id, campaign_run, diagnostics_run, runner_sha):
             run(["python", "/analysis/natural_trace_report.py", str(diagnostic_dir / "results/natural-trace"),
                  "--output", str(reports / "natural-trace-report.json")])
             run(["python", "/analysis/write_final_report.py", "--results-directory", str(reports),
-                 "--output", str(directory / "docs/RESULTS.md")])
+                 "--output", str(directory / "measurement-tables.md")])
             run(["python", "/analysis/plot_results.py", "--root", str(directory),
                  "--width-summary", str(reports / "width-probe-summary.json"), "--width-stem", "verify-width-v12"])
 

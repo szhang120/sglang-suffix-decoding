@@ -22,7 +22,7 @@ if modal.is_local():
     ).add_local_file(
         ROOT / "analysis/benchmark_report.py", "/project/analysis/benchmark_report.py", copy=True
     ).add_local_file(
-        ROOT / "results/modal/modal-20261004-v12-suffix-isolated/suffix-gate-status.json",
+        ROOT / "configs/gpu-source-manifest.json",
         "/project/portable-source-gate.json", copy=True
     ).env({"SUFFIX_PORTABLE_CPU_ONLY": "1" if CPU_ONLY else "0"})
 else:

@@ -54,7 +54,7 @@ def main():
     parser.add_argument("--output-dir", type=Path, required=True, help="Fresh directory; existing paths are refused")
     parser.add_argument("--dry-run", action="store_true", help="Validate source hashes and print stages without GPU work")
     parser.add_argument("--source-manifest", type=Path,
-                        default=ROOT / "results/modal/modal-20261004-v12-suffix-isolated/suffix-gate-status.json")
+                        default=ROOT / "configs/gpu-source-manifest.json")
     parser.add_argument("--smoke", action="store_true", help="Check isolated Linux execution on one public input, without timing trials")
     args = parser.parse_args()
     expected = source_fingerprints(args.source_manifest)

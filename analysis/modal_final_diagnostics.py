@@ -20,7 +20,7 @@ image = modal.Image.from_id(BASE_IMAGE).add_local_file(
 )
 image = image.add_local_file(ROOT / "scripts/reproduce_gpu.py", "/project/scripts/reproduce_gpu.py", copy=True)
 image = image.add_local_file(
-    ROOT / "results/modal/modal-20261004-v12-suffix-isolated/suffix-gate-status.json",
+    ROOT / "configs/gpu-source-manifest.json",
     "/project/portable-source-gate.json", copy=True)
 report_files = ("benchmark_report.py", "natural_trace_report.py", "decode_control_report.py", "width_report.py")
 cpu_image = modal.Image.debian_slim(python_version="3.12")
@@ -281,7 +281,7 @@ def main(run_id: str, reference_run: str = "modal-20261004-final-campaign", wait
          submit_only: bool = False):
     import hashlib
 
-    gate = ROOT / "results/modal/modal-20261004-v12-suffix-isolated/suffix-gate-status.json"
+    gate = ROOT / "configs/gpu-source-manifest.json"
     expected = json.loads(gate.read_text())["source_sha256"]
     control_sha = hashlib.sha256((ROOT / "analysis/decode_control_gpu.py").read_bytes()).hexdigest()
     runner_sha = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()

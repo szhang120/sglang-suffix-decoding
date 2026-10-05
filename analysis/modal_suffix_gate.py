@@ -80,7 +80,7 @@ def execute(run_id, expected):
 
 @app.local_entrypoint()
 def main(run_id: str = "modal-20261004-v12-suffix-isolated"):
-    expected = json.loads((ROOT / "results/modal/modal-20261004-v12-full/raw/modal-20261004-v12-full/public-gate-status.json").read_text())["source_sha256"]
+    expected = json.loads((ROOT / "configs/gpu-source-manifest.json").read_text())["source_sha256"]
     status = execute.remote(run_id, expected)
     directory = ROOT / "results/modal" / run_id
     directory.mkdir(parents=True, exist_ok=True)

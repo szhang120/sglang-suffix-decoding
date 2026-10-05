@@ -1,7 +1,5 @@
 {
   "success": true,
-  "run_id": "modal-20261004-v12-suffix-isolated",
-  "image_id": "im-96vGJgQDElG1UZq72yqyhI",
   "source_sha256": {
     "configs/source-lock.json": "8027be54c2c1123b5b9dfbeabf27a8c86ae6ae204042c41d24548d81b884bc77",
     "configs/gpu-requirements.lock": "c0a19671efe44499b964370a3932dcb1d6abca143c0fbf7f1fd65f0e44f85510",
@@ -28,10 +26,5 @@
     "scripts/gpu_public_gate.py": "1a85a9872985fd01e52a16108b67e4b328f291bb017685dd9e3a53009fe97280",
     "scripts/gpu_width_probe.py": "3e252e32ba8dd6239473eaf65aea4f21cbd8be904367fba392c4d366e08cec3a",
     "scripts/materialize_workload.py": "c8e8ad18295b15464482cecde48e97449a0219667fbec0a11f717d3eb89887ff"
-  },
-  "ordinary_reference_run": "modal-20261004-v12-full",
-  "cross_allocation_correctness_only": true,
-  "execution_complete": true,
-  "mismatches": 0,
-  "elapsed_seconds": 793.674009474
+  }
 }

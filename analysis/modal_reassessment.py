@@ -84,7 +84,7 @@ def execute(run_id, expected, diagnostic_sha, image_id):
 def main(run_id: str = "modal-20261004-independent-audit"):
     import hashlib
 
-    reference = ROOT / "results/modal/modal-20261004-v12/public-probe-0-status.json"
+    reference = ROOT / "configs/gpu-source-manifest.json"
     expected = json.loads(reference.read_text())["source_sha256"]
     diagnostic_sha = hashlib.sha256((ROOT / "analysis/reassessment_gpu.py").read_bytes()).hexdigest()
     status = execute.remote(run_id, expected, diagnostic_sha, image.object_id)

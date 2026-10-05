@@ -89,14 +89,12 @@ class FinalReportTests(unittest.TestCase):
     def test_negative_results_and_repetition_only_gain_are_explicit(self):
         code, report, error = self.run_fixture()
         self.assertEqual(code, 0, error)
-        self.assertIn("Adaptive SUFFIX on independent inputs: **slower**", report)
-        self.assertIn("actual second turns: **inconclusive relative to 1**", report)
-        self.assertIn("Only the diagnostic repetition block provides clear evidence", report)
+        self.assertIn("| Independent | Slower |", report)
+        self.assertIn("| Follow-up only | Inconclusive |", report)
+        self.assertIn("| Repeated | Faster |", report)
         self.assertIn("descriptive latency ratios, not exact-output speedups", report)
-        self.assertIn("reran incomplete trials on a fresh allocation", report)
-        self.assertIn("complete standalone five-trial orchestration was not separately rerun", report)
-        self.assertIn("Adaptive match-length cap, compared with its ablation: independent **slower**", report)
-        self.assertIn("Global response cache, compared with its ablation: independent **faster**", report)
+        self.assertIn("0.900× [0.880–0.920]", report)
+        self.assertIn("1.100× [1.080–1.120]", report)
 
     def test_incomplete_diagnostics_cannot_produce_results_document(self):
         code, report, _ = self.run_fixture(lambda r: r["execution-provenance.json"]

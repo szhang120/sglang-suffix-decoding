@@ -194,7 +194,7 @@ def execute(run_id, expected, runner_sha, image_id, resume_run=""):
 def main(run_id: str = "modal-20261004-final-campaign", resume_run: str = "", submit_only: bool = False):
     import hashlib
 
-    reference = ROOT / "results/modal/modal-20261004-v12-suffix-isolated/suffix-gate-status.json"
+    reference = ROOT / "configs/gpu-source-manifest.json"
     expected = json.loads(reference.read_text())["source_sha256"]
     runner_sha = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
     if submit_only:
