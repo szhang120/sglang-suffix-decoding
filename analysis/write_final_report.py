@@ -56,7 +56,8 @@ def main():
     text = [
         "## Results", "",
         "The benchmarks compare ordinary decoding, three SUFFIX configurations and SGLang NGRAM PROB. The target model is Qwen2.5-7B-Instruct on one H100 80GB. All modes use greedy decoding with a batch size of 1. Weights and activations use BF16. The output head produces FP32 values.", "",
-        "All modes use deterministic Triton attention, eager execution and seed 42. Each request can generate up to 256 tokens. CUDA graphs, overlap and radix caching are disabled.", "",
+        "All modes share the deterministic Triton attention route and the fix to the output head's memory layout. Execution is eager, with seed 42. Each request can generate up to 256 tokens.", "",
+        "See the [benchmark notes](docs/benchmark-notes.md) for execution requirements and comparison limits.", "",
         "Each trial runs five modes on the same 240 requests. Five trials produce 6,000 measurements, with the mode order rotated between trials. The workload uses 52 initial prompts and 32 follow-ups. Each mode runs three blocks, with empty suffix or NGRAM caches at the start of each block:", "",
         "- Independent: 52 initial prompts, each run once.",
         "- First + follow-up: 52 initial prompts and 32 follow-ups that change an earlier prompt.",
@@ -94,7 +95,7 @@ def main():
         bound_statement = f"Decoding with the adaptive bound is {bound_findings[0]} than decoding without it in all three blocks." if bound_findings[0] != "inconclusive" else "The adaptive bound comparison is inconclusive in all three blocks."
     else:
         bound_statement = "Adaptive bound results: " + "; ".join(f"{label.lower()}: {result}" for (_, label), result in zip(blocks, bound_findings)) + "."
-    text += ["", bound_statement + " Removing the bound can change both the selected continuation and its length. These tests do not separate their effects on latency.", "",
+    text += ["", bound_statement + " Removing the bound can change both the selected continuation and its length.", "",
              "### Output checks", "",
              "All timed SUFFIX configurations produce the same output token IDs as ordinary decoding. Separate checks cover suffix traces, verification, KV updates and the portable runner. The table lists passing comparisons and assertions:", "",
              "| Correctness check | Passing comparisons |", "|---|---:|",
@@ -105,14 +106,14 @@ def main():
              "| Attention route comparison outputs | 24 / 24 |",
              "| Portable smoke outputs with empty and populated caches | 4 / 4 |", "",
              "### NGRAM PROB", "",
-             f"NGRAM output differs from ordinary output on {len(benchmark['mismatches'])} of 1,200 timed requests. The table gives descriptive latency ratios, not exact-output speedups.", "",
+             f"NGRAM output differs from ordinary output on {len(benchmark['mismatches'])} of 1,200 timed requests. The table gives descriptive latency ratios alongside the output differences.", "",
              "| Block | Ordinary / NGRAM latency | Differing outputs |", "|---|---:|---:|"]
     mismatches = Counter(r["block"] for r in benchmark["mismatches"])
     for block, label in blocks:
         row = aggregates[("ngram", block)]
         value = row.get("descriptive_latency_ratio", row.get("pooled_speedup"))
         text.append(f"| {label} | {value:.3f}× | {mismatches[block]} |")
-    text += ["", "NGRAM and SUFFIX use different cache policies. NGRAM can merge branches even when each suffix anchor has only one continuation. The output differences prevent an exact-output speed comparison with NGRAM.", "",
+    text += ["", "NGRAM and SUFFIX use different cache policies. NGRAM can merge branches even when each suffix anchor has only one continuation.", "",
              "### GPU verification width", "",
              "This test holds the context fixed and changes the number of input rows in a verification pass. One row contains the last emitted token. A 33-row pass adds 32 draft tokens. The table shows median sums of GPU kernel times from three profiling trials:", "",
              "| Context tokens | Kernel time, 1 row | Kernel time, 33 rows | Reduction |", "|---:|---:|---:|---:|"]
@@ -127,9 +128,9 @@ def main():
         "The shared route is faster in this comparison." if route_high < 1 else
         "The interval includes 1, so the result is inconclusive."
     )
-    text += ["", "Shorter verification passes reduce measured kernel time. The launch grids for KV storage and argmax become smaller. The attention and output-head grids stay the same. Kernel time includes profiler overhead. It does not measure request latency or operation counts.", "",
+    text += ["", "Shorter verification passes reduce measured kernel time. The launch grids for KV storage and argmax become smaller. The attention and output-head grids stay the same. Kernel time includes profiler overhead.", "",
              "### Attention route", "",
-             f"All benchmark modes share the same attention route. A separate check compares this route with the original decode route on two prompts and six paired trials. Shared-route latency divided by original-route latency is {ratio(route, 'pooled_shared_over_original_cost_ratio')}. Values above 1 mean the shared route is slower. {route_finding} This check does not establish the baseline cost for other inputs.", ""]
+             f"All benchmark modes share the same attention route. A separate check compares this route with the original decode route on two prompts and six paired trials. Shared-route latency divided by original-route latency is {ratio(route, 'pooled_shared_over_original_cost_ratio')}. Values above 1 mean the shared route is slower. {route_finding}", ""]
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text("\n".join(text))
     print(f"Wrote verified measurement tables to {args.output}")

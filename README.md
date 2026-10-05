@@ -1,6 +1,6 @@
 # SuffixDecoding in SGLang
 
-SuffixDecoding reuses cached token sequences to propose several next tokens at once. This implementation uses ArcticInference's CPU suffix trees for proposals. SGLang runs the target model to verify them. It implements the paper's linear, greedy variant with a batch size of 1. The benchmarks use Qwen2.5-7B-Instruct on one H100 80GB.
+SuffixDecoding reuses cached token sequences to propose several next tokens at once. This implementation uses ArcticInference's CPU suffix trees for proposals. SGLang runs the target model to verify them. The implementation follows the paper's linear, greedy variant with a batch size of 1. The benchmarks use Qwen2.5-7B-Instruct on one H100 80GB.
 
 ## Setup
 
@@ -50,15 +50,15 @@ SGLang verifies the last emitted token and the proposed draft tokens in one targ
 
 Only committed output enters the suffix caches. Completion removes the local cache and retains the global response. An abort removes the local cache and the global response for that request. A cache flush clears both suffix caches.
 
-This implementation does not support batching, sampling, CUDA graphs, overlap, grammar constraints or logprob requests. It uses no draft model or training.
-
 <!-- BEGIN MEASUREMENTS -->
 
 ## Results
 
 The benchmarks compare ordinary decoding, three SUFFIX configurations and SGLang NGRAM PROB. The target model is Qwen2.5-7B-Instruct on one H100 80GB. All modes use greedy decoding with a batch size of 1. Weights and activations use BF16. The output head produces FP32 values.
 
-All modes use deterministic Triton attention, eager execution and seed 42. Each request can generate up to 256 tokens. CUDA graphs, overlap and radix caching are disabled.
+All modes share the deterministic Triton attention route and the fix to the output head's memory layout. Execution is eager, with seed 42. Each request can generate up to 256 tokens.
+
+See the [benchmark notes](docs/benchmark-notes.md) for execution requirements and comparison limits.
 
 Each trial runs five modes on the same 240 requests. Five trials produce 6,000 measurements, with the mode order rotated between trials. The workload uses 52 initial prompts and 32 follow-ups. Each mode runs three blocks, with empty suffix or NGRAM caches at the start of each block:
 
@@ -96,7 +96,7 @@ Each ratio divides the ablated mode's latency by the adaptive dual-cache latency
 | First + follow-up | 0.936× [0.932–0.940] | 1.048× [1.024–1.071] |
 | Repeated | 0.954× [0.935–0.980] | 1.960× [1.935–1.985] |
 
-Decoding with the adaptive bound is slower than decoding without it in all three blocks. Removing the bound can change both the selected continuation and its length. These tests do not separate their effects on latency.
+Decoding with the adaptive bound is slower than decoding without it in all three blocks. Removing the bound can change both the selected continuation and its length.
 
 ### Output checks
 
@@ -113,7 +113,7 @@ All timed SUFFIX configurations produce the same output token IDs as ordinary de
 
 ### NGRAM PROB
 
-NGRAM output differs from ordinary output on 50 of 1,200 timed requests. The table gives descriptive latency ratios, not exact-output speedups.
+NGRAM output differs from ordinary output on 50 of 1,200 timed requests. The table gives descriptive latency ratios alongside the output differences.
 
 | Block | Ordinary / NGRAM latency | Differing outputs |
 |---|---:|---:|
@@ -121,7 +121,7 @@ NGRAM output differs from ordinary output on 50 of 1,200 timed requests. The tab
 | First + follow-up | 1.122× | 15 |
 | Repeated | 1.938× | 20 |
 
-NGRAM and SUFFIX use different cache policies. NGRAM can merge branches even when each suffix anchor has only one continuation. The output differences prevent an exact-output speed comparison with NGRAM.
+NGRAM and SUFFIX use different cache policies. NGRAM can merge branches even when each suffix anchor has only one continuation.
 
 ### GPU verification width
 
@@ -133,21 +133,13 @@ This test holds the context fixed and changes the number of input rows in a veri
 | 128 | 7.745 ms | 9.006 ms | 14.0% |
 | 512 | 8.865 ms | 10.342 ms | 14.3% |
 
-Shorter verification passes reduce measured kernel time. The launch grids for KV storage and argmax become smaller. The attention and output-head grids stay the same. Kernel time includes profiler overhead. It does not measure request latency or operation counts.
+Shorter verification passes reduce measured kernel time. The launch grids for KV storage and argmax become smaller. The attention and output-head grids stay the same. Kernel time includes profiler overhead.
 
 ### Attention route
 
-All benchmark modes share the same attention route. A separate check compares this route with the original decode route on two prompts and six paired trials. Shared-route latency divided by original-route latency is 0.983× [0.952–1.019]. Values above 1 mean the shared route is slower. The interval includes 1, so the result is inconclusive. This check does not establish the baseline cost for other inputs.
+All benchmark modes share the same attention route. A separate check compares this route with the original decode route on two prompts and six paired trials. Shared-route latency divided by original-route latency is 0.983× [0.952–1.019]. Values above 1 mean the shared route is slower. The interval includes 1, so the result is inconclusive.
 
 <!-- END MEASUREMENTS -->
-
-## Limitations
-
-- These results apply to Qwen in SGLang on a small public workload. The paper tests Llama in vLLM on agentic applications. This implementation covers linear speculation; it does not cover tree speculation or hybrid fallback.
-- All modes share the deterministic attention route and the fix to the output head's memory layout. The ordinary baseline therefore differs from optimized upstream SGLang decoding.
-- Matching token IDs on this test set does not prove correctness for all inputs. Five trials measure timing variation on this workload, not performance on other workloads.
-- Each workload block fits in the cache. The benchmarks do not test cache eviction or large caches. The measurements do not separate CPU proposal and cache costs from other request costs.
-- The public image passed CPU checks, and the portable runner passed four GPU smoke requests. The portable runner has not completed a separate full five-trial reproduction.
 
 ## Data and sources
 

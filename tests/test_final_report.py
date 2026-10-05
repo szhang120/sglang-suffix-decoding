@@ -92,7 +92,7 @@ class FinalReportTests(unittest.TestCase):
         self.assertIn("| Independent | Slower |", report)
         self.assertIn("| Follow-up only | Inconclusive |", report)
         self.assertIn("| Repeated | Faster |", report)
-        self.assertIn("descriptive latency ratios, not exact-output speedups", report)
+        self.assertIn("descriptive latency ratios alongside the output differences", report)
         self.assertIn("0.900× [0.880–0.920]", report)
         self.assertIn("1.100× [1.080–1.120]", report)
 
