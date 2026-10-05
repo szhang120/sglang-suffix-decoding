@@ -1,0 +1,67 @@
+{
+  "archive": "profile-ngram.tar.gz",
+  "bytes": 21893774,
+  "sha256": "970fc15bdc969c9f5c733850c683782ec1a6db95cac30c3a8c23ca665c959b00",
+  "files": {
+    "profile-ngram/environment.json": {
+      "bytes": 21081,
+      "sha256": "6d3e2f5b7fe4b26a904b05a2271e5dd3c047d0287ba940626f7ab56bfb6fe42e"
+    },
+    "profile-ngram/profile/independent-0/1791189721.2035866-TP-0.trace.json.gz": {
+      "bytes": 2016419,
+      "sha256": "a6caefd47b6e0573634046a7c543093bc704eec67cd00c690d319c424ef47e2d"
+    },
+    "profile-ngram/profile/independent-1/1791189737.9633121-TP-0.trace.json.gz": {
+      "bytes": 2006780,
+      "sha256": "a668b1043d721401b1fab093185889030fb38a4f24f060fdbc93a3f9660fac91"
+    },
+    "profile-ngram/profile/independent-2/1791189752.5711145-TP-0.trace.json.gz": {
+      "bytes": 2009062,
+      "sha256": "34b6a0ccf548ccf8d45edf4b3001e67b34f8526e7a451bd34dd68c3517646ada"
+    },
+    "profile-ngram/profile/independent-3/1791189766.9038422-TP-0.trace.json.gz": {
+      "bytes": 2004454,
+      "sha256": "4fbacc2e1d7dba84ab61d7cfb3b9f6d9225e4a5281d2091a0684bcfab521ea87"
+    },
+    "profile-ngram/profile/refinement-0/1791189782.7404418-TP-0.trace.json.gz": {
+      "bytes": 2006676,
+      "sha256": "8d06231d99f858f5a11703bcf9048ed8b18bbe773013d66dbe218f854e704d27"
+    },
+    "profile-ngram/profile/refinement-1/1791189799.2014117-TP-0.trace.json.gz": {
+      "bytes": 2008168,
+      "sha256": "b5e43fcd3b4af888214587cef5701496cd93cb9865a189279de2869720e167a1"
+    },
+    "profile-ngram/profile/refinement-2/1791189813.2764668-TP-0.trace.json.gz": {
+      "bytes": 2008164,
+      "sha256": "0c7869a3b28c8862aa2dc0a9f825564ccfa2ea11de7db94e3f0b246372374eef"
+    },
+    "profile-ngram/profile/refinement-3/1791189828.208985-TP-0.trace.json.gz": {
+      "bytes": 2011454,
+      "sha256": "4eb25954a0216b552d81f36467a4d2e76e4f8d72628b5b570c07f9f30a9046ed"
+    },
+    "profile-ngram/profile/repeat-0/1791189842.4708018-TP-0.trace.json.gz": {
+      "bytes": 2010757,
+      "sha256": "abd76136d720009ce53aec7f2110d9aedf3aec3d7d1fdafdacb206597d51f7c3"
+    },
+    "profile-ngram/profile/repeat-1/1791189858.9032276-TP-0.trace.json.gz": {
+      "bytes": 2007829,
+      "sha256": "b0bb713f84c648da3ca42cc65b4f3ecc09a4245ef21d5a557f3db3daf0277075"
+    },
+    "profile-ngram/profile/repeat-2/1791189873.6837466-TP-0.trace.json.gz": {
+      "bytes": 2007291,
+      "sha256": "52a5a525517d40a8f82513ad2b0dbe22bbfe84bb1d98b778ad074968fc7a76ce"
+    },
+    "profile-ngram/profile/repeat-3/1791189879.389537-TP-0.trace.json.gz": {
+      "bytes": 2008916,
+      "sha256": "73d5f33de7076e580cbb03654c210574943e42b15a2c86362a06479988d17349"
+    },
+    "profile-ngram/requests.jsonl": {
+      "bytes": 151634,
+      "sha256": "502e83e5279635da4c67dca39acac0e8e6e92e372cd874b2a5712e9590ec6003"
+    },
+    "profile-ngram/server-info.json": {
+      "bytes": 45406,
+      "sha256": "41d3bcc188e0a68085a2334d84fbdde832ac05a4e2c48c3c595344a6366cb8e4"
+    }
+  }
+}

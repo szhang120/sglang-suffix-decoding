@@ -1,0 +1,23 @@
+{
+  "archive": "portable-runner-smoke.tar.gz",
+  "bytes": 3465,
+  "sha256": "a30a3a928ec247a6cd0a1a9e50e67e915b10614a09f058ec0a29cab2de719b68",
+  "files": {
+    "portable-runner-smoke/campaign-status.json": {
+      "bytes": 3195,
+      "sha256": "0b1007f15238fa87dae4abffa6225d104b5a7330644036e71f69977b859a7a02"
+    },
+    "portable-runner-smoke/campaign.log": {
+      "bytes": 2481,
+      "sha256": "ff153466949ba1cab7749fb1ec335d44c06b4f9a3f7301273d290c6f755695c5"
+    },
+    "portable-runner-smoke/portable-smoke-ordinary.json": {
+      "bytes": 1657,
+      "sha256": "34f554befdb8a66931d3f35f4308f7ccc3d4d8760b897fa1e652b1d30bbae94d"
+    },
+    "portable-runner-smoke/portable-smoke-suffix.json": {
+      "bytes": 2062,
+      "sha256": "293cc76d9bb54d24ce03470396d8d2dcc845b9eebc02d84fbaeca104d988a21e"
+    }
+  }
+}

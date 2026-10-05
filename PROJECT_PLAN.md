@@ -1,6 +1,6 @@
 # SuffixDecoding in SGLang
 
-Checkpoint: 2026-10-05 05:45 EDT. Serving and all diagnostic gates passed; GPU apps stopped. CPU-only analysis and packaging passed, and report/figure review is complete. Raw-hash checks, source CI and publication remain. See [current status](docs/STATUS.md) and [preserved history](docs/PROJECT_HISTORY.md).
+Final measurements complete. Five serving trials and all separate diagnostic stages passed their gates. See [measured results](docs/RESULTS.md), [final status](docs/STATUS.md) and [preserved history](docs/PROJECT_HISTORY.md).
 
 ## Scope and integration
 
@@ -32,11 +32,11 @@ Each five-mode trial stays on one physical GPU. Recovery copies only complete pa
 
 1. **Complete:** pinned workspace, public repository/CI, native reuse, cache lifecycle, proposer, verifier, acceptance and KV path. Ten host contracts and seven benchmark-policy checks pass locally; Linux/Mac CI passes at source checkpoint `f98928aa13cd905835cf18687bd6c1f05bfb8274`; four publication-report checks also pass on Mac/Linux and in the public Linux image. Synthetic fixtures check refusal of incomplete/failed evidence and explicit negative findings; they supply no model or performance measurements. Host stubs do not establish GPU correctness.
 2. **Complete:** plain 30-case GPU checks, 416 direct verification/KV assertions, separate 240/240 exact SUFFIX gate, independent upstream attribution, and public raw audit releases. One captured NGRAM layout effect is explained; arbitrary-input equivalence and all NGRAM errors remain unproven.
-3. **Complete:** five paired serving trials, 25 modes, 6000 records, all 4800 strict IDs matching. NGRAM differs on 50/1200. The validated five-trial report gives adaptive ratios 0.999× independent, 1.113× combined initial/follow-up, 1.280× actual follow-ups and 1.902× repetition. Independent bootstrap interval spans parity; follow-up and repetition intervals exceed parity. Removing the match-length bound is faster under paired comparisons in all three blocks. Final diagnostic interpretation and publication remain pending.
-4. **Complete:** all 16 diagnostic phases passed: 720 exact suffix traces, five profiles, 24 route-control requests, 54 width probes and four portable-runner smoke requests. Diagnostic GPU stopped at 05:21 EDT. Shorter widths reduce some kernel work, while attention/head tiles remain padded. Instrumented times remain separate from serving estimates.
-5. **Running:** CPU analysis and packaging completed successfully; measured report and figures reviewed. Verify raw archive/member hashes and source CI, then collect and publish the measured release. Preserve negative findings and the distinction from the original paper setup.
+3. **Complete:** five rotated serving trials, 6000 measured requests and all 4800 strict ordinary/SUFFIX/ablation comparisons. Upstream NGRAM differs on 50/1200 responses; descriptive results retain every mismatch.
+4. **Complete:** 720 exact-output natural traces, five 12-request profiles, 24 paired ordinary-route controls, 54 controlled-width probes and four portable-runner smoke requests. Instrumented times remain separate from serving estimates. See the measured GPU-work and baseline-cost findings.
+5. **Complete:** paired trial analysis, actual second turns, proposal/acceptance denominators, scientific figures, per-file/archive hashes, technical write-up and public measured release. Negative results and differences from the paper remain explicit. CPU public-build and GPU smoke validation do not establish a separate complete standalone five-trial rerun.
 
-**Still required:** final-candidate width and baseline-cost controls, full-workload acceptance analysis and final report including negative results and the distinction from the paper's Llama/vLLM experimental setup.
+**Completed:** serving trials, final-candidate diagnostics, full-workload acceptance analysis, measured report, figures and raw artifacts. See `docs/RESULTS.md` and `results/final/`.
 
 ## Decision scores
 
@@ -51,4 +51,4 @@ Scores are engineering judgments, not probabilities.
 | Keep upstream NGRAM with descriptive mismatches | 93 | Independent reproduction supports retaining the requested baseline while restricting exact-output claims. |
 | Finish public portable runner before publication | 97 | Fresh gates remove private output dependencies; full standalone orchestration still needs an explicit validation limitation. |
 
-The unsolicited Codex scheduled follow-up was removed after the user's clarification. Continue here with the separately submitted Modal diagnostics; no scheduled task or idle cloud waiter is active.
+The unsolicited Codex scheduled follow-up was removed after the user's clarification. All authorized execution stages are complete; no scheduled task or idle cloud waiter is active.

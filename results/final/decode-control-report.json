@@ -1,0 +1,147 @@
+{
+  "exact_ids_passed": true,
+  "measured_requests": 24,
+  "paired_trials": 6,
+  "metric": "Shared/original summed ordinary request wall latency; above1 means a slower shared route",
+  "selection": "Two writing prompts q81/q82 selected because both attention routes matched in the prior diagnostic",
+  "limitation": "Small selected control; not a representative public workload or optimized production SGLang comparison",
+  "output_tokens_per_prompt": [
+    256,
+    230
+  ],
+  "pooled_shared_over_original_cost_ratio": 0.982830445088523,
+  "median_trial_cost_ratio": 0.9839347350437526,
+  "observed_trial_range": [
+    0.9294239566857629,
+    1.059356505303472
+  ],
+  "trial_bootstrap_95": [
+    0.9515682044489917,
+    1.0185713939138212
+  ],
+  "uncertainty": "Paired trial bootstrap on these two fixed prompts, seed42; six trials",
+  "common_config": {
+    "model_path": "Qwen/Qwen2.5-7B-Instruct",
+    "revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+    "dtype": "bfloat16",
+    "attention_backend": "triton",
+    "enable_deterministic_inference": true,
+    "enable_fp32_lm_head": true,
+    "tp_size": 1,
+    "pp_size": 1,
+    "page_size": 1,
+    "max_running_requests": 1,
+    "disable_overlap_schedule": true,
+    "disable_decode_cuda_graph": true,
+    "disable_prefill_cuda_graph": true,
+    "disable_radix_cache": true,
+    "context_length": 16384,
+    "mem_fraction_static": 0.75,
+    "random_seed": 42
+  },
+  "model": {
+    "id": "Qwen/Qwen2.5-7B-Instruct",
+    "revision": "a09a35458c702b33eeacc393d103063234e8bc28"
+  },
+  "gpu_uuid": "GPU-71c59c41-6be9-99fb-9588-ba6bdb6a21fc",
+  "trials": [
+    {
+      "trial": 0,
+      "order": [
+        0,
+        1
+      ],
+      "original_wall_seconds": 15.130807815,
+      "shared_wall_seconds": 14.68647345,
+      "shared_over_original_cost_ratio": 0.9706337975848516,
+      "original_median_ttft_ms": 39.5677795,
+      "shared_median_ttft_ms": 38.515474
+    },
+    {
+      "trial": 1,
+      "order": [
+        1,
+        0
+      ],
+      "original_wall_seconds": 14.559633499,
+      "shared_wall_seconds": 15.423842462,
+      "shared_over_original_cost_ratio": 1.059356505303472,
+      "original_median_ttft_ms": 51.06617,
+      "shared_median_ttft_ms": 39.9790985
+    },
+    {
+      "trial": 2,
+      "order": [
+        0,
+        1
+      ],
+      "original_wall_seconds": 14.783997207,
+      "shared_wall_seconds": 14.743129397,
+      "shared_over_original_cost_ratio": 0.9972356725026538,
+      "original_median_ttft_ms": 38.8716095,
+      "shared_median_ttft_ms": 38.7912075
+    },
+    {
+      "trial": 3,
+      "order": [
+        1,
+        0
+      ],
+      "original_wall_seconds": 15.539575114,
+      "shared_wall_seconds": 14.71459917,
+      "shared_over_original_cost_ratio": 0.946911293394582,
+      "original_median_ttft_ms": 46.4461515,
+      "shared_median_ttft_ms": 37.5362705
+    },
+    {
+      "trial": 4,
+      "order": [
+        0,
+        1
+      ],
+      "original_wall_seconds": 15.719491636,
+      "shared_wall_seconds": 15.733035479,
+      "shared_over_original_cost_ratio": 1.000861595483723,
+      "original_median_ttft_ms": 38.639488,
+      "shared_median_ttft_ms": 47.095973
+    },
+    {
+      "trial": 5,
+      "order": [
+        1,
+        0
+      ],
+      "original_wall_seconds": 16.250558506,
+      "shared_wall_seconds": 15.103658385,
+      "shared_over_original_cost_ratio": 0.9294239566857629,
+      "original_median_ttft_ms": 42.149294,
+      "shared_median_ttft_ms": 40.128684
+    }
+  ],
+  "raw_sha256": {
+    "shared0-0/requests.jsonl": "226499a9d253eb0ab742663c799ab4796e6429c7bd45ca32e032db8d1f0f6960",
+    "shared0-0/environment.json": "fdd28b8d2f7599e4d5a871090e25670ed165af7240a813c3806a03c391fa3156",
+    "shared1-0/requests.jsonl": "246d368ca76d91acf210c21a94b882135b6f2fe277aedbb0fc4dcd2f85396fa2",
+    "shared1-0/environment.json": "56a01268bd001dd072c7c746211d1544d1d37dd45582f282cc7dcd59c7e256d2",
+    "shared0-1/requests.jsonl": "3b7c86c23467de0de3e117e026e7705f0cae50a9f47befca597cd7558f66c552",
+    "shared0-1/environment.json": "9a762502eca74bf7b1b3e0caaa6abddf1cdd87fce69eede066644a8733f597d3",
+    "shared1-1/requests.jsonl": "a093c3055f5e49e3037ebddec5c7118e347e77c781200a700f7f89f4262ddf97",
+    "shared1-1/environment.json": "b97ffdfe0013771eb7d0973ee921f9d1fca9cc564786bc392796835ac434d48d",
+    "shared0-2/requests.jsonl": "203392f2c1d265d59952d392ff2abb7b5f780388ee388184c0dab7bbfd6106e4",
+    "shared0-2/environment.json": "90e45f6e6328c3a07875b0f35d593ddae0267d5a15af274f09ebecc972afa844",
+    "shared1-2/requests.jsonl": "6f46e1b9be751eae18254b8f44eb2840c43fa4ff734de248ba71d156cafae398",
+    "shared1-2/environment.json": "cdc3eb7787051018375151f0ede2e4d06063cf1307b0fd4c66a12c7ee9d1c9d4",
+    "shared0-3/requests.jsonl": "d9e6b7dba220ba10faddda6e7bf7fc53bf24325fcef69b9ea47a6e680762a8f0",
+    "shared0-3/environment.json": "d530936cccafa8ff333e48fef91a10c8145c5fd1d0d50cac75fc9bd1dfbcff4d",
+    "shared1-3/requests.jsonl": "56f304dbf050dae7fd44ba19042791ce89a0c237a138c1d264fe448f943ccc7d",
+    "shared1-3/environment.json": "6fce9dbc9eef29f4b601d5718b514737c0a26eaca459a0014ee4b8b9455a085a",
+    "shared0-4/requests.jsonl": "5fabef4de9d2c92e7e9fd4182d56df9522c44b22ea468893bc3324440d29f4c1",
+    "shared0-4/environment.json": "ec1f7352c0f89bdbf50fe177e824fc94e4122a9755b1de501ef2a64873c39e9c",
+    "shared1-4/requests.jsonl": "2200dba5b0c21bcd2dc50f9a8378764c0a440c40ce33fcf6385e8a8b4d60682e",
+    "shared1-4/environment.json": "9adb305bbf6e96918e9785f146dd525d803d876d3ce86a1c730dd2af96e51d7f",
+    "shared0-5/requests.jsonl": "13546e7d347e16c8417e99e65a18df98abc1e031a18a82352a389c2ae1479ed4",
+    "shared0-5/environment.json": "e4aed63a064413344c5cc5f1d0d169fb46ebc0cc16b4fc987eb061cfab7fcbeb",
+    "shared1-5/requests.jsonl": "fe0d4c4994fa0e25aa40276bd99f4008a4cd032575e8e5ecd81df254fb6497a6",
+    "shared1-5/environment.json": "dbec4a69e1c3ae9fee72befcad176026978efcd09ff8ec997e5ad07b1146100a"
+  }
+}

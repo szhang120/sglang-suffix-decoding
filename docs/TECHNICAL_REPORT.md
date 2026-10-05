@@ -1,6 +1,8 @@
 # A linear SuffixDecoding adaptation for SGLang
 
-**Status: SUFFIX passes the full 240-request public-workload exact-ID gate in the retained v12 configuration. Five serving trials completed: all 4800 ordinary/SUFFIX/ablation outputs match; all diagnostic stages passed. Upstream NGRAM still has output differences.** The validated serving report measures adaptive ratios of 0.999× independent, 1.280× on actual follow-ups and 1.902× on repetition; the measured write-up has been generated and is under final publication review. Reproduction of the paper’s headline performance is not established. SGLang executes Qwen2.5-7B-Instruct on one H100 80GB. All failed configurations remain available alongside the passing configuration.
+**Status: five serving trials and all separate diagnostics are complete.** All 4800 ordinary/SUFFIX/ablation outputs match; upstream NGRAM differences remain descriptive. See [measured results](RESULTS.md) for ratios, intervals, GPU work and negative findings. SGLang executes Qwen2.5-7B-Instruct on one H100; this is an adapted reproduction. Earlier failures remain preserved.
+
+**Measured interpretation.** The adaptive bound improves draft selectivity, but on independent inputs it commits 1.25 tokens per verification round versus 1.33 without that bound. Longer proposals can therefore save later forward passes despite lower draft acceptance. Controlled widths show only 12–14% lower profiled kernel-duration sums at one row than at 33 rows, with unchanged attention/head launch tiles. The combination is consistent with the measured bound-removal advantage; it does not isolate its cause. Changing the bound also changes candidate scoring/selection, and CPU proposal/cache costs were not separately isolated. These findings apply to the disclosed eager SGLang/Qwen configuration, not the paper's original numerical setup.
 
 ## Algorithm and integration
 
@@ -64,7 +66,7 @@ A smaller host tensor does not guarantee proportional hardware savings: CUDA gra
 
 The first profile, before the head-copy correction, used a 126-token prompt, six widths and three randomized trials. All 18 outputs matched ordinary generation. One-row median summed kernel time was 12.93ms versus 14.00ms at 33 rows. This context crosses a 64-key tile boundary, so it cannot isolate a uniform per-row benefit.
 
-The final profile uses contexts 126/128/512 and widths 1/2/4/8/16/33, three randomized trials each. All 54 outputs match ordinary IDs. Forced candidates are zero IDs and remain subject to target verification; they are never injected directly into outputs or caches.
+The v11 post-head-fix profile uses contexts 126/128/512 and widths 1/2/4/8/16/33, three randomized trials each. All 54 outputs match ordinary IDs. Forced candidates are zero IDs and remain subject to target verification; they are never injected directly into outputs or caches.
 
 | Input context tokens | One-row median kernel sum | 33-row median kernel sum | Reduction at one row |
 |---:|---:|---:|---:|
@@ -108,4 +110,4 @@ Profiling runs are separate from timed trials. SGLang’s `spec_num_proposed_dra
 
 [The paper’s baseline comparison](https://arxiv.org/html/2411.04975v3#S4.SS2) uses Llama-3.1-8B-Instruct, batch 1 and a single H100. Its live OpenHands/SWE-Bench evaluation uses vLLM with a different model and tensor parallelism. This project adapts the linear algorithm to SGLang with Qwen, a bounded output cache and a small public Spec-Bench subset plus actual second turns. It does not reproduce proprietary AgenticSQL or a live agent trajectory, and adds no hybrid model fallback.
 
-**Performance behavior is still unresolved.** Controlled profiles establish partial GPU work savings and expose tile-padding limits. Serving results must distinguish independent, refinement and identical-prompt repetition. A gain restricted to repetition would demonstrate a diagnostic upper bound, not broad agentic value. Negative results and token divergences will remain part of the final report.
+**The completed v12 experiment is reported in [measured results](RESULTS.md).** The v11 diagnostics here are retained as history. Controlled profiles establish partial GPU work savings and expose tile-padding limits. Serving results distinguish independent, refinement and identical-prompt repetition. A gain restricted to repetition would demonstrate a diagnostic upper bound, not broad agentic value. Negative results and token divergences are retained in the final report.

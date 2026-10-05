@@ -1,0 +1,55 @@
+{
+  "archive": "natural-traces.tar.gz",
+  "bytes": 2248797,
+  "sha256": "265428796244f4c4bbe6bb90045c0974065e7150239dbc32cd8180a17f6f2e08",
+  "files": {
+    "natural-traces/suffix-fixed/results/public-gate-suffix-shared1-environment.json": {
+      "bytes": 49110,
+      "sha256": "6fd160110356dfbd10bdd43e094b1a3a93acc8f207cb3d62229246daf9ee1ab1"
+    },
+    "natural-traces/suffix-fixed/results/public-gate-suffix-shared1.jsonl": {
+      "bytes": 650089,
+      "sha256": "e93e9ba3eb2e8bed9670afa5bd26ee434aa1884fd1167efc7dc7ab9d25eb69e9"
+    },
+    "natural-traces/suffix-fixed/results/suffix-rounds.jsonl": {
+      "bytes": 6718070,
+      "sha256": "7451e4aa4693496b7f931ad821e48714b67224245de4eb110d494a5d5b967ad2"
+    },
+    "natural-traces/suffix-fixed/results/trace-equality.json": {
+      "bytes": 131,
+      "sha256": "b6d4a23d121d2477c856bfc7c747472244e02ca719b4d111c6558832c44e62c5"
+    },
+    "natural-traces/suffix-local/results/public-gate-suffix-shared1-environment.json": {
+      "bytes": 49114,
+      "sha256": "3c7077bea06b08979992af38fe342c5722fb170d7ed49b16fb0767ec7d2ec0e2"
+    },
+    "natural-traces/suffix-local/results/public-gate-suffix-shared1.jsonl": {
+      "bytes": 644564,
+      "sha256": "033775283cada5d9ee938d56e5562aad576c732131dccda565d9ef4d832eade4"
+    },
+    "natural-traces/suffix-local/results/suffix-rounds.jsonl": {
+      "bytes": 5830468,
+      "sha256": "ae6ef0448ed25c93f5d3b09d72b159fe0172d38da3081e112fcfafe6bc97f482"
+    },
+    "natural-traces/suffix-local/results/trace-equality.json": {
+      "bytes": 131,
+      "sha256": "2157b9cf48a01a8cd13b8dd222dc5fa6be8246b20c0fdf0570cadb30ee24db11"
+    },
+    "natural-traces/suffix/results/public-gate-suffix-shared1-environment.json": {
+      "bytes": 49095,
+      "sha256": "8cce727f032bc4549788e6e7db60759bfbb04b23fbf096a9e8ae6dad96dc5c35"
+    },
+    "natural-traces/suffix/results/public-gate-suffix-shared1.jsonl": {
+      "bytes": 647846,
+      "sha256": "749754f9c46ace8b99a97f42a24931b4b11d0097a7c3ce87d3286ce1aabed54e"
+    },
+    "natural-traces/suffix/results/suffix-rounds.jsonl": {
+      "bytes": 4570626,
+      "sha256": "2333b6a4386fd3575ca0d9d5bd3ecbee03f7d607ee5ca270d2a64148fa5694c7"
+    },
+    "natural-traces/suffix/results/trace-equality.json": {
+      "bytes": 125,
+      "sha256": "c030074adb2129689d454e7990a105230e213327507683e6b4f43feebe0d8ea5"
+    }
+  }
+}

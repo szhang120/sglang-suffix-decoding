@@ -203,14 +203,15 @@
       "mismatches": 0
     },
     "serving_benchmarks": {
-      "status": "resumed after cancellation",
-      "run_id": "modal-20261004-final-campaign-resumed",
-      "exact_output_policy": "ordinary/SUFFIX/ablations strict; upstream NGRAM differences descriptive",
-      "followup": "Sequential async submission after campaign completion; no idle cloud waiters",
-      "completed_trials_preserved": 1,
-      "validated_requests_preserved": 1200,
-      "original_run": "modal-20261004-final-campaign",
-      "original_error": "Interrupted before completion"
+      "status": "complete",
+      "measured_requests": 6000,
+      "exact_ordinary_suffix_ablation_requests": 4800,
+      "ngram_differing_responses": 50,
+      "campaign_run": "modal-20261004-final-campaign-resumed",
+      "diagnostics_run": "modal-20261005-final-diagnostics",
+      "final_analysis_run": "modal-20261005-final-analysis",
+      "performance_report": "docs/RESULTS.md",
+      "raw_artifact_manifests": "results/final"
     },
     "real_branch_replay": {
       "run_id": "modal-20261004-branch-attention",
@@ -222,9 +223,9 @@
   },
   "reporting_policy_tests": 7,
   "latest_ci": {
-    "commit": "7ce6a7530ba49518afea8e0f42e7d0b41fbe0e9c",
+    "commit": "a4576b6816a4f76024fa12d6f14055003c83a5f1",
     "linux_and_macos": "passed",
-    "url": "https://github.com/szhang120/sglang-suffix-decoding/actions/runs/37247900419"
+    "url": "https://github.com/szhang120/sglang-suffix-decoding/actions/runs/37292084076"
   },
   "suffix_public_workload_correctness_passed": true,
   "reporting_proposer_configurations_checked": true,
@@ -247,7 +248,12 @@
         "state": "stopped"
       }
     ],
-    "gpu_smoke": "pending in final diagnostic allocation",
+    "gpu_smoke": {
+      "success": true,
+      "requests": 4,
+      "run_id": "modal-20261005-final-diagnostics",
+      "full_portable_five_trial_rerun": "not separately executed"
+    },
     "full_portable_five_trial_rerun": "not separately executed"
   },
   "async_submission_probe": {
@@ -353,5 +359,15 @@
     "reference_run": "modal-20261004-final-campaign-resumed",
     "app_id": "ap-LH7AwrtpEfMxOZyroo0MGW",
     "function_call_id": "fc-01M45FKXQG34QARXYRM93P5ZDR"
+  },
+  "final_diagnostics": {
+    "run_id": "modal-20261005-final-diagnostics",
+    "success": true,
+    "completed_phases": 16,
+    "exact_suffix_traces": 720,
+    "width_probes": 54,
+    "route_control_requests": 24,
+    "portable_smoke_requests": 4,
+    "report": "docs/RESULTS.md"
   }
 }
