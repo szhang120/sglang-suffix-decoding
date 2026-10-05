@@ -1,4 +1,4 @@
-# Status at 2026-10-04 19:38 EDT
+# Status at 2026-10-04 19:57 EDT
 
 This is a saved checkpoint, not a live dashboard. Pausing Codex does not stop detached Modal apps.
 
@@ -12,7 +12,7 @@ This is a saved checkpoint, not a live dashboard. Pausing Codex does not stop de
 
 ## Active
 
-Only `ap-xoBixARmigL9i5dgUso8Je` (`sglang-suffix-validated-campaign`) remains active: one H100 running the frozen five-mode, five-trial campaign. GPU allocation continues until completion, failure, explicit stop or its 12-hour timeout.
+Only `ap-TawwrpzDJ2lkv2krq66I9s` (`sglang-suffix-validated-campaign`) remains active: one H100 running `modal-20261004-final-campaign-resumed`. It preserves the complete first trial and reruns trials 1–4 under unchanged GPU source/workload hashes. GPU allocation continues until completion, failure, explicit stop or its 12-hour timeout. The local submit command has exited; monitoring is read-only.
 
 Latest checked progress: five of 25 mode/trial combinations, 1200/6000 timed requests validated. The first trial is complete:
 
@@ -24,7 +24,7 @@ Latest checked progress: five of 25 mode/trial combinations, 1200/6000 timed req
 | SUFFIX without the adaptive match-length bound | 240 | 0 |
 | Local-cache-only SUFFIX | 240 | 0 |
 
-The rotated second trial is running NGRAM; at the last live read it had executed 38 additional requests. These partial records have not passed the mode's completion checks. The progress file's `success: false` is an initial completion flag; the final `campaign-status.json` determines success or failure. Its completed-trial array can lag the last mode checkpoint; the log confirms the next trial has started.
+The resumed allocation has passed fresh plain gates and the direct KV audit and is starting the second trial's NGRAM run. The progress file's `success: false` is an initial completion flag; the final `campaign-status.json` determines success or failure. Earlier incomplete trial records do not count toward the 6000 measured requests.
 
 ## Stopped deliberately
 
@@ -50,3 +50,11 @@ Future execution should announce each stage, report completed/total counts and a
 The user authorized continuation after the status reset. Continue the active campaign, then launch diagnostics, final analysis and publication sequentially. No persistent cloud waiter or automatic publisher was restarted. The runbook now states the required completion checks. The analysis verifies recorded proposer settings and rejects silent SUFFIX ablation misconfiguration; all sixteen host/report checks pass. GPU code and workload remain frozen.
 
 The public portable runner passes source-hash dry runs on Mac and Linux. Its brief CPU app stopped after completion; a fixed container-import error and an earlier image-ID typo are recorded. A four-request Linux/GPU smoke will run in the final diagnostic allocation (16 phases total); it does not establish a separate complete five-trial rerun. Both published source checkpoints have passed Linux/Mac CI. A transient automatic approval-service usage error interrupted a CI read; the normal reviewed retry succeeded after the user resumed.
+
+## Cancellation and recovery
+
+The original campaign received an explicit input cancellation signal at 19:38:47 EDT and stopped at 19:39:33. Its status says `Interrupted before completion`; there is no recorded correctness/CUDA failure. The logs do not identify the cancellation source. Its complete 1200-request trial and partial second trial are saved locally and in the artifact volume.
+
+The resumed campaign copies only complete paired trials, preserves the failed status/log and incomplete records under `resume-source/`, and reruns incomplete trials in full. No partial timings are mixed across allocations. Local revalidation confirms all 960 strict first-trial outputs match, NGRAM has 10/240 differences, and every mode's recorded configuration is valid.
+
+All long stage launchers now support `--submit-only`, using async `spawn()` and returning a function-call receipt. A CPU-only probe's local CLI exited at 19:45:26; its remote completion file was written at 19:45:48. The probe app stopped. This validates continuation after normal submitter exit, not immunity to explicit app cancellation. Decision score: **97/100** for preserving complete paired work and replacing the long-lived waiting caller.

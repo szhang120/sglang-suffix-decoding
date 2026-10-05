@@ -16,7 +16,7 @@ SUFFIX_PORTABLE_CPU_ONLY=1 SUFFIX_MODAL_CPU_ONLY=1 \
   /tmp/sglang-modal-cli/bin/modal run scripts/modal_reproduce.py \
   --run-id FRESH_CPU_ID --dry-run
 /tmp/sglang-modal-cli/bin/modal run --detach scripts/modal_reproduce.py \
-  --run-id FRESH_GPU_ID
+  --run-id FRESH_GPU_ID --submit-only
 ```
 
 The first command allocates CPU only for source-hash validation; image building
@@ -58,21 +58,35 @@ Use Modal CLI 1.6.1 in the isolated Mac environment `/tmp/sglang-modal-cli`. Tok
 For the retained shared-attention candidate, the complete isolated suffix gate supplies the strict reference. Run stages sequentially with fresh IDs. Launch the campaign first:
 
 ```sh
-/tmp/sglang-modal-cli/bin/modal run --detach analysis/modal_final_campaign.py --run-id CAMPAIGN_ID
+/tmp/sglang-modal-cli/bin/modal run --detach analysis/modal_final_campaign.py --run-id CAMPAIGN_ID --submit-only
 ```
 
-Inspect the app and download `CAMPAIGN_ID/campaign-status.json`. Require `success: true`, five completed trials and 25 completed mode runs before launching diagnostics. Pausing Codex or disconnecting the Mac does not stop a detached app. The campaign progress file contains completed mode runs; its initial `success: false` is not a failure status.
+Inspect the app and download `CAMPAIGN_ID/campaign-status.json`. Require `success: true`, five completed trials and 25 completed mode runs before launching diagnostics. `--submit-only` uses asynchronous `spawn()` and returns a saved function-call receipt, avoiding a long-lived local waiting caller. Detached application state alone did not prevent the observed input cancellation in the original synchronous campaign. The campaign progress file contains completed mode runs; its initial `success: false` is not a failure status.
+
+To recover a canceled campaign with complete paired trials, preserve its artifacts and use a fresh ID:
+
+```sh
+/tmp/sglang-modal-cli/bin/modal run --detach analysis/modal_final_campaign.py \
+  --run-id RESUMED_ID --resume-run CANCELED_ID --submit-only
+```
+
+Only complete five-mode trials are copied. Incomplete trials are rerun in full;
+their raw records and the failed source status/log remain in `resume-source/`.
+Source hashes must match. Each paired trial owns one physical GPU; different
+trials can use different allocations, which the report records by GPU UUID.
+A short CPU-only probe verified completion after the submitting CLI exited.
+Explicitly stopping the Modal app still cancels its work.
 
 After the campaign app has stopped, run diagnostics:
 
 ```sh
-/tmp/sglang-modal-cli/bin/modal run --detach analysis/modal_final_diagnostics.py --run-id DIAGNOSTIC_ID --reference-run CAMPAIGN_ID --wait-for-campaign
+/tmp/sglang-modal-cli/bin/modal run --detach analysis/modal_final_diagnostics.py --run-id DIAGNOSTIC_ID --reference-run CAMPAIGN_ID --wait-for-campaign --submit-only
 ```
 
 Here `--wait-for-campaign` selects the controller that validates timings and generates diagnostic reports. Invoke it only after campaign completion: no persistent idle waiter is needed. Require successful `DIAGNOSTIC_ID/diagnostics-status.json` and `DIAGNOSTIC_ID-controller/controller-status.json`, then launch the CPU finalizer:
 
 ```sh
-/tmp/sglang-modal-cli/bin/modal run --detach analysis/modal_finalize.py --run-id ANALYSIS_ID --campaign-run CAMPAIGN_ID --diagnostics-run DIAGNOSTIC_ID
+/tmp/sglang-modal-cli/bin/modal run --detach analysis/modal_finalize.py --run-id ANALYSIS_ID --campaign-run CAMPAIGN_ID --diagnostics-run DIAGNOSTIC_ID --submit-only
 ```
 
 The follow-up validates all 6000 serving records on CPU, then starts one serialized diagnostic GPU function after the campaign completes. A failed campaign/report stops it before allocation. Natural traces, five separate profiles, six paired ordinary-route controls and 54 width probes follow. Its CPU analysis writes report hashes and never merges instrumented latencies into serving estimates. The CPU-only finalizer then regenerates extended reports with actual second turns separated, writes the gated results document and scientific figures, and packages raw measurements/profiles with per-file hashes. It refuses failed/incomplete evidence. The controller, GPU and finalizer statuses in the artifact volume are authoritative.

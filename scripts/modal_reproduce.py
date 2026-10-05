@@ -64,8 +64,13 @@ def execute(run_id, dry_run, smoke):
 
 
 @app.local_entrypoint()
-def main(run_id: str, dry_run: bool = False, smoke: bool = False):
+def main(run_id: str, dry_run: bool = False, smoke: bool = False, submit_only: bool = False):
     assert dry_run == CPU_ONLY, "Dry runs require SUFFIX_PORTABLE_CPU_ONLY=1 before import/deployment"
+    if submit_only:
+        call = execute.spawn(run_id, dry_run, smoke)
+        print(json.dumps(dict(submitted=True, run_id=run_id, app_id=app.app_id,
+                              function_call_id=call.object_id, gpu_allocated=not CPU_ONLY), indent=2))
+        return
     status = execute.remote(run_id, dry_run, smoke)
     print(json.dumps(status, indent=2))
     if not status["success"]:

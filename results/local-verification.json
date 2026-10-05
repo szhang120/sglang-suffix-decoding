@@ -203,10 +203,14 @@
       "mismatches": 0
     },
     "serving_benchmarks": {
-      "status": "running",
-      "run_id": "modal-20261004-final-campaign",
+      "status": "resumed after cancellation",
+      "run_id": "modal-20261004-final-campaign-resumed",
       "exact_output_policy": "ordinary/SUFFIX/ablations strict; upstream NGRAM differences descriptive",
-      "followup": "Stage-by-stage execution after campaign completion; idle cloud waiters and automatic publication watcher stopped"
+      "followup": "Sequential async submission after campaign completion; no idle cloud waiters",
+      "completed_trials_preserved": 1,
+      "validated_requests_preserved": 1200,
+      "original_run": "modal-20261004-final-campaign",
+      "original_error": "Interrupted before completion"
     },
     "real_branch_replay": {
       "run_id": "modal-20261004-branch-attention",
@@ -245,5 +249,12 @@
     ],
     "gpu_smoke": "pending in final diagnostic allocation",
     "full_portable_five_trial_rerun": "not separately executed"
+  },
+  "async_submission_probe": {
+    "gpu_allocated": false,
+    "success": true,
+    "local_cli_exit_edt": "2026-10-04 19:45:26",
+    "remote_status_written_edt": "2026-10-04 19:45:48",
+    "run_id": "modal-20261004-async-submission-probe"
   }
 }

@@ -277,7 +277,8 @@ def wait_and_execute(run_id, reference_run, expected, control_sha, runner_sha, i
 
 
 @app.local_entrypoint()
-def main(run_id: str, reference_run: str = "modal-20261004-final-campaign", wait_for_campaign: bool = False):
+def main(run_id: str, reference_run: str = "modal-20261004-final-campaign", wait_for_campaign: bool = False,
+         submit_only: bool = False):
     import hashlib
 
     gate = ROOT / "results/modal/modal-20261004-v12-suffix-isolated/suffix-gate-status.json"
@@ -285,6 +286,15 @@ def main(run_id: str, reference_run: str = "modal-20261004-final-campaign", wait
     control_sha = hashlib.sha256((ROOT / "analysis/decode_control_gpu.py").read_bytes()).hexdigest()
     runner_sha = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
     function = wait_and_execute if wait_for_campaign else execute
+    if submit_only:
+        call = function.spawn(run_id, reference_run, expected, control_sha, runner_sha, image.object_id)
+        submission = dict(submitted=True, run_id=run_id, reference_run=reference_run,
+                          app_id=app.app_id, function_call_id=call.object_id)
+        directory = ROOT / "results/modal" / run_id
+        directory.mkdir(parents=True, exist_ok=True)
+        (directory / "submission.json").write_text(json.dumps(submission, indent=2) + "\n")
+        print(json.dumps(submission, indent=2))
+        return
     status = function.remote(run_id, reference_run, expected, control_sha, runner_sha, image.object_id)
     directory = ROOT / "results/modal" / run_id
     directory.mkdir(parents=True, exist_ok=True)

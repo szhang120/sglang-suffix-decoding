@@ -147,6 +147,9 @@ def main():
              f"Campaign: `{campaign['run_id']}`. Diagnostics: `{diagnostics['run_id']}`. Immutable runtime image: `{campaign['image_id']}`; image IDs identify provenance in the original Modal workspace rather than public portable images.",
              "", f"Integration patch SHA256: `{campaign['source_sha256']['patches/sglang-suffix.patch']}`. Workload SHA256: `{campaign['source_sha256']['configs/frozen-workload.jsonl']}`. Dependency lock SHA256: `{campaign['source_sha256']['configs/gpu-requirements.lock']}`.",
              "", "The JSON reports retain raw-file hashes, IDs, resolved configuration, GPU UUIDs, package freezes, trace hashes and per-trial measurements. Exact runtime source snapshots and selected numerical fixtures are public in the attribution audit release. See [GPU runbook](GPU_RUNBOOK.md), [technical design](TECHNICAL_REPORT.md), and the committed `results/final/` reports. Timing and profile artifacts are separate release assets; no model weights or credentials are distributed.", ""]
+    if campaign.get("resume_lineage"):
+        origin = campaign["resume_lineage"]
+        text += [f"The original campaign `{origin['run_id']}` was canceled after its complete first trial. The resumed campaign preserved only complete paired trials and reran incomplete trials on a fresh allocation. Every five-mode trial stayed on one physical GPU; allocations can differ between trials, as recorded by GPU UUID. The original failed status, log and discarded partial records are retained under `resume-source/` in the serving archive. Model, runtime and frozen input hashes are unchanged.", ""]
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text("\n".join(text))
     print(f"Wrote gated measured results to {args.output}")

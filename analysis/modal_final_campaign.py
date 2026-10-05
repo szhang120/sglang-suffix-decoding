@@ -24,7 +24,7 @@ MODES = ("ordinary", "ngram", "suffix", "suffix-fixed", "suffix-local")
               ephemeral_disk=512 * 1024, timeout=43200, startup_timeout=1800,
               max_containers=1, retries=0, scaledown_window=2,
               volumes={"/artifacts": artifacts, "/model-cache": model_cache})
-def execute(run_id, expected, runner_sha, image_id):
+def execute(run_id, expected, runner_sha, image_id, resume_run=""):
     import hashlib
     import subprocess
     import time
@@ -61,6 +61,43 @@ def execute(run_id, expected, runner_sha, image_id):
     try:
         for name, digest in expected.items():
             assert hashlib.sha256((Path("/project") / name).read_bytes()).hexdigest() == digest, name
+        if resume_run:
+            import shutil
+
+            assert resume_run != run_id and all(c in "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_" for c in resume_run)
+            previous_dir = Path("/artifacts") / resume_run
+            previous_path = previous_dir / "campaign-status.json"
+            previous = json.loads(previous_path.read_text())
+            assert not previous["success"] and previous.get("error") == "Interrupted before completion"
+            assert previous["source_sha256"] == expected
+            completed = previous["completed_trials"]
+            assert completed and completed == list(range(len(completed))) and len(completed) < 5
+            copied = []
+            for trial in completed:
+                for mode in MODES:
+                    entry = next(row for row in previous["completed_modes"] if row["trial"] == trial and row["mode"] == mode)
+                    assert mode == "ngram" or not entry["mismatches"]
+                    assert len(rows(previous_dir / f"results/gpu/{mode}-{trial}/requests.jsonl")) == 240
+                    shutil.copytree(previous_dir / f"results/gpu/{mode}-{trial}", results / f"gpu/{mode}-{trial}")
+                    filename = f"benchmark-{mode}-{trial}-equality.json"
+                    shutil.copyfile(previous_dir / "results" / filename, results / filename)
+                    copied.append(entry)
+            status["completed_modes"] = copied
+            status["completed_trials"] = completed.copy()
+            status["resume_lineage"] = dict(run_id=resume_run, completed_trials=completed,
+                                           original_runner_sha256=previous["runner_sha256"],
+                                           original_status_sha256=hashlib.sha256(previous_path.read_bytes()).hexdigest(),
+                                           incomplete_trials_discarded=True,
+                                           allocation_policy="Every five-mode paired trial stays on one GPU; allocations can differ between trials")
+            history = directory / "resume-source"
+            history.mkdir()
+            for filename in ("campaign-status.json", "campaign.log"):
+                shutil.copyfile(previous_dir / filename, history / filename)
+            complete_names = {f"{mode}-{trial}" for trial in completed for mode in MODES}
+            for old in sorted((previous_dir / "results/gpu").iterdir()):
+                if old.is_dir() and old.name not in complete_names:
+                    shutil.copytree(old, history / "discarded-trials" / old.name)
+            print(f"PROGRESS: preserved {len(completed)} complete trials from {resume_run}; rerunning incomplete trials", flush=True)
         suffix_gate = Path("/artifacts/modal-20261004-v12-suffix-isolated/results/suffix-gate-summary.json")
         gate = json.loads(suffix_gate.read_text())
         assert gate["complete"] and gate["requests"] == 240 and not gate["mismatches"]
@@ -113,7 +150,7 @@ def execute(run_id, expected, runner_sha, image_id):
             status["gates_passed"] = True
             log.flush()
             artifacts.commit()
-            for trial in range(5):
+            for trial in range(len(status["completed_trials"]), 5):
                 order = MODES[trial:] + MODES[:trial]
                 for mode in order:
                     run(["python", "scripts/gpu_bench.py", "--mode", mode, "--trial", str(trial)])
@@ -138,6 +175,8 @@ def execute(run_id, expected, runner_sha, image_id):
                 for mode in MODES[2:]:
                     assert not equality(baseline, rows(results / "gpu" / f"{mode}-{trial}" / "requests.jsonl"))
                 status["completed_trials"].append(trial)
+                (directory / "campaign-progress.json").write_text(json.dumps(status, indent=2) + "\n")
+                artifacts.commit()
             status["success"] = True
     except Exception as exc:
         status["error"] = str(exc)
@@ -152,13 +191,22 @@ def execute(run_id, expected, runner_sha, image_id):
 
 
 @app.local_entrypoint()
-def main(run_id: str = "modal-20261004-final-campaign"):
+def main(run_id: str = "modal-20261004-final-campaign", resume_run: str = "", submit_only: bool = False):
     import hashlib
 
     reference = ROOT / "results/modal/modal-20261004-v12-suffix-isolated/suffix-gate-status.json"
     expected = json.loads(reference.read_text())["source_sha256"]
     runner_sha = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
-    status = execute.remote(run_id, expected, runner_sha, image.object_id)
+    if submit_only:
+        call = execute.spawn(run_id, expected, runner_sha, image.object_id, resume_run)
+        submission = dict(submitted=True, run_id=run_id, resume_run=resume_run,
+                          app_id=app.app_id, function_call_id=call.object_id, runner_sha256=runner_sha)
+        directory = ROOT / "results/modal" / run_id
+        directory.mkdir(parents=True, exist_ok=True)
+        (directory / "submission.json").write_text(json.dumps(submission, indent=2) + "\n")
+        print(json.dumps(submission, indent=2))
+        return
+    status = execute.remote(run_id, expected, runner_sha, image.object_id, resume_run)
     directory = ROOT / "results/modal" / run_id
     directory.mkdir(parents=True, exist_ok=True)
     (directory / "campaign-status.json").write_text(json.dumps(status, indent=2) + "\n")

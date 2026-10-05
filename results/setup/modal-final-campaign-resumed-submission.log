@@ -1,0 +1,19 @@
+Note that running a local entrypoint in detached mode only keeps the last triggered Modal function alive after the parent process has been killed or disconnected.
+✓ Initialized. View run at 
+https://modal.com/apps/szhanggg/main/ap-TawwrpzDJ2lkv2krq66I9s
+✓ Created objects.
+├── ✓ Uploaded 
+│   /Users/seanzhang/Documents/ChatGPT/sglang-suffix-decoding/analysis/modal_fin
+│   al_campaign.py
+└── ✓ Created Function execute.
+{
+  "submitted": true,
+  "run_id": "modal-20261004-final-campaign-resumed",
+  "resume_run": "modal-20261004-final-campaign",
+  "app_id": "ap-TawwrpzDJ2lkv2krq66I9s",
+  "function_call_id": "fc-01M44N49GMFMJ4GGCHJW9WNX27",
+  "runner_sha256": "b25e93e98fbba19d84aad38c26a6ac3e022361e5293bc744f549d4faaffbb07e"
+}
+[modal-client] 2026-10-04T19:49:11-0400 Timed out waiting for final app logs.
+✓ App completed. View run at 
+https://modal.com/apps/szhanggg/main/ap-TawwrpzDJ2lkv2krq66I9s

@@ -134,10 +134,19 @@ def execute(run_id, campaign_run, diagnostics_run, runner_sha):
 @app.local_entrypoint()
 def main(run_id: str = "modal-20261004-final-analysis",
          campaign_run: str = "modal-20261004-final-campaign",
-         diagnostics_run: str = "modal-20261004-final-diagnostics"):
+         diagnostics_run: str = "modal-20261004-final-diagnostics", submit_only: bool = False):
     import hashlib
 
     runner_sha = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
+    if submit_only:
+        call = execute.spawn(run_id, campaign_run, diagnostics_run, runner_sha)
+        submission = dict(submitted=True, run_id=run_id, campaign_run=campaign_run,
+                          diagnostics_run=diagnostics_run, app_id=app.app_id, function_call_id=call.object_id)
+        destination = ROOT / "results/modal" / run_id
+        destination.mkdir(parents=True, exist_ok=True)
+        (destination / "submission.json").write_text(json.dumps(submission, indent=2) + "\n")
+        print(json.dumps(submission, indent=2))
+        return
     status = execute.remote(run_id, campaign_run, diagnostics_run, runner_sha)
     destination = ROOT / "results/modal" / run_id
     destination.mkdir(parents=True, exist_ok=True)
