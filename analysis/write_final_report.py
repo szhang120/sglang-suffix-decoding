@@ -55,10 +55,10 @@ def main():
 
     text = [
         "## Results", "",
-        "Qwen2.5-7B-Instruct; one H100 80GB; greedy batch 1; BF16 with an FP32 output head.", "",
-        "Deterministic Triton attention; eager execution; seed 42; output limit 256. Graphs, overlap and radix caching disabled.", "",
-        "Five rotated trials × five modes × 240 requests = 6,000 measurements. Inputs: 52 initial prompts and 32 follow-ups. Blocks: 52 independent, 84 first/follow-up, 104 repeated requests; caches start empty per block.", "",
-        "Speedup = ordinary/mode summed request latency, including host/streaming overhead. Above 1 is faster. Brackets: 95% paired bootstrap intervals, 10,000 trial resamples, seed 42; fixed-workload timing variation.", "",
+        "The model is Qwen2.5-7B-Instruct on one H100 80GB. Decoding is greedy, with a batch size of 1. Weights and activations use BF16. The output head produces FP32 values.", "",
+        "All modes use deterministic Triton attention, eager execution and seed 42. The output limit is 256 tokens. CUDA graphs, overlap and radix caching are disabled.", "",
+        "Five trials × five modes × 240 requests = 6,000 measurements. The mode order rotates between trials. Inputs include 52 initial prompts and 32 follow-ups. Each block has 52 independent, 84 first and follow-up, or 104 repeated requests. Each block starts with empty algorithm caches.", "",
+        "Speedup is total ordinary request latency divided by total mode latency. It includes host and streaming overhead. Values above 1 mean faster execution. Brackets show 95% paired bootstrap intervals from 10,000 trial resamples with seed 42. The intervals describe timing variation on this workload.", "",
         "| Mode | Independent | First + follow-up | Follow-up only | Repeated |",
         "|---|---:|---:|---:|---:|",
     ]
@@ -68,7 +68,7 @@ def main():
         cells = [ratio(aggregates[(mode, "independent")]), ratio(aggregates[(mode, "refinement")]),
                  ratio(follow), ratio(aggregates[(mode, "repeat")])]
         text.append(f"| {label} | " + " | ".join(cells) + " |")
-    text += ["", "Repeated includes both identical-prompt passes, a favorable reuse test. The bound-removal variant still uses probability, available-continuation and output-budget limits.", "",
+    text += ["", "The repeated block includes the first and second passes of each identical prompt. This test gives favorable conditions for cache reuse. Without the match-length bound, probability, available continuations and the output limit still constrain proposals.", "",
              "| Adaptive SUFFIX vs ordinary | Result |", "|---|---|"]
     for label, row in (("Independent", aggregates[("suffix", "independent")]),
                        ("Follow-up only", turns[("suffix", "refinement", "refinement")]),
@@ -77,39 +77,43 @@ def main():
 
     ablations = {(r["comparator"], r["block"]): r for r in benchmark["ablation_comparisons"]}
     assert len(ablations) == 6 and all(r["paired_trials"] == 5 for r in ablations.values())
-    text += ["", "Ablation ratios: above 1 favors adaptive dual cache.", "",
+    text += ["", "Each ablation removes one component. Ratios above 1 favor the adaptive method with both caches.", "",
              "| Block | Adaptive / without match-length bound | Dual cache / local only |", "|---|---:|---:|"]
     for block, label in blocks:
         cells = [ratio(ablations[(comparator, block)], "pooled_speedup_ratio")
                  for comparator in ("suffix-fixed", "suffix-local")]
         text.append(f"| {label} | " + " | ".join(cells) + " |")
     bound_findings = [finding(ablations[("suffix-fixed", block)]).lower() for block, _ in blocks]
-    text += ["", "Adaptive bound vs removal (independent / first + follow-up / repeated): " + " / ".join(bound_findings) + ". Candidate selection also changes; the cause is not isolated.", "",
+    if len(set(bound_findings)) == 1:
+        bound_statement = f"Decoding with the adaptive bound is {bound_findings[0]} than decoding without it in all three blocks." if bound_findings[0] != "inconclusive" else "The adaptive bound comparison is inconclusive in all three blocks."
+    else:
+        bound_statement = "Adaptive bound results: " + "; ".join(f"{label.lower()}: {result}" for (_, label), result in zip(blocks, bound_findings)) + "."
+    text += ["", bound_statement + " Removing the bound can change the chosen candidate and its length. These tests do not identify which change caused the latency difference.", "",
              "| Correctness check | Passing comparisons |", "|---|---:|",
              "| Ordinary, SUFFIX and suffix ablations in timed runs | 4,800 / 4,800 |",
              "| Separate suffix traces | 720 / 720 |",
-             f"| Direct verification/KV assertions | {campaign['audited_rounds']} / {campaign['audited_rounds']} |",
+             f"| Direct verification and KV assertions | {campaign['audited_rounds']} / {campaign['audited_rounds']} |",
              "| Controlled-width outputs | 54 / 54 |",
-             "| Ordinary-route outputs | 24 / 24 |",
-             "| Portable cold/warm smoke outputs | 4 / 4 |", "",
+             "| Attention route comparison outputs | 24 / 24 |",
+             "| Portable smoke outputs with empty and populated caches | 4 / 4 |", "",
              "### NGRAM PROB", "",
-             f"NGRAM differs from ordinary output on {len(benchmark['mismatches'])}/1,200 timed requests. The ratios below are descriptive latency ratios, not exact-output speedups.", "",
+             f"NGRAM output differs from ordinary output on {len(benchmark['mismatches'])} of 1,200 timed requests. The table gives descriptive latency ratios, not exact-output speedups.", "",
              "| Block | Ordinary / NGRAM latency | Differing outputs |", "|---|---:|---:|"]
     mismatches = Counter(r["block"] for r in benchmark["mismatches"])
     for block, label in blocks:
         row = aggregates[("ngram", block)]
         value = row.get("descriptive_latency_ratio", row.get("pooled_speedup"))
         text.append(f"| {label} | {value:.3f}× | {mismatches[block]} |")
-    text += ["", "NGRAM uses different caches and can branch at fanout 1. SUFFIX output checks remain strict.", "",
+    text += ["", "NGRAM and SUFFIX use different cache policies. NGRAM can merge branches even when each suffix anchor has a fanout of 1. SUFFIX outputs must match ordinary outputs.", "",
              "### GPU verification width", "",
-             "| Context tokens | One-row kernel sum | 33-row kernel sum | Reduction |", "|---:|---:|---:|---:|"]
+             "| Context tokens | Kernel time, 1 row | Kernel time, 33 rows | Reduction |", "|---:|---:|---:|---:|"]
     widths = {(r["context_tokens"], r["verify_rows"]): r for r in width["rows"]}
     for context in (126, 128, 512):
         one = widths[(context, 1)]["median_kernel_ms"]
         full = widths[(context, 33)]["median_kernel_ms"]
         text.append(f"| {context} | {one:.3f} ms | {full:.3f} ms | {100 * (1 - one / full):.1f}% |")
-    text += ["", "Three profiling trials. KV-store/argmax grids shrink; attention/head grids remain unchanged. Profiled kernel sums are neither request latency nor FLOPs.", "",
-             f"Two-prompt, six-pair route control: shared/original latency {ratio(route, 'pooled_shared_over_original_cost_ratio')}; above 1 means the shared route is slower. General baseline cost remains unestablished.", ""]
+    text += ["", "The table shows median sums of GPU kernel times from three profiling trials. The launch grids for KV storage and argmax become smaller. The attention and output-head grids stay the same. Kernel time includes profiler overhead. It does not measure request latency or operation counts.", "",
+             f"The attention route comparison uses two prompts and six paired trials. Shared-route latency / original-route latency is {ratio(route, 'pooled_shared_over_original_cost_ratio')}. Values above 1 mean the shared route is slower. This test does not establish the baseline cost for other inputs.", ""]
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text("\n".join(text))
     print(f"Wrote verified measurement tables to {args.output}")
